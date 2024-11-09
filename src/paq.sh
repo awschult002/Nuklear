@@ -55,6 +55,6 @@ nuklear_color_picker.c,\
 nuklear_combo.c,\
 nuklear_tooltip.c \
 --outro \
-../LICENSE,../CHANGELOG,../CREDITS \
+../LICENSE,../CHANGELOG.md,../CREDITS.md \
 > \
 ../nuklear.h

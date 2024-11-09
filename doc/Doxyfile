@@ -908,8 +908,8 @@ WARN_LOGFILE           =
 
 INPUT                  =    "./nuklear.h" \
                             "./LICENSE" \
-                            "./CHANGELOG" \
-                            "./CREDITS" \
+                            "./CHANGELOG.md" \
+                            "./CREDITS.md" \
                             "./LICENSE" \
                             "./HEADER.md" \
                             "./Readme.md"

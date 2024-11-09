@@ -2273,8 +2273,8 @@ NK_API float nk_layout_ratio_from_pixel(const struct nk_context *ctx, float pixe
 
 /**
  * \brief Sets current row layout to share horizontal space
- * between @cols number of widgets evenly. Once called all subsequent widget
- * calls greater than @cols will allocate a new row with same layout.
+ * between `cols` number of widgets evenly. Once called all subsequent widget
+ * calls greater than `cols` will allocate a new row with same layout.
  *
  * \details
  * ```c
@@ -2288,9 +2288,9 @@ NK_API float nk_layout_ratio_from_pixel(const struct nk_context *ctx, float pixe
 NK_API void nk_layout_row_dynamic(struct nk_context *ctx, float height, int cols);
 
 /**
- * \brief Sets current row layout to fill @cols number of widgets
+ * \brief Sets current row layout to fill `cols` number of widgets
  * in row with same @item_width horizontal size. Once called all subsequent widget
- * calls greater than @cols will allocate a new row with same layout.
+ * calls greater than `cols` will allocate a new row with same layout.
  *
  * \details
  * ```c
@@ -2320,7 +2320,7 @@ NK_API void nk_layout_row_static(struct nk_context *ctx, float height, int item_
 NK_API void nk_layout_row_begin(struct nk_context *ctx, enum nk_layout_format fmt, float row_height, int cols);
 
 /**
- * \breif Specifies either window ratio or width of a single column
+ * \brief Specifies either window ratio or width of a single column
  *
  * \details
  * ```c

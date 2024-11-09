@@ -6,6 +6,23 @@
  *                          BUTTON
  *
  * ===============================================================*/
+
+/********************************************************************
+ * @brief ADD DOCUMENTATION
+ *
+ * @details
+ * ADD Detailed DOCUMENTATION
+ *
+ * @param[out] nk_command_buffer is the buffer with the commands.
+ * @param[in] nk_symbol_type
+ * @param[in] nk_rect_content
+ * @param[in] nk_color_background
+ * @param[in] nk_color_foreground
+ * @param[in] border_width
+ * @param[in] nk_user_font
+ *
+ * @returns void
+ *******************************************************************/
 NK_LIB void
 nk_draw_symbol(struct nk_command_buffer *out, enum nk_symbol_type type,
     struct nk_rect content, struct nk_color background, struct nk_color foreground,
@@ -72,6 +89,19 @@ nk_draw_symbol(struct nk_command_buffer *out, enum nk_symbol_type type,
     case NK_SYMBOL_MAX: break;
     }
 }
+/********************************************************************
+ * @brief ADD DOCUMENTATION
+ *
+ * @details
+ * ADD Detailed DOCUMENTATION
+ *
+ * @param[in] state
+ * @param[in] r
+ * @param[in] i
+ * @param[in] behavior
+ *
+ * @returns void
+ *******************************************************************/
 NK_LIB nk_bool
 nk_button_behavior(nk_flags *state, struct nk_rect r,
     const struct nk_input *i, enum nk_button_behavior behavior)
@@ -99,6 +129,22 @@ nk_button_behavior(nk_flags *state, struct nk_rect r,
         *state |= NK_WIDGET_STATE_LEFT;
     return ret;
 }
+/********************************************************************
+ * @brief ADD DOCUMENTATION
+ *
+ * @details
+ * ADD Detailed DOCUMENTATION
+ *
+ * @param[out] nk_command_buffer is the buffer with the commands.
+ * @param[in] nk_symbol_type
+ * @param[in] nk_rect_content
+ * @param[in] nk_color_background
+ * @param[in] nk_color_foreground
+ * @param[in] border_width
+ * @param[in] nk_user_font
+ *
+ * @returns void
+ *******************************************************************/
 NK_LIB const struct nk_style_item*
 nk_draw_button(struct nk_command_buffer *out,
     const struct nk_rect *bounds, nk_flags state,
@@ -125,6 +171,22 @@ nk_draw_button(struct nk_command_buffer *out,
     }
     return background;
 }
+/********************************************************************
+ * @brief ADD DOCUMENTATION
+ *
+ * @details
+ * ADD Detailed DOCUMENTATION
+ *
+ * @param[out] nk_command_buffer is the buffer with the commands.
+ * @param[in] nk_symbol_type
+ * @param[in] nk_rect_content
+ * @param[in] nk_color_background
+ * @param[in] nk_color_foreground
+ * @param[in] border_width
+ * @param[in] nk_user_font
+ *
+ * @returns void
+ *******************************************************************/
 NK_LIB nk_bool
 nk_do_button(nk_flags *state, struct nk_command_buffer *out, struct nk_rect r,
     const struct nk_style_button *style, const struct nk_input *in,
@@ -150,6 +212,22 @@ nk_do_button(nk_flags *state, struct nk_command_buffer *out, struct nk_rect r,
     bounds.h = r.h + 2 * style->touch_padding.y;
     return nk_button_behavior(state, bounds, in, behavior);
 }
+/********************************************************************
+ * @brief ADD DOCUMENTATION
+ *
+ * @details
+ * ADD Detailed DOCUMENTATION
+ *
+ * @param[out] nk_command_buffer is the buffer with the commands.
+ * @param[in] nk_symbol_type
+ * @param[in] nk_rect_content
+ * @param[in] nk_color_background
+ * @param[in] nk_color_foreground
+ * @param[in] border_width
+ * @param[in] nk_user_font
+ *
+ * @returns void
+ *******************************************************************/
 NK_LIB void
 nk_draw_button_text(struct nk_command_buffer *out,
     const struct nk_rect *bounds, const struct nk_rect *content, nk_flags state,
@@ -175,6 +253,22 @@ nk_draw_button_text(struct nk_command_buffer *out,
     text.padding = nk_vec2(0,0);
     nk_widget_text(out, *content, txt, len, &text, text_alignment, font);
 }
+/********************************************************************
+ * @brief ADD DOCUMENTATION
+ *
+ * @details
+ * ADD Detailed DOCUMENTATION
+ *
+ * @param[out] nk_command_buffer is the buffer with the commands.
+ * @param[in] nk_symbol_type
+ * @param[in] nk_rect_content
+ * @param[in] nk_color_background
+ * @param[in] nk_color_foreground
+ * @param[in] border_width
+ * @param[in] nk_user_font
+ *
+ * @returns void
+ *******************************************************************/
 NK_LIB nk_bool
 nk_do_button_text(nk_flags *state,
     struct nk_command_buffer *out, struct nk_rect bounds,
@@ -199,6 +293,22 @@ nk_do_button_text(nk_flags *state,
     if (style->draw_end) style->draw_end(out, style->userdata);
     return ret;
 }
+/********************************************************************
+ * @brief ADD DOCUMENTATION
+ *
+ * @details
+ * ADD Detailed DOCUMENTATION
+ *
+ * @param[out] nk_command_buffer is the buffer with the commands.
+ * @param[in] nk_symbol_type
+ * @param[in] nk_rect_content
+ * @param[in] nk_color_background
+ * @param[in] nk_color_foreground
+ * @param[in] border_width
+ * @param[in] nk_user_font
+ *
+ * @returns void
+ *******************************************************************/
 NK_LIB void
 nk_draw_button_symbol(struct nk_command_buffer *out,
     const struct nk_rect *bounds, const struct nk_rect *content,
@@ -223,6 +333,22 @@ nk_draw_button_symbol(struct nk_command_buffer *out,
     sym = nk_rgb_factor(sym, style->color_factor_text);
     nk_draw_symbol(out, type, *content, bg, sym, 1, font);
 }
+/********************************************************************
+ * @brief ADD DOCUMENTATION
+ *
+ * @details
+ * ADD Detailed DOCUMENTATION
+ *
+ * @param[out] nk_command_buffer is the buffer with the commands.
+ * @param[in] nk_symbol_type
+ * @param[in] nk_rect_content
+ * @param[in] nk_color_background
+ * @param[in] nk_color_foreground
+ * @param[in] border_width
+ * @param[in] nk_user_font
+ *
+ * @returns void
+ *******************************************************************/
 NK_LIB nk_bool
 nk_do_button_symbol(nk_flags *state,
     struct nk_command_buffer *out, struct nk_rect bounds,
@@ -246,6 +372,22 @@ nk_do_button_symbol(nk_flags *state,
     if (style->draw_end) style->draw_end(out, style->userdata);
     return ret;
 }
+/********************************************************************
+ * @brief ADD DOCUMENTATION
+ *
+ * @details
+ * ADD Detailed DOCUMENTATION
+ *
+ * @param[out] nk_command_buffer is the buffer with the commands.
+ * @param[in] nk_symbol_type
+ * @param[in] nk_rect_content
+ * @param[in] nk_color_background
+ * @param[in] nk_color_foreground
+ * @param[in] border_width
+ * @param[in] nk_user_font
+ *
+ * @returns void
+ *******************************************************************/
 NK_LIB void
 nk_draw_button_image(struct nk_command_buffer *out,
     const struct nk_rect *bounds, const struct nk_rect *content,
@@ -254,6 +396,22 @@ nk_draw_button_image(struct nk_command_buffer *out,
     nk_draw_button(out, bounds, state, style);
     nk_draw_image(out, *content, img, nk_rgb_factor(nk_white, style->color_factor_background));
 }
+/********************************************************************
+ * @brief ADD DOCUMENTATION
+ *
+ * @details
+ * ADD Detailed DOCUMENTATION
+ *
+ * @param[out] nk_command_buffer is the buffer with the commands.
+ * @param[in] nk_symbol_type
+ * @param[in] nk_rect_content
+ * @param[in] nk_color_background
+ * @param[in] nk_color_foreground
+ * @param[in] border_width
+ * @param[in] nk_user_font
+ *
+ * @returns void
+ *******************************************************************/
 NK_LIB nk_bool
 nk_do_button_image(nk_flags *state,
     struct nk_command_buffer *out, struct nk_rect bounds,
@@ -280,6 +438,22 @@ nk_do_button_image(nk_flags *state,
     if (style->draw_end) style->draw_end(out, style->userdata);
     return ret;
 }
+/********************************************************************
+ * @brief ADD DOCUMENTATION
+ *
+ * @details
+ * ADD Detailed DOCUMENTATION
+ *
+ * @param[out] nk_command_buffer is the buffer with the commands.
+ * @param[in] nk_symbol_type
+ * @param[in] nk_rect_content
+ * @param[in] nk_color_background
+ * @param[in] nk_color_foreground
+ * @param[in] border_width
+ * @param[in] nk_user_font
+ *
+ * @returns void
+ *******************************************************************/
 NK_LIB void
 nk_draw_button_text_symbol(struct nk_command_buffer *out,
     const struct nk_rect *bounds, const struct nk_rect *label,
@@ -315,6 +489,22 @@ nk_draw_button_text_symbol(struct nk_command_buffer *out,
     nk_draw_symbol(out, type, *symbol, style->text_background, sym, 0, font);
     nk_widget_text(out, *label, str, len, &text, NK_TEXT_CENTERED, font);
 }
+/********************************************************************
+ * @brief ADD DOCUMENTATION
+ *
+ * @details
+ * ADD Detailed DOCUMENTATION
+ *
+ * @param[out] nk_command_buffer is the buffer with the commands.
+ * @param[in] nk_symbol_type
+ * @param[in] nk_rect_content
+ * @param[in] nk_color_background
+ * @param[in] nk_color_foreground
+ * @param[in] border_width
+ * @param[in] nk_user_font
+ *
+ * @returns void
+ *******************************************************************/
 NK_LIB nk_bool
 nk_do_button_text_symbol(nk_flags *state,
     struct nk_command_buffer *out, struct nk_rect bounds,
@@ -347,6 +537,22 @@ nk_do_button_text_symbol(nk_flags *state,
     if (style->draw_end) style->draw_end(out, style->userdata);
     return ret;
 }
+/********************************************************************
+ * @brief ADD DOCUMENTATION
+ *
+ * @details
+ * ADD Detailed DOCUMENTATION
+ *
+ * @param[out] nk_command_buffer is the buffer with the commands.
+ * @param[in] nk_symbol_type
+ * @param[in] nk_rect_content
+ * @param[in] nk_color_background
+ * @param[in] nk_color_foreground
+ * @param[in] border_width
+ * @param[in] nk_user_font
+ *
+ * @returns void
+ *******************************************************************/
 NK_LIB void
 nk_draw_button_text_image(struct nk_command_buffer *out,
     const struct nk_rect *bounds, const struct nk_rect *label,
@@ -373,6 +579,22 @@ nk_draw_button_text_image(struct nk_command_buffer *out,
     nk_widget_text(out, *label, str, len, &text, NK_TEXT_CENTERED, font);
     nk_draw_image(out, *image, img, nk_rgb_factor(nk_white, style->color_factor_background));
 }
+/********************************************************************
+ * @brief ADD DOCUMENTATION
+ *
+ * @details
+ * ADD Detailed DOCUMENTATION
+ *
+ * @param[out] nk_command_buffer is the buffer with the commands.
+ * @param[in] nk_symbol_type
+ * @param[in] nk_rect_content
+ * @param[in] nk_color_background
+ * @param[in] nk_color_foreground
+ * @param[in] border_width
+ * @param[in] nk_user_font
+ *
+ * @returns void
+ *******************************************************************/
 NK_LIB nk_bool
 nk_do_button_text_image(nk_flags *state,
     struct nk_command_buffer *out, struct nk_rect bounds,
@@ -409,6 +631,22 @@ nk_do_button_text_image(nk_flags *state,
     if (style->draw_end) style->draw_end(out, style->userdata);
     return ret;
 }
+/********************************************************************
+ * @brief ADD DOCUMENTATION
+ *
+ * @details
+ * ADD Detailed DOCUMENTATION
+ *
+ * @param[out] nk_command_buffer is the buffer with the commands.
+ * @param[in] nk_symbol_type
+ * @param[in] nk_rect_content
+ * @param[in] nk_color_background
+ * @param[in] nk_color_foreground
+ * @param[in] border_width
+ * @param[in] nk_user_font
+ *
+ * @returns void
+ *******************************************************************/
 NK_API void
 nk_button_set_behavior(struct nk_context *ctx, enum nk_button_behavior behavior)
 {
@@ -416,6 +654,22 @@ nk_button_set_behavior(struct nk_context *ctx, enum nk_button_behavior behavior)
     if (!ctx) return;
     ctx->button_behavior = behavior;
 }
+/********************************************************************
+ * @brief ADD DOCUMENTATION
+ *
+ * @details
+ * ADD Detailed DOCUMENTATION
+ *
+ * @param[out] nk_command_buffer is the buffer with the commands.
+ * @param[in] nk_symbol_type
+ * @param[in] nk_rect_content
+ * @param[in] nk_color_background
+ * @param[in] nk_color_foreground
+ * @param[in] border_width
+ * @param[in] nk_user_font
+ *
+ * @returns void
+ *******************************************************************/
 NK_API nk_bool
 nk_button_push_behavior(struct nk_context *ctx, enum nk_button_behavior behavior)
 {
@@ -436,6 +690,22 @@ nk_button_push_behavior(struct nk_context *ctx, enum nk_button_behavior behavior
     ctx->button_behavior = behavior;
     return 1;
 }
+/********************************************************************
+ * @brief ADD DOCUMENTATION
+ *
+ * @details
+ * ADD Detailed DOCUMENTATION
+ *
+ * @param[out] nk_command_buffer is the buffer with the commands.
+ * @param[in] nk_symbol_type
+ * @param[in] nk_rect_content
+ * @param[in] nk_color_background
+ * @param[in] nk_color_foreground
+ * @param[in] border_width
+ * @param[in] nk_user_font
+ *
+ * @returns void
+ *******************************************************************/
 NK_API nk_bool
 nk_button_pop_behavior(struct nk_context *ctx)
 {
@@ -454,6 +724,22 @@ nk_button_pop_behavior(struct nk_context *ctx)
     *element->address = element->old_value;
     return 1;
 }
+/********************************************************************
+ * @brief ADD DOCUMENTATION
+ *
+ * @details
+ * ADD Detailed DOCUMENTATION
+ *
+ * @param[out] nk_command_buffer is the buffer with the commands.
+ * @param[in] nk_symbol_type
+ * @param[in] nk_rect_content
+ * @param[in] nk_color_background
+ * @param[in] nk_color_foreground
+ * @param[in] border_width
+ * @param[in] nk_user_font
+ *
+ * @returns void
+ *******************************************************************/
 NK_API nk_bool
 nk_button_text_styled(struct nk_context *ctx,
     const struct nk_style_button *style, const char *title, int len)
@@ -481,6 +767,22 @@ nk_button_text_styled(struct nk_context *ctx,
                     title, len, style->text_alignment, ctx->button_behavior,
                     style, in, ctx->style.font);
 }
+/********************************************************************
+ * @brief ADD DOCUMENTATION
+ *
+ * @details
+ * ADD Detailed DOCUMENTATION
+ *
+ * @param[out] nk_command_buffer is the buffer with the commands.
+ * @param[in] nk_symbol_type
+ * @param[in] nk_rect_content
+ * @param[in] nk_color_background
+ * @param[in] nk_color_foreground
+ * @param[in] border_width
+ * @param[in] nk_user_font
+ *
+ * @returns void
+ *******************************************************************/
 NK_API nk_bool
 nk_button_text(struct nk_context *ctx, const char *title, int len)
 {
@@ -488,15 +790,63 @@ nk_button_text(struct nk_context *ctx, const char *title, int len)
     if (!ctx) return 0;
     return nk_button_text_styled(ctx, &ctx->style.button, title, len);
 }
+/********************************************************************
+ * @brief ADD DOCUMENTATION
+ *
+ * @details
+ * ADD Detailed DOCUMENTATION
+ *
+ * @param[out] nk_command_buffer is the buffer with the commands.
+ * @param[in] nk_symbol_type
+ * @param[in] nk_rect_content
+ * @param[in] nk_color_background
+ * @param[in] nk_color_foreground
+ * @param[in] border_width
+ * @param[in] nk_user_font
+ *
+ * @returns void
+ *******************************************************************/
 NK_API nk_bool nk_button_label_styled(struct nk_context *ctx,
     const struct nk_style_button *style, const char *title)
 {
     return nk_button_text_styled(ctx, style, title, nk_strlen(title));
 }
+/********************************************************************
+ * @brief ADD DOCUMENTATION
+ *
+ * @details
+ * ADD Detailed DOCUMENTATION
+ *
+ * @param[out] nk_command_buffer is the buffer with the commands.
+ * @param[in] nk_symbol_type
+ * @param[in] nk_rect_content
+ * @param[in] nk_color_background
+ * @param[in] nk_color_foreground
+ * @param[in] border_width
+ * @param[in] nk_user_font
+ *
+ * @returns void
+ *******************************************************************/
 NK_API nk_bool nk_button_label(struct nk_context *ctx, const char *title)
 {
     return nk_button_text(ctx, title, nk_strlen(title));
 }
+/********************************************************************
+ * @brief ADD DOCUMENTATION
+ *
+ * @details
+ * ADD Detailed DOCUMENTATION
+ *
+ * @param[out] nk_command_buffer is the buffer with the commands.
+ * @param[in] nk_symbol_type
+ * @param[in] nk_rect_content
+ * @param[in] nk_color_background
+ * @param[in] nk_color_foreground
+ * @param[in] border_width
+ * @param[in] nk_user_font
+ *
+ * @returns void
+ *******************************************************************/
 NK_API nk_bool
 nk_button_color(struct nk_context *ctx, struct nk_color color)
 {
@@ -532,6 +882,22 @@ nk_button_color(struct nk_context *ctx, struct nk_color color)
     nk_draw_button(&win->buffer, &bounds, ctx->last_widget_state, &button);
     return ret;
 }
+/********************************************************************
+ * @brief ADD DOCUMENTATION
+ *
+ * @details
+ * ADD Detailed DOCUMENTATION
+ *
+ * @param[out] nk_command_buffer is the buffer with the commands.
+ * @param[in] nk_symbol_type
+ * @param[in] nk_rect_content
+ * @param[in] nk_color_background
+ * @param[in] nk_color_foreground
+ * @param[in] border_width
+ * @param[in] nk_user_font
+ *
+ * @returns void
+ *******************************************************************/
 NK_API nk_bool
 nk_button_symbol_styled(struct nk_context *ctx,
     const struct nk_style_button *style, enum nk_symbol_type symbol)
@@ -557,6 +923,22 @@ nk_button_symbol_styled(struct nk_context *ctx,
     return nk_do_button_symbol(&ctx->last_widget_state, &win->buffer, bounds,
             symbol, ctx->button_behavior, style, in, ctx->style.font);
 }
+/********************************************************************
+ * @brief ADD DOCUMENTATION
+ *
+ * @details
+ * ADD Detailed DOCUMENTATION
+ *
+ * @param[out] nk_command_buffer is the buffer with the commands.
+ * @param[in] nk_symbol_type
+ * @param[in] nk_rect_content
+ * @param[in] nk_color_background
+ * @param[in] nk_color_foreground
+ * @param[in] border_width
+ * @param[in] nk_user_font
+ *
+ * @returns void
+ *******************************************************************/
 NK_API nk_bool
 nk_button_symbol(struct nk_context *ctx, enum nk_symbol_type symbol)
 {
@@ -564,6 +946,22 @@ nk_button_symbol(struct nk_context *ctx, enum nk_symbol_type symbol)
     if (!ctx) return 0;
     return nk_button_symbol_styled(ctx, &ctx->style.button, symbol);
 }
+/********************************************************************
+ * @brief ADD DOCUMENTATION
+ *
+ * @details
+ * ADD Detailed DOCUMENTATION
+ *
+ * @param[out] nk_command_buffer is the buffer with the commands.
+ * @param[in] nk_symbol_type
+ * @param[in] nk_rect_content
+ * @param[in] nk_color_background
+ * @param[in] nk_color_foreground
+ * @param[in] border_width
+ * @param[in] nk_user_font
+ *
+ * @returns void
+ *******************************************************************/
 NK_API nk_bool
 nk_button_image_styled(struct nk_context *ctx, const struct nk_style_button *style,
     struct nk_image img)
@@ -590,6 +988,22 @@ nk_button_image_styled(struct nk_context *ctx, const struct nk_style_button *sty
     return nk_do_button_image(&ctx->last_widget_state, &win->buffer, bounds,
                 img, ctx->button_behavior, style, in);
 }
+/********************************************************************
+ * @brief ADD DOCUMENTATION
+ *
+ * @details
+ * ADD Detailed DOCUMENTATION
+ *
+ * @param[out] nk_command_buffer is the buffer with the commands.
+ * @param[in] nk_symbol_type
+ * @param[in] nk_rect_content
+ * @param[in] nk_color_background
+ * @param[in] nk_color_foreground
+ * @param[in] border_width
+ * @param[in] nk_user_font
+ *
+ * @returns void
+ *******************************************************************/
 NK_API nk_bool
 nk_button_image(struct nk_context *ctx, struct nk_image img)
 {
@@ -597,6 +1011,22 @@ nk_button_image(struct nk_context *ctx, struct nk_image img)
     if (!ctx) return 0;
     return nk_button_image_styled(ctx, &ctx->style.button, img);
 }
+/********************************************************************
+ * @brief ADD DOCUMENTATION
+ *
+ * @details
+ * ADD Detailed DOCUMENTATION
+ *
+ * @param[out] nk_command_buffer is the buffer with the commands.
+ * @param[in] nk_symbol_type
+ * @param[in] nk_rect_content
+ * @param[in] nk_color_background
+ * @param[in] nk_color_foreground
+ * @param[in] border_width
+ * @param[in] nk_user_font
+ *
+ * @returns void
+ *******************************************************************/
 NK_API nk_bool
 nk_button_symbol_text_styled(struct nk_context *ctx,
     const struct nk_style_button *style, enum nk_symbol_type symbol,
@@ -625,6 +1055,22 @@ nk_button_symbol_text_styled(struct nk_context *ctx,
                 symbol, text, len, align, ctx->button_behavior,
                 style, ctx->style.font, in);
 }
+/********************************************************************
+ * @brief ADD DOCUMENTATION
+ *
+ * @details
+ * ADD Detailed DOCUMENTATION
+ *
+ * @param[out] nk_command_buffer is the buffer with the commands.
+ * @param[in] nk_symbol_type
+ * @param[in] nk_rect_content
+ * @param[in] nk_color_background
+ * @param[in] nk_color_foreground
+ * @param[in] border_width
+ * @param[in] nk_user_font
+ *
+ * @returns void
+ *******************************************************************/
 NK_API nk_bool
 nk_button_symbol_text(struct nk_context *ctx, enum nk_symbol_type symbol,
     const char* text, int len, nk_flags align)
@@ -633,17 +1079,65 @@ nk_button_symbol_text(struct nk_context *ctx, enum nk_symbol_type symbol,
     if (!ctx) return 0;
     return nk_button_symbol_text_styled(ctx, &ctx->style.button, symbol, text, len, align);
 }
+/********************************************************************
+ * @brief ADD DOCUMENTATION
+ *
+ * @details
+ * ADD Detailed DOCUMENTATION
+ *
+ * @param[out] nk_command_buffer is the buffer with the commands.
+ * @param[in] nk_symbol_type
+ * @param[in] nk_rect_content
+ * @param[in] nk_color_background
+ * @param[in] nk_color_foreground
+ * @param[in] border_width
+ * @param[in] nk_user_font
+ *
+ * @returns void
+ *******************************************************************/
 NK_API nk_bool nk_button_symbol_label(struct nk_context *ctx, enum nk_symbol_type symbol,
     const char *label, nk_flags align)
 {
     return nk_button_symbol_text(ctx, symbol, label, nk_strlen(label), align);
 }
+/********************************************************************
+ * @brief ADD DOCUMENTATION
+ *
+ * @details
+ * ADD Detailed DOCUMENTATION
+ *
+ * @param[out] nk_command_buffer is the buffer with the commands.
+ * @param[in] nk_symbol_type
+ * @param[in] nk_rect_content
+ * @param[in] nk_color_background
+ * @param[in] nk_color_foreground
+ * @param[in] border_width
+ * @param[in] nk_user_font
+ *
+ * @returns void
+ *******************************************************************/
 NK_API nk_bool nk_button_symbol_label_styled(struct nk_context *ctx,
     const struct nk_style_button *style, enum nk_symbol_type symbol,
     const char *title, nk_flags align)
 {
     return nk_button_symbol_text_styled(ctx, style, symbol, title, nk_strlen(title), align);
 }
+/********************************************************************
+ * @brief ADD DOCUMENTATION
+ *
+ * @details
+ * ADD Detailed DOCUMENTATION
+ *
+ * @param[out] nk_command_buffer is the buffer with the commands.
+ * @param[in] nk_symbol_type
+ * @param[in] nk_rect_content
+ * @param[in] nk_color_background
+ * @param[in] nk_color_foreground
+ * @param[in] border_width
+ * @param[in] nk_user_font
+ *
+ * @returns void
+ *******************************************************************/
 NK_API nk_bool
 nk_button_image_text_styled(struct nk_context *ctx,
     const struct nk_style_button *style, struct nk_image img, const char *text,
@@ -672,17 +1166,65 @@ nk_button_image_text_styled(struct nk_context *ctx,
             bounds, img, text, len, align, ctx->button_behavior,
             style, ctx->style.font, in);
 }
+/********************************************************************
+ * @brief ADD DOCUMENTATION
+ *
+ * @details
+ * ADD Detailed DOCUMENTATION
+ *
+ * @param[out] nk_command_buffer is the buffer with the commands.
+ * @param[in] nk_symbol_type
+ * @param[in] nk_rect_content
+ * @param[in] nk_color_background
+ * @param[in] nk_color_foreground
+ * @param[in] border_width
+ * @param[in] nk_user_font
+ *
+ * @returns void
+ *******************************************************************/
 NK_API nk_bool
 nk_button_image_text(struct nk_context *ctx, struct nk_image img,
     const char *text, int len, nk_flags align)
 {
     return nk_button_image_text_styled(ctx, &ctx->style.button,img, text, len, align);
 }
+/********************************************************************
+ * @brief ADD DOCUMENTATION
+ *
+ * @details
+ * ADD Detailed DOCUMENTATION
+ *
+ * @param[out] nk_command_buffer is the buffer with the commands.
+ * @param[in] nk_symbol_type
+ * @param[in] nk_rect_content
+ * @param[in] nk_color_background
+ * @param[in] nk_color_foreground
+ * @param[in] border_width
+ * @param[in] nk_user_font
+ *
+ * @returns void
+ *******************************************************************/
 NK_API nk_bool nk_button_image_label(struct nk_context *ctx, struct nk_image img,
     const char *label, nk_flags align)
 {
     return nk_button_image_text(ctx, img, label, nk_strlen(label), align);
 }
+/********************************************************************
+ * @brief ADD DOCUMENTATION
+ *
+ * @details
+ * ADD Detailed DOCUMENTATION
+ *
+ * @param[out] nk_command_buffer is the buffer with the commands.
+ * @param[in] nk_symbol_type
+ * @param[in] nk_rect_content
+ * @param[in] nk_color_background
+ * @param[in] nk_color_foreground
+ * @param[in] border_width
+ * @param[in] nk_user_font
+ *
+ * @returns void
+ *******************************************************************/
 NK_API nk_bool nk_button_image_label_styled(struct nk_context *ctx,
     const struct nk_style_button *style, struct nk_image img,
     const char *label, nk_flags text_alignment)
