@@ -127,7 +127,7 @@ in libraries and brought me to create some of my own. Finally Apoorva Joshi for 
 
 ## License
 Nuklear is avaliable under either the MIT License or public domain.
-See [LICENSE](LICENSE) for more info.
+See [LICENSE](./LICENSE) for more info.
 
 ## Reviewers guide
 

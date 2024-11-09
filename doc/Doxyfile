@@ -907,7 +907,11 @@ WARN_LOGFILE           =
 # Note: If this tag is empty the current directory is searched.
 
 INPUT                  =    "./nuklear.h" \
-                            "./src/HEADER.md" \
+                            "./LICENSE" \
+                            "./CHANGELOG" \
+                            "./CREDITS" \
+                            "./LICENSE" \
+                            "./HEADER.md" \
                             "./Readme.md"
 
 

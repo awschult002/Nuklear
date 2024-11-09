@@ -15,7 +15,7 @@ usage:
 
 docs: $(docs_path)/html/index.html 
 
-$(docs_path)/html/index.html: $(docs_path)/doxygen-awesome-css/doxygen-awesome.css $(doxyfile) nuklear.h
+$(docs_path)/html/index.html: $(docs_path)/doxygen-awesome-css/doxygen-awesome.css $(doxyfile) nuklear.h Readme.md ./HEADER.md ./CHANGELOG ./LICENSE ./CREDITS
 	doxygen $(doxyfile)
 
 $(doxyfile):
