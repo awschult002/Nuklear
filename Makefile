@@ -15,7 +15,7 @@ usage:
 
 docs: $(docs_path)/html/index.html 
 
-$(docs_path)/html/index.html: $(docs_path)/doxygen-awesome-css/doxygen-awesome.css $(doxyfile)
+$(docs_path)/html/index.html: $(docs_path)/doxygen-awesome-css/doxygen-awesome.css $(doxyfile) nuklear.h
 	doxygen $(doxyfile)
 
 $(doxyfile):
@@ -24,7 +24,9 @@ $(doxyfile):
 $(docs_path)/doxygen-awesome-css/doxygen-awesome.css:
 	git clone https://github.com/jothepro/doxygen-awesome-css.git $(docs_path)/doxygen-awesome-css --branch v2.3.4
 
-nuke:
+nuke: nuklear.h
+
+nuklear.h:
 	cd ./src && ./paq.sh
 
 all: docs nuke
