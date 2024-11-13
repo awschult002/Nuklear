@@ -344,78 +344,60 @@ enum nk_symbol_type {
  * ```
  *
  * # Reference
- * Function            | Description
- * --------------------|-------------------------------------------------------
- * \ref nk_init_default | Initializes context with standard library memory allocation (malloc,free)
- * \ref nk_init_fixed   | Initializes context from single fixed size memory block
- * \ref nk_init         | Initializes context with memory allocator callbacks for alloc and free
- * \ref nk_init_custom  | Initializes context from two buffers. One for draw commands the other for window/panel/table allocations
- * \ref nk_clear        | Called at the end of the frame to reset and prepare the context for the next frame
- * \ref nk_free         | Shutdown and free all memory allocated inside the context
- * \ref nk_set_user_data| Utility function to pass user data to draw command
+ * | Function              | Description                                                                                              |
+ * | --------------------- | ---------------                                                                                          |
+ * | \ref nk_init_default  | Initializes context with standard library memory allocation (malloc,free)                                |
+ * | \ref nk_init_fixed    | Initializes context from single fixed size memory block                                                  |
+ * | \ref nk_init          | Initializes context with memory allocator callbacks for alloc and free                                   |
+ * | \ref nk_init_custom   | Initializes context from two buffers. One for draw commands the other for window/panel/table allocations |
+ * | \ref nk_clear         | Called at the end of the frame to reset and prepare the context for the next frame                       |
+ * | \ref nk_free          | Shutdown and free all memory allocated inside the context                                                |
+ * | \ref nk_set_user_data | Utility function to pass user data to draw command
  */
 
 #ifdef NK_INCLUDE_DEFAULT_ALLOCATOR
 
 /**
- * # nk_init_default
- * Initializes a `nk_context` struct with a default standard library allocator.
+ * \brief Initializes a `nk_context` struct with a default standard library allocator.
  * Should be used if you don't want to be bothered with memory management in nuklear.
  *
- * ```c
- * nk_bool nk_init_default(struct nk_context *ctx, const struct nk_user_font *font);
- * ```
  *
- * Parameter   | Description
- * ------------|---------------------------------------------------------------
- * \param[in] ctx     | Must point to an either stack or heap allocated `nk_context` struct
- * \param[in] font    | Must point to a previously initialized font handle for more info look at font documentation
+ * \param[in] ctx      Must point to an either stack or heap allocated `nk_context` struct
+ * \param[in] font     Must point to a previously initialized font handle for more info look at font documentation
  *
  * \returns either `false(0)` on failure or `true(1)` on success.
  */
 NK_API nk_bool nk_init_default(struct nk_context*, const struct nk_user_font*);
 #endif
 /**
- * # nk_init_fixed
- * Initializes a `nk_context` struct from single fixed size memory block
+ * \brief Initializes a `nk_context` struct from single fixed size memory block
  * Should be used if you want complete control over nuklear's memory management.
  * Especially recommended for system with little memory or systems with virtual memory.
  * For the later case you can just allocate for example 16MB of virtual memory
  * and only the required amount of memory will actually be committed.
  *
- * ```c
- * nk_bool nk_init_fixed(struct nk_context *ctx, void *memory, nk_size size, const struct nk_user_font *font);
- * ```
  *
  * !!! Warning
  *     make sure the passed memory block is aligned correctly for `nk_draw_commands`.
  *
- * Parameter   | Description
- * ------------|--------------------------------------------------------------
- * \param[in] ctx     | Must point to an either stack or heap allocated `nk_context` struct
- * \param[in] memory  | Must point to a previously allocated memory block
- * \param[in] size    | Must contain the total size of memory
- * \param[in] font    | Must point to a previously initialized font handle for more info look at font documentation
+ * \param[in] ctx      Must point to an either stack or heap allocated `nk_context` struct
+ * \param[in] memory   Must point to a previously allocated memory block
+ * \param[in] size     Must contain the total size of memory
+ * \param[in] font     Must point to a previously initialized font handle for more info look at font documentation
  *
  * \returns either `false(0)` on failure or `true(1)` on success.
  */
 NK_API nk_bool nk_init_fixed(struct nk_context*, void *memory, nk_size size, const struct nk_user_font*);
 
 /**
- * # nk_init
- * Initializes a `nk_context` struct with memory allocation callbacks for nuklear to allocate
+ * \brief Initializes a `nk_context` struct with memory allocation callbacks for nuklear to allocate
  * memory from. Used internally for `nk_init_default` and provides a kitchen sink allocation
  * interface to nuklear. Can be useful for cases like monitoring memory consumption.
  *
- * ```c
- * nk_bool nk_init(struct nk_context *ctx, const struct nk_allocator *alloc, const struct nk_user_font *font);
- * ```
  *
- * Parameter   | Description
- * ------------|---------------------------------------------------------------
- * \param[in] ctx     | Must point to an either stack or heap allocated `nk_context` struct
- * \param[in] alloc   | Must point to a previously allocated memory allocator
- * \param[in] font    | Must point to a previously initialized font handle for more info look at font documentation
+ * \param[in] ctx      Must point to an either stack or heap allocated `nk_context` struct
+ * \param[in] alloc    Must point to a previously allocated memory allocator
+ * \param[in] font     Must point to a previously initialized font handle for more info look at font documentation
  *
  * \returns either `false(0)` on failure or `true(1)` on success.
  */
@@ -428,9 +410,6 @@ NK_API nk_bool nk_init(struct nk_context*, const struct nk_allocator*, const str
  * The first buffer is for allocating draw commands while the second buffer is
  * used for allocating windows, panels and state tables.
  *
- * ```c
- * nk_bool nk_init_custom(struct nk_context *ctx, struct nk_buffer *cmds, struct nk_buffer *pool, const struct nk_user_font *font);
- * ```
  *
  * \param[in] ctx    Must point to an either stack or heap allocated `nk_context` struct
  * \param[in] cmds   Must point to a previously initialized memory buffer either fixed or dynamic to store draw commands into
@@ -448,9 +427,6 @@ NK_API nk_bool nk_init_custom(struct nk_context*, struct nk_buffer *cmds, struct
  * This includes mostly garbage collector tasks like removing windows or table
  * not called and therefore used anymore.
  *
- * ```c
- * void nk_clear(struct nk_context *ctx);
- * ```
  *
  * \param[in] ctx  Must point to a previously initialized `nk_context` struct
  */
@@ -460,9 +436,6 @@ NK_API void nk_clear(struct nk_context*);
  * \brief Frees all memory allocated by nuklear; Not needed if context was initialized with `nk_init_fixed`.
  *
  * \details
- * ```c
- * void nk_free(struct nk_context *ctx);
- * ```
  *
  * \param[in] ctx  Must point to a previously initialized `nk_context` struct
  */
@@ -473,9 +446,6 @@ NK_API void nk_free(struct nk_context*);
  * \brief Sets the currently passed userdata passed down into each draw command.
  *
  * \details
- * ```c
- * void nk_set_user_data(struct nk_context *ctx, nk_handle data);
- * ```
  *
  * \param[in] ctx Must point to a previously initialized `nk_context` struct
  * \param[in] data  Handle with either pointer or index to be passed into every draw commands
@@ -538,17 +508,17 @@ NK_API void nk_set_user_data(struct nk_context*, nk_handle handle);
  * ```
  *
  * # Reference
- * Function            | Description
- * --------------------|-------------------------------------------------------
- * \ref nk_input_begin  | Begins the input mirroring process. Needs to be called before all other `nk_input_xxx` calls
- * \ref nk_input_motion | Mirrors mouse cursor position
- * \ref nk_input_key    | Mirrors key state with either pressed or released
- * \ref nk_input_button | Mirrors mouse button state with either pressed or released
- * \ref nk_input_scroll | Mirrors mouse scroll values
- * \ref nk_input_char   | Adds a single ASCII text character into an internal text buffer
- * \ref nk_input_glyph  | Adds a single multi-byte UTF-8 character into an internal text buffer
- * \ref nk_input_unicode| Adds a single unicode rune into an internal text buffer
- * \ref nk_input_end    | Ends the input mirroring process by calculating state changes. Don't call any `nk_input_xxx` function referenced above after this call
+ * | Function              | Description                                                                                                                            |
+ * | --------------------- | ---------------                                                                                                                        |
+ * | \ref nk_input_begin   | Begins the input mirroring process. Needs to be called before all other `nk_input_xxx` calls                                           |
+ * | \ref nk_input_motion  | Mirrors mouse cursor position                                                                                                          |
+ * | \ref nk_input_key     | Mirrors key state with either pressed or released                                                                                      |
+ * | \ref nk_input_button  | Mirrors mouse button state with either pressed or released                                                                             |
+ * | \ref nk_input_scroll  | Mirrors mouse scroll values                                                                                                            |
+ * | \ref nk_input_char    | Adds a single ASCII text character into an internal text buffer                                                                        |
+ * | \ref nk_input_glyph   | Adds a single multi-byte UTF-8 character into an internal text buffer                                                                  |
+ * | \ref nk_input_unicode | Adds a single unicode rune into an internal text buffer                                                                                |
+ * | \ref nk_input_end     | Ends the input mirroring process by calculating state changes. Don't call any `nk_input_xxx` function referenced above after this call |
  */
 
 enum nk_keys {
@@ -599,9 +569,6 @@ enum nk_buttons {
  * mouse, previous mouse position and movement as well as key state transitions.
  *
  * \details
- * ```c
- * void nk_input_begin(struct nk_context*);
- * ```
  *
  * \param[in] ctx Must point to a previously initialized `nk_context` struct
  */
@@ -611,9 +578,6 @@ NK_API void nk_input_begin(struct nk_context*);
  * \brief Mirrors current mouse position to nuklear
  *
  * \details
- * ```c
- * void nk_input_motion(struct nk_context *ctx, int x, int y);
- * ```
  *
  * \param[in] ctx   Must point to a previously initialized `nk_context` struct
  * \param[in] x     Must hold an integer describing the current mouse cursor x-position
@@ -625,9 +589,6 @@ NK_API void nk_input_motion(struct nk_context*, int x, int y);
  * \brief Mirrors the state of a specific key to nuklear
  *
  * \details
- * ```c
- * void nk_input_key(struct nk_context*, enum nk_keys key, nk_bool down);
- * ```
  *
  * \param[in] ctx      Must point to a previously initialized `nk_context` struct
  * \param[in] key      Must be any value specified in enum `nk_keys` that needs to be mirrored
@@ -639,9 +600,6 @@ NK_API void nk_input_key(struct nk_context*, enum nk_keys, nk_bool down);
  * \brief Mirrors the state of a specific mouse button to nuklear
  *
  * \details
- * ```c
- * void nk_input_button(struct nk_context *ctx, enum nk_buttons btn, int x, int y, nk_bool down);
- * ```
  *
  * \param[in] ctx     Must point to a previously initialized `nk_context` struct
  * \param[in] btn     Must be any value specified in enum `nk_buttons` that needs to be mirrored
@@ -658,12 +616,9 @@ NK_API void nk_input_button(struct nk_context*, enum nk_buttons, int x, int y, n
  * Is generally a scroll value. So does not have to come from mouse and could
  * also originate from balls, tracks, linear guide rails, or other programs.
  *
- * ```c
- * void nk_input_scroll(struct nk_context *ctx, struct nk_vec2 val);
- * ```
  *
- * \param[in] ctx     | Must point to a previously initialized `nk_context` struct
- * \param[in] val     | vector with both X- as well as Y-scroll value
+ * \param[in] ctx      Must point to a previously initialized `nk_context` struct
+ * \param[in] val      vector with both X- as well as Y-scroll value
  */
 NK_API void nk_input_scroll(struct nk_context*, struct nk_vec2 val);
 
@@ -677,12 +632,9 @@ NK_API void nk_input_scroll(struct nk_context*, struct nk_vec2 val);
  * \note
  *     Stores up to NK_INPUT_MAX bytes between `nk_input_begin` and `nk_input_end`.
  *
- * ```c
- * void nk_input_char(struct nk_context *ctx, char c);
- * ```
  *
- * \param[in] ctx     | Must point to a previously initialized `nk_context` struct
- * \param[in] c       | Must be a single ASCII character preferable one that can be printed
+ * \param[in] ctx      Must point to a previously initialized `nk_context` struct
+ * \param[in] c        Must be a single ASCII character preferable one that can be printed
  */
 NK_API void nk_input_char(struct nk_context*, char);
 
@@ -693,12 +645,9 @@ NK_API void nk_input_char(struct nk_context*, char);
  * \note
  *     Stores up to NK_INPUT_MAX bytes between `nk_input_begin` and `nk_input_end`.
  *
- * ```c
- * void nk_input_glyph(struct nk_context *ctx, const nk_glyph g);
- * ```
  *
- * \param[in] ctx     | Must point to a previously initialized `nk_context` struct
- * \param[in] g       | UTF-32 unicode codepoint
+ * \param[in] ctx      Must point to a previously initialized `nk_context` struct
+ * \param[in] g        UTF-32 unicode codepoint
  */
 NK_API void nk_input_glyph(struct nk_context*, const nk_glyph);
 
@@ -710,12 +659,9 @@ NK_API void nk_input_glyph(struct nk_context*, const nk_glyph);
  * \note
  *     Stores up to NK_INPUT_MAX bytes between `nk_input_begin` and `nk_input_end`.
  *
- * ```c
- * void nk_input_unicode(struct nk_context*, nk_rune rune);
- * ```
  *
- * \param[in] ctx     | Must point to a previously initialized `nk_context` struct
- * \param[in] rune    | UTF-32 unicode codepoint
+ * \param[in] ctx      Must point to a previously initialized `nk_context` struct
+ * \param[in] rune     UTF-32 unicode codepoint
  */
 NK_API void nk_input_unicode(struct nk_context*, nk_rune);
 
@@ -724,11 +670,8 @@ NK_API void nk_input_unicode(struct nk_context*, nk_rune);
  * state to ensure the mouse cursor is not grabbed indefinitely.
  *
  * \details
- * ```c
- * void nk_input_end(struct nk_context *ctx);
- * ```
  *
- * \param[in] ctx     | Must point to a previously initialized `nk_context` struct
+ * \param[in] ctx      Must point to a previously initialized `nk_context` struct
  */
 NK_API void nk_input_end(struct nk_context*);
 
@@ -951,16 +894,16 @@ NK_API void nk_input_end(struct nk_context*);
  * ```
  *
  * # Reference
- * Function            | Description
- * --------------------|-------------------------------------------------------
- * \ref nk__begin       | Returns the first draw command in the context draw command list to be drawn
- * \ref nk__next        | Increments the draw command iterator to the next command inside the context draw command list
- * \ref nk_foreach      | Iterates over each draw command inside the context draw command list
- * \ref nk_convert      | Converts from the abstract draw commands list into a hardware accessible vertex format
- * \ref nk_draw_begin   | Returns the first vertex command in the context vertex draw list to be executed
- * \ref nk__draw_next   | Increments the vertex command iterator to the next command inside the context vertex command list
- * \ref nk__draw_end    | Returns the end of the vertex draw list
- * \ref nk_draw_foreach | Iterates over each vertex draw command inside the vertex draw list
+ * | Function              | Description                                                                                       |
+ * | --------------------- | ---------------                                                                                   |
+ * | \ref nk__begin        | Returns the first draw command in the context draw command list to be drawn                       |
+ * | \ref nk__next         | Increments the draw command iterator to the next command inside the context draw command list     |
+ * | \ref nk_foreach       | Iterates over each draw command inside the context draw command list                              |
+ * | \ref nk_convert       | Converts from the abstract draw commands list into a hardware accessible vertex format            |
+ * | \ref nk_draw_begin    | Returns the first vertex command in the context vertex draw list to be executed                   |
+ * | \ref nk__draw_next    | Increments the vertex command iterator to the next command inside the context vertex command list |
+ * | \ref nk__draw_end     | Returns the end of the vertex draw list                                                           |
+ * | \ref nk_draw_foreach  | Iterates over each vertex draw command inside the vertex draw list                                |
  */
 
 enum nk_anti_aliasing {NK_ANTI_ALIASING_OFF, NK_ANTI_ALIASING_ON};
@@ -993,11 +936,8 @@ struct nk_convert_config {
  * commands accumulated over one frame.
  *
  * \details
- * ```c
- * const struct nk_command* nk__begin(struct nk_context*);
- * ```
  *
- * \param[in] ctx     | must point to an previously initialized `nk_context` struct at the end of a frame
+ * \param[in] ctx      must point to an previously initialized `nk_context` struct at the end of a frame
  *
  * \returns draw command pointer pointing to the first command inside the draw command list
  */
@@ -1007,12 +947,9 @@ NK_API const struct nk_command* nk__begin(struct nk_context*);
  * \brief Returns draw command pointer pointing to the next command inside the draw command list
  *
  * \details
- * ```c
- * const struct nk_command* nk__next(struct nk_context*, const struct nk_command*);
- * ```
  *
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct at the end of a frame
- * \param[in] cmd     | Must point to an previously a draw command either returned by `nk__begin` or `nk__next`
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct at the end of a frame
+ * \param[in] cmd      Must point to an previously a draw command either returned by `nk__begin` or `nk__next`
  *
  * \returns draw command pointer pointing to the next command inside the draw command list
  */
@@ -1021,12 +958,9 @@ NK_API const struct nk_command* nk__next(struct nk_context*, const struct nk_com
 /**
  * \brief Iterates over each draw command inside the context draw command list
  *
- * ```c
- * #define nk_foreach(c, ctx)
- * ```
  *
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct at the end of a frame
- * \param[in] cmd     | Command pointer initialized to NULL
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct at the end of a frame
+ * \param[in] cmd      Command pointer initialized to NULL
  */
 #define nk_foreach(c, ctx) for((c) = nk__begin(ctx); (c) != 0; (c) = nk__next(ctx,c))
 
@@ -1040,9 +974,6 @@ NK_API const struct nk_command* nk__next(struct nk_context*, const struct nk_com
  * The vertex format as well as some other configuration values have to be
  * configured by filling out a `nk_convert_config` struct.
  *
- * ```c
- * nk_flags nk_convert(struct nk_context *ctx, struct nk_buffer *cmds,
- *     struct nk_buffer *vertices, struct nk_buffer *elements, const struct nk_convert_config*);
  * ```
  *
  * \param[in] ctx      Must point to an previously initialized `nk_context` struct at the end of a frame
@@ -1053,13 +984,11 @@ NK_API const struct nk_command* nk__next(struct nk_context*, const struct nk_com
  *
  * \returns one of enum nk_convert_result error codes
  *
- * Parameter                       | Description
- * --------------------------------|-----------------------------------------------------------
- * NK_CONVERT_SUCCESS              | Signals a successful draw command to vertex buffer conversion
- * NK_CONVERT_INVALID_PARAM        | An invalid argument was passed in the function call
- * NK_CONVERT_COMMAND_BUFFER_FULL  | The provided buffer for storing draw commands is full or failed to allocate more memory
- * NK_CONVERT_VERTEX_BUFFER_FULL   | The provided buffer for storing vertices is full or failed to allocate more memory
- * NK_CONVERT_ELEMENT_BUFFER_FULL  | The provided buffer for storing indices is full or failed to allocate more memory
+ * NK_CONVERT_SUCCESS               Signals a successful draw command to vertex buffer conversion
+ * NK_CONVERT_INVALID_PARAM         An invalid argument was passed in the function call
+ * NK_CONVERT_COMMAND_BUFFER_FULL   The provided buffer for storing draw commands is full or failed to allocate more memory
+ * NK_CONVERT_VERTEX_BUFFER_FULL    The provided buffer for storing vertices is full or failed to allocate more memory
+ * NK_CONVERT_ELEMENT_BUFFER_FULL   The provided buffer for storing indices is full or failed to allocate more memory
  */
 NK_API nk_flags nk_convert(struct nk_context*, struct nk_buffer *cmds, struct nk_buffer *vertices, struct nk_buffer *elements, const struct nk_convert_config*);
 
@@ -1067,49 +996,32 @@ NK_API nk_flags nk_convert(struct nk_context*, struct nk_buffer *cmds, struct nk
  * \brief Returns a draw vertex command buffer iterator to iterate over the vertex draw command buffer
  *
  * \details
- * ```c
- * const struct nk_draw_command* nk__draw_begin(const struct nk_context*, const struct nk_buffer*);
- * ```
  *
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct at the end of a frame
- * \param[in] buf     | Must point to an previously by `nk_convert` filled out vertex draw command buffer
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct at the end of a frame
+ * \param[in] buf      Must point to an previously by `nk_convert` filled out vertex draw command buffer
  *
  * \returns vertex draw command pointer pointing to the first command inside the vertex draw command buffer
  */
 NK_API const struct nk_draw_command* nk__draw_begin(const struct nk_context*, const struct nk_buffer*);
 
 /**
-
- * # # nk__draw_end
- * \returns the vertex draw command at the end of the vertex draw command buffer
+ * \brief returns the vertex draw command at the end of the vertex draw command * buffer.
  *
- * ```c
- * const struct nk_draw_command* nk__draw_end(const struct nk_context *ctx, const struct nk_buffer *buf);
- * ```
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct at the end of a frame
+ * \param[in] buf      Must point to an previously by `nk_convert` filled out vertex draw command buffer
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct at the end of a frame
- * \param[in] buf     | Must point to an previously by `nk_convert` filled out vertex draw command buffer
- *
- * \returns vertex draw command pointer pointing to the end of the last vertex draw command inside the vertex draw command buffer
+ * \returns vertex draw command pointer pointing to the end of the last vertex draw command inside the vertex draw command buffer.
 
  */
 NK_API const struct nk_draw_command* nk__draw_end(const struct nk_context*, const struct nk_buffer*);
 
 /**
- * # # nk__draw_next
  * Increments the vertex draw command buffer iterator
  *
- * ```c
- * const struct nk_draw_command* nk__draw_next(const struct nk_draw_command*, const struct nk_buffer*, const struct nk_context*);
- * ```
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] cmd     | Must point to an previously either by `nk__draw_begin` or `nk__draw_next` returned vertex draw command
- * \param[in] buf     | Must point to an previously by `nk_convert` filled out vertex draw command buffer
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct at the end of a frame
+ * \param[in] cmd      Must point to an previously either by `nk__draw_begin` or `nk__draw_next` returned vertex draw command
+ * \param[in] buf      Must point to an previously by `nk_convert` filled out vertex draw command buffer
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct at the end of a frame
  *
  * \returns vertex draw command pointer pointing to the end of the last vertex draw command inside the vertex draw command buffer
 
@@ -1117,18 +1029,12 @@ NK_API const struct nk_draw_command* nk__draw_end(const struct nk_context*, cons
 NK_API const struct nk_draw_command* nk__draw_next(const struct nk_draw_command*, const struct nk_buffer*, const struct nk_context*);
 
 /**
- * # # nk_draw_foreach
  * Iterates over each vertex draw command inside a vertex draw command buffer
  *
- * ```c
- * #define nk_draw_foreach(cmd,ctx, b)
- * ```
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] cmd     | `nk_draw_command`iterator set to NULL
- * \param[in] buf     | Must point to an previously by `nk_convert` filled out vertex draw command buffer
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct at the end of a frame
+ * \param[in] cmd      `nk_draw_command`iterator set to NULL
+ * \param[in] buf      Must point to an previously by `nk_convert` filled out vertex draw command buffer
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct at the end of a frame
  */
 
 #define nk_draw_foreach(cmd,ctx, b) for((cmd)=nk__draw_begin(ctx, b); (cmd)!=0; (cmd)=nk__draw_next(cmd, b, ctx))
@@ -1219,66 +1125,63 @@ NK_API const struct nk_draw_command* nk__draw_next(const struct nk_draw_command*
  * ```
  *
  * # Reference
- * Function                            | Description
- * ------------------------------------|----------------------------------------
- * \ref nk_begin                            | Starts a new window; needs to be called every frame for every window (unless hidden) or otherwise the window gets removed
- * \ref nk_begin_titled                     | Extended window start with separated title and identifier to allow multiple windows with same name but not title
- * \ref nk_end                              | Needs to be called at the end of the window building process to process scaling, scrollbars and general cleanup
- *
- * \ref nk_window_find                      | Finds and returns the window with give name
- * \ref nk_window_get_bounds                | Returns a rectangle with screen position and size of the currently processed window.
- * \ref nk_window_get_position              | Returns the position of the currently processed window
- * \ref nk_window_get_size                  | Returns the size with width and height of the currently processed window
- * \ref nk_window_get_width                 | Returns the width of the currently processed window
- * \ref nk_window_get_height                | Returns the height of the currently processed window
- * \ref nk_window_get_panel                 | Returns the underlying panel which contains all processing state of the current window
- * \ref nk_window_get_content_region        | Returns the position and size of the currently visible and non-clipped space inside the currently processed window
- * \ref nk_window_get_content_region_min    | Returns the upper rectangle position of the currently visible and non-clipped space inside the currently processed window
- * \ref nk_window_get_content_region_max    | Returns the upper rectangle position of the currently visible and non-clipped space inside the currently processed window
- * \ref nk_window_get_content_region_size   | Returns the size of the currently visible and non-clipped space inside the currently processed window
- * \ref nk_window_get_canvas                | Returns the draw command buffer. Can be used to draw custom widgets
- * \ref nk_window_get_scroll                | Gets the scroll offset of the current window
- * \ref nk_window_has_focus                 | Returns if the currently processed window is currently active
- * \ref nk_window_is_collapsed              | Returns if the window with given name is currently minimized/collapsed
- * \ref nk_window_is_closed                 | Returns if the currently processed window was closed
- * \ref nk_window_is_hidden                 | Returns if the currently processed window was hidden
- * \ref nk_window_is_active                 | Same as nk_window_has_focus for some reason
- * \ref nk_window_is_hovered                | Returns if the currently processed window is currently being hovered by mouse
- * \ref nk_window_is_any_hovered            | Return if any window currently hovered
- * \ref nk_item_is_any_active               | Returns if any window or widgets is currently hovered or active
-//
- * \ref nk_window_set_bounds                | Updates position and size of the currently processed window
- * \ref nk_window_set_position              | Updates position of the currently process window
- * \ref nk_window_set_size                  | Updates the size of the currently processed window
- * \ref nk_window_set_focus                 | Set the currently processed window as active window
- * \ref nk_window_set_scroll                | Sets the scroll offset of the current window
-//
- * \ref nk_window_close                     | Closes the window with given window name which deletes the window at the end of the frame
- * \ref nk_window_collapse                  | Collapses the window with given window name
- * \ref nk_window_collapse_if               | Collapses the window with given window name if the given condition was met
- * \ref nk_window_show                      | Hides a visible or reshows a hidden window
- * \ref nk_window_show_if                   | Hides/shows a window depending on condition
+ * | Function                               | Description                                                                                                               |
+ * | ---------------------                  | ---------------                                                                                                           |
+ * | \ref nk_begin                          | Starts a new window; needs to be called every frame for every window (unless hidden) or otherwise the window gets removed |
+ * | \ref nk_begin_titled                   | Extended window start with separated title and identifier to allow multiple windows with same name but not title          |
+ * | \ref nk_end                            | Needs to be called at the end of the window building process to process scaling, scrollbars and general cleanup           |
+ * | \ref nk_window_find                    | Finds and returns the window with give name                                                                               |
+ * | \ref nk_window_get_bounds              | Returns a rectangle with screen position and size of the currently processed window.                                      |
+ * | \ref nk_window_get_position            | Returns the position of the currently processed window                                                                    |
+ * | \ref nk_window_get_size                | Returns the size with width and height of the currently processed window                                                  |
+ * | \ref nk_window_get_width               | Returns the width of the currently processed window                                                                       |
+ * | \ref nk_window_get_height              | Returns the height of the currently processed window                                                                      |
+ * | \ref nk_window_get_panel               | Returns the underlying panel which contains all processing state of the current window                                    |
+ * | \ref nk_window_get_content_region      | Returns the position and size of the currently visible and non-clipped space inside the currently processed window        |
+ * | \ref nk_window_get_content_region_min  | Returns the upper rectangle position of the currently visible and non-clipped space inside the currently processed window |
+ * | \ref nk_window_get_content_region_max  | Returns the upper rectangle position of the currently visible and non-clipped space inside the currently processed window |
+ * | \ref nk_window_get_content_region_size | Returns the size of the currently visible and non-clipped space inside the currently processed window                     |
+ * | \ref nk_window_get_canvas              | Returns the draw command buffer. Can be used to draw custom widgets                                                       |
+ * | \ref nk_window_get_scroll              | Gets the scroll offset of the current window                                                                              |
+ * | \ref nk_window_has_focus               | Returns if the currently processed window is currently active                                                             |
+ * | \ref nk_window_is_collapsed            | Returns if the window with given name is currently minimized/collapsed                                                    |
+ * | \ref nk_window_is_closed               | Returns if the currently processed window was closed                                                                      |
+ * | \ref nk_window_is_hidden               | Returns if the currently processed window was hidden                                                                      |
+ * | \ref nk_window_is_active               | Same as nk_window_has_focus for some reason                                                                               |
+ * | \ref nk_window_is_hovered              | Returns if the currently processed window is currently being hovered by mouse                                             |
+ * | \ref nk_window_is_any_hovered          | Return if any window currently hovered                                                                                    |
+ * | \ref nk_item_is_any_active             | Returns if any window or widgets is currently hovered or active                                                           |
+ * | \ref nk_window_set_bounds              | Updates position and size of the currently processed window                                                               |
+ * | \ref nk_window_set_position            | Updates position of the currently process window                                                                          |
+ * | \ref nk_window_set_size                | Updates the size of the currently processed window                                                                        |
+ * | \ref nk_window_set_focus               | Set the currently processed window as active window                                                                       |
+ * | \ref nk_window_set_scroll              | Sets the scroll offset of the current window                                                                              |
+ * | \ref nk_window_close                   | Closes the window with given window name which deletes the window at the end of the frame                                 |
+ * | \ref nk_window_collapse                | Collapses the window with given window name                                                                               |
+ * | \ref nk_window_collapse_if             | Collapses the window with given window name if the given condition was met                                                |
+ * | \ref nk_window_show                    | Hides a visible or reshows a hidden window                                                                                |
+ * | \ref nk_window_show_if                 | Hides/shows a window depending on condition                                                                               |
 
  * # nk_panel_flags
- * Flag                        | Description
- * ----------------------------|----------------------------------------
- * NK_WINDOW_BORDER            | Draws a border around the window to visually separate window from the background
- * NK_WINDOW_MOVABLE           | The movable flag indicates that a window can be moved by user input or by dragging the window header
- * NK_WINDOW_SCALABLE          | The scalable flag indicates that a window can be scaled by user input by dragging a scaler icon at the button of the window
- * NK_WINDOW_CLOSABLE          | Adds a closable icon into the header
- * NK_WINDOW_MINIMIZABLE       | Adds a minimize icon into the header
- * NK_WINDOW_NO_SCROLLBAR      | Removes the scrollbar from the window
- * NK_WINDOW_TITLE             | Forces a header at the top at the window showing the title
- * NK_WINDOW_SCROLL_AUTO_HIDE  | Automatically hides the window scrollbar if no user interaction: also requires delta time in `nk_context` to be set each frame
- * NK_WINDOW_BACKGROUND        | Always keep window in the background
- * NK_WINDOW_SCALE_LEFT        | Puts window scaler in the left-bottom corner instead right-bottom
- * NK_WINDOW_NO_INPUT          | Prevents window of scaling, moving or getting focus
+ * | Flag                            | Description                                                                                                                    |
+ * | ---------------------           | ---------------                                                                                                                |
+ * | \ref NK_WINDOW_BORDER           | Draws a border around the window to visually separate window from the background                                               |
+ * | \ref NK_WINDOW_MOVABLE          | The movable flag indicates that a window can be moved by user input or by dragging the window header                           |
+ * | \ref NK_WINDOW_SCALABLE         | The scalable flag indicates that a window can be scaled by user input by dragging a scaler icon at the button of the window    |
+ * | \ref NK_WINDOW_CLOSABLE         | Adds a closable icon into the header                                                                                           |
+ * | \ref NK_WINDOW_MINIMIZABLE      | Adds a minimize icon into the header                                                                                           |
+ * | \ref NK_WINDOW_NO_SCROLLBAR     | Removes the scrollbar from the window                                                                                          |
+ * | \ref NK_WINDOW_TITLE            | Forces a header at the top at the window showing the title                                                                     |
+ * | \ref NK_WINDOW_SCROLL_AUTO_HIDE | Automatically hides the window scrollbar if no user interaction: also requires delta time in `nk_context` to be set each frame |
+ * | \ref NK_WINDOW_BACKGROUND       | Always keep window in the background                                                                                           |
+ * | \ref NK_WINDOW_SCALE_LEFT       | Puts window scaler in the left-bottom corner instead right-bottom                                                              |
+ * | \ref NK_WINDOW_NO_INPUT         | Prevents window of scaling, moving or getting focus                                                                            |
  *
  * # nk_collapse_states
- * State           | Description
- * ----------------|-----------------------------------------------------------
- * NK_MINIMIZED| UI section is collapsed and not visible until maximized
- * NK_MAXIMIZED| UI section is extended and visible until minimized
+ * | State                 | Description                                             |
+ * | --------------------- | ---------------                                         |
+ * | \ref NK_MINIMIZED     | UI section is collapsed and not visible until maximized |
+ * | \ref NK_MAXIMIZED     | UI section is extended and visible until minimized      |
  */
 
 enum nk_panel_flags {
@@ -1296,20 +1199,16 @@ enum nk_panel_flags {
 };
 
 /**
- * # # nk_begin
- * Starts a new window; needs to be called every frame for every
+ * \brief Starts a new window; needs to be called every frame for every
+ *
+ * \details
  * window (unless hidden) or otherwise the window gets removed
  *
- * ```c
- * nk_bool nk_begin(struct nk_context *ctx, const char *title, struct nk_rect bounds, nk_flags flags);
- * ```
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] title   | Window title and identifier. Needs to be persistent over frames to identify the window
- * \param[in] bounds  | Initial position and window size. However if you do not define `NK_WINDOW_SCALABLE` or `NK_WINDOW_MOVABLE` you can set window position and size every frame
- * \param[in] flags   | Window flags defined in the nk_panel_flags section with a number of different window behaviors
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] title    Window title and identifier. Needs to be persistent over frames to identify the window
+ * \param[in] bounds   Initial position and window size. However if you do not define `NK_WINDOW_SCALABLE` or `NK_WINDOW_MOVABLE` you can set window position and size every frame
+ * \param[in] flags    Window flags defined in the nk_panel_flags section with a number of different window behaviors
  *
  * \returns `true(1)` if the window can be filled up with widgets from this point
  * until `nk_end` or `false(0)` otherwise for example if minimized
@@ -1318,21 +1217,17 @@ enum nk_panel_flags {
 NK_API nk_bool nk_begin(struct nk_context *ctx, const char *title, struct nk_rect bounds, nk_flags flags);
 
 /**
- * # # nk_begin_titled
- * Extended window start with separated title and identifier to allow multiple
+ * \brief Extended window start with separated title and identifier to allow multiple
+ *
+ * \details
  * windows with same title but not name
  *
- * ```c
- * nk_bool nk_begin_titled(struct nk_context *ctx, const char *name, const char *title, struct nk_rect bounds, nk_flags flags);
- * ```
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] name    | Window identifier. Needs to be persistent over frames to identify the window
- * \param[in] title   | Window title displayed inside header if flag `NK_WINDOW_TITLE` or either `NK_WINDOW_CLOSABLE` or `NK_WINDOW_MINIMIZED` was set
- * \param[in] bounds  | Initial position and window size. However if you do not define `NK_WINDOW_SCALABLE` or `NK_WINDOW_MOVABLE` you can set window position and size every frame
- * \param[in] flags   | Window flags defined in the nk_panel_flags section with a number of different window behaviors
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] name     Window identifier. Needs to be persistent over frames to identify the window
+ * \param[in] title    Window title displayed inside header if flag `NK_WINDOW_TITLE` or either `NK_WINDOW_CLOSABLE` or `NK_WINDOW_MINIMIZED` was set
+ * \param[in] bounds   Initial position and window size. However if you do not define `NK_WINDOW_SCALABLE` or `NK_WINDOW_MOVABLE` you can set window position and size every frame
+ * \param[in] flags    Window flags defined in the nk_panel_flags section with a number of different window behaviors
  *
  * \returns `true(1)` if the window can be filled up with widgets from this point
  * until `nk_end` or `false(0)` otherwise for example if minimized
@@ -1341,33 +1236,25 @@ NK_API nk_bool nk_begin(struct nk_context *ctx, const char *title, struct nk_rec
 NK_API nk_bool nk_begin_titled(struct nk_context *ctx, const char *name, const char *title, struct nk_rect bounds, nk_flags flags);
 
 /**
- * # # nk_end
- * Needs to be called at the end of the window building process to process scaling, scrollbars and general cleanup.
+ * \brief Needs to be called at the end of the window building process to process scaling, scrollbars and general cleanup.
+ *
+ * \details
  * All widget calls after this functions will result in asserts or no state changes
  *
- * ```c
- * void nk_end(struct nk_context *ctx);
- * ```
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
 
  */
 NK_API void nk_end(struct nk_context *ctx);
 
 /**
- * # # nk_window_find
- * Finds and returns a window from passed name
+ * \brief Finds and returns a window from passed name
  *
- * ```c
- * struct nk_window *nk_window_find(struct nk_context *ctx, const char *name);
- * ```
+ * \details
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] name    | Window identifier
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] name     Window identifier
  *
  * \returns a `nk_window` struct pointing to the identified window or NULL if
  * no window with the given name was found
@@ -1375,18 +1262,14 @@ NK_API void nk_end(struct nk_context *ctx);
 NK_API struct nk_window *nk_window_find(const struct nk_context *ctx, const char *name);
 
 /**
- * # # nk_window_get_bounds
- * \returns a rectangle with screen position and size of the currently processed window
+ * \brief \returns a rectangle with screen position and size of the currently processed window
+ *
+ * \details
  *
  * !!! \warning
  *     Only call this function between calls `nk_begin_xxx` and `nk_end`
- * ```c
- * struct nk_rect nk_window_get_bounds(const struct nk_context *ctx);
- * ```
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
  *
  * \returns a `nk_rect` struct with window upper left window position and size
 
@@ -1394,18 +1277,14 @@ NK_API struct nk_window *nk_window_find(const struct nk_context *ctx, const char
 NK_API struct nk_rect nk_window_get_bounds(const struct nk_context *ctx);
 
 /**
- * # # nk_window_get_position
- * \returns the position of the currently processed window.
+ * \brief \returns the position of the currently processed window.
+ *
+ * \details
  *
  * !!! \warning
  *     Only call this function between calls `nk_begin_xxx` and `nk_end`
- * ```c
- * struct nk_vec2 nk_window_get_position(const struct nk_context *ctx);
- * ```
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
  *
  * \returns a `nk_vec2` struct with window upper left position
 
@@ -1413,18 +1292,14 @@ NK_API struct nk_rect nk_window_get_bounds(const struct nk_context *ctx);
 NK_API struct nk_vec2 nk_window_get_position(const struct nk_context *ctx);
 
 /**
- * # # nk_window_get_size
- * \returns the size with width and height of the currently processed window.
+ * \brief \returns the size with width and height of the currently processed window.
+ *
+ * \details
  *
  * !!! \warning
  *     Only call this function between calls `nk_begin_xxx` and `nk_end`
- * ```c
- * struct nk_vec2 nk_window_get_size(const struct nk_context *ctx);
- * ```
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
  *
  * \returns a `nk_vec2` struct with window width and height
 
@@ -1432,36 +1307,28 @@ NK_API struct nk_vec2 nk_window_get_position(const struct nk_context *ctx);
 NK_API struct nk_vec2 nk_window_get_size(const struct nk_context *ctx);
 
 /**
- * nk_window_get_width
- * \returns the width of the currently processed window.
+ * \brief \returns the width of the currently processed window.
+ *
+ * \details
  *
  * !!! \warning
  *     Only call this function between calls `nk_begin_xxx` and `nk_end`
- * ```c
- * float nk_window_get_width(const struct nk_context *ctx);
- * ```
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
  *
  * \returns the current window width
  */
 NK_API float nk_window_get_width(const struct nk_context *ctx);
 
 /**
- * # # nk_window_get_height
- * \returns the height of the currently processed window.
+ * \brief \returns the height of the currently processed window.
+ *
+ * \details
  *
  * !!! \warning
  *     Only call this function between calls `nk_begin_xxx` and `nk_end`
- * ```c
- * float nk_window_get_height(const struct nk_context *ctx);
- * ```
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
  *
  * \returns the current window height
 
@@ -1469,20 +1336,16 @@ NK_API float nk_window_get_width(const struct nk_context *ctx);
 NK_API float nk_window_get_height(const struct nk_context* ctx);
 
 /**
- * # # nk_window_get_panel
- * \returns the underlying panel which contains all processing state of the current window.
+ * \brief \returns the underlying panel which contains all processing state of the current window.
+ *
+ * \details
  *
  * !!! \warning
  *     Only call this function between calls `nk_begin_xxx` and `nk_end`
  * !!! \warning
  *     Do not keep the returned panel pointer around, it is only valid until `nk_end`
- * ```c
- * struct nk_panel* nk_window_get_panel(struct nk_context *ctx);
- * ```
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
  *
  * \returns a pointer to window internal `nk_panel` state.
 
@@ -1490,20 +1353,16 @@ NK_API float nk_window_get_height(const struct nk_context* ctx);
 NK_API struct nk_panel* nk_window_get_panel(const struct nk_context* ctx);
 
 /**
- * # # nk_window_get_content_region
- * \returns the position and size of the currently visible and non-clipped space
+ * \brief \returns the position and size of the currently visible and non-clipped space
  * inside the currently processed window.
+ *
+ * \details
  *
  * !!! \warning
  *     Only call this function between calls `nk_begin_xxx` and `nk_end`
  *
- * ```c
- * struct nk_rect nk_window_get_content_region(struct nk_context *ctx);
- * ```
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
  *
  * \returns `nk_rect` struct with screen position and size (no scrollbar offset)
  * of the visible space inside the current window
@@ -1512,20 +1371,16 @@ NK_API struct nk_panel* nk_window_get_panel(const struct nk_context* ctx);
 NK_API struct nk_rect nk_window_get_content_region(const struct nk_context* ctx);
 
 /**
- * # # nk_window_get_content_region_min
- * \returns the upper left position of the currently visible and non-clipped
+ * \brief \returns the upper left position of the currently visible and non-clipped
  * space inside the currently processed window.
+ *
+ * \details
  *
  * !!! \warning
  *     Only call this function between calls `nk_begin_xxx` and `nk_end`
  *
- * ```c
- * struct nk_vec2 nk_window_get_content_region_min(struct nk_context *ctx);
- * ```
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
  *
  * returns `nk_vec2` struct with  upper left screen position (no scrollbar offset)
  * of the visible space inside the current window
@@ -1534,20 +1389,16 @@ NK_API struct nk_rect nk_window_get_content_region(const struct nk_context* ctx)
 NK_API struct nk_vec2 nk_window_get_content_region_min(const struct nk_context *ctx);
 
 /**
- * # # nk_window_get_content_region_max
- * \returns the lower right screen position of the currently visible and
+ * \brief \returns the lower right screen position of the currently visible and
  * non-clipped space inside the currently processed window.
+ *
+ * \details
  *
  * !!! \warning
  *     Only call this function between calls `nk_begin_xxx` and `nk_end`
  *
- * ```c
- * struct nk_vec2 nk_window_get_content_region_max(struct nk_context *ctx);
- * ```
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
  *
  * \returns `nk_vec2` struct with lower right screen position (no scrollbar offset)
  * of the visible space inside the current window
@@ -1556,20 +1407,15 @@ NK_API struct nk_vec2 nk_window_get_content_region_min(const struct nk_context *
 NK_API struct nk_vec2 nk_window_get_content_region_max(const struct nk_context *ctx);
 
 /**
- * # # nk_window_get_content_region_size
- * \returns the size of the currently visible and non-clipped space inside the
- * currently processed window
+ * \brief \returns the size of the currently visible and non-clipped space inside the currently processed window
+ *
+ * \details
  *
  * !!! \warning
  *     Only call this function between calls `nk_begin_xxx` and `nk_end`
  *
- * ```c
- * struct nk_vec2 nk_window_get_content_region_size(struct nk_context *ctx);
- * ```
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
  *
  * \returns `nk_vec2` struct with size the visible space inside the current window
 
@@ -1577,20 +1423,16 @@ NK_API struct nk_vec2 nk_window_get_content_region_max(const struct nk_context *
 NK_API struct nk_vec2 nk_window_get_content_region_size(const struct nk_context *ctx);
 
 /**
- * # # nk_window_get_canvas
- * \returns the draw command buffer. Can be used to draw custom widgets
+ * \brief \returns the draw command buffer. Can be used to draw custom widgets
+ *
+ * \details
  * !!! \warning
  *     Only call this function between calls `nk_begin_xxx` and `nk_end`
  * !!! \warning
  *     Do not keep the returned command buffer pointer around it is only valid until `nk_end`
  *
- * ```c
- * struct nk_command_buffer* nk_window_get_canvas(struct nk_context *ctx);
- * ```
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
  *
  * \returns a pointer to window internal `nk_command_buffer` struct used as
  * drawing canvas. Can be used to do custom drawing.
@@ -1598,36 +1440,28 @@ NK_API struct nk_vec2 nk_window_get_content_region_size(const struct nk_context 
 NK_API struct nk_command_buffer* nk_window_get_canvas(const struct nk_context* ctx);
 
 /**
- * # # nk_window_get_scroll
- * Gets the scroll offset for the current window
+ * \brief Gets the scroll offset for the current window
+ *
+ * \details
  * !!! \warning
  *     Only call this function between calls `nk_begin_xxx` and `nk_end`
  *
- * ```c
- * void nk_window_get_scroll(struct nk_context *ctx, nk_uint *offset_x, nk_uint *offset_y);
- * ```
  *
- * Parameter    | Description
- * -------------|-----------------------------------------------------------
- * \param[in] ctx      | Must point to an previously initialized `nk_context` struct
- * \param[in] offset_x | A pointer to the x offset output (or NULL to ignore)
- * \param[in] offset_y | A pointer to the y offset output (or NULL to ignore)
+ * \param[in] ctx       Must point to an previously initialized `nk_context` struct
+ * \param[in] offset_x  A pointer to the x offset output (or NULL to ignore)
+ * \param[in] offset_y  A pointer to the y offset output (or NULL to ignore)
 
  */
 NK_API void nk_window_get_scroll(const struct nk_context *ctx, nk_uint *offset_x, nk_uint *offset_y);
 
 /**
- * # # nk_window_has_focus
- * \returns if the currently processed window is currently active
+ * \brief \returns if the currently processed window is currently active
+ *
+ * \details
  * !!! \warning
  *     Only call this function between calls `nk_begin_xxx` and `nk_end`
- * ```c
- * nk_bool nk_window_has_focus(const struct nk_context *ctx);
- * ```
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
  *
  * \returns `false(0)` if current window is not active or `true(1)` if it is
 
@@ -1635,17 +1469,13 @@ NK_API void nk_window_get_scroll(const struct nk_context *ctx, nk_uint *offset_x
 NK_API nk_bool nk_window_has_focus(const struct nk_context *ctx);
 
 /**
- * # # nk_window_is_hovered
- * Return if the current window is being hovered
+ * \brief Return if the current window is being hovered
+ *
+ * \details
  * !!! \warning
  *     Only call this function between calls `nk_begin_xxx` and `nk_end`
- * ```c
- * nk_bool nk_window_is_hovered(struct nk_context *ctx);
- * ```
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
  *
  * \returns `true(1)` if current window is hovered or `false(0)` otherwise
 
@@ -1653,16 +1483,12 @@ NK_API nk_bool nk_window_has_focus(const struct nk_context *ctx);
 NK_API nk_bool nk_window_is_hovered(const struct nk_context *ctx);
 
 /**
- * # # nk_window_is_collapsed
- * \returns if the window with given name is currently minimized/collapsed
- * ```c
- * nk_bool nk_window_is_collapsed(struct nk_context *ctx, const char *name);
- * ```
+ * \brief \returns if the window with given name is currently minimized/collapsed
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] name    | Identifier of window you want to check if it is collapsed
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] name     Identifier of window you want to check if it is collapsed
  *
  * \returns `true(1)` if current window is minimized and `false(0)` if window not
  * found or is not minimized
@@ -1671,16 +1497,12 @@ NK_API nk_bool nk_window_is_hovered(const struct nk_context *ctx);
 NK_API nk_bool nk_window_is_collapsed(const struct nk_context *ctx, const char *name);
 
 /**
- * # # nk_window_is_closed
- * \returns if the window with given name was closed by calling `nk_close`
- * ```c
- * nk_bool nk_window_is_closed(struct nk_context *ctx, const char *name);
- * ```
+ * \brief \returns if the window with given name was closed by calling `nk_close`
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] name    | Identifier of window you want to check if it is closed
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] name     Identifier of window you want to check if it is closed
  *
  * \returns `true(1)` if current window was closed or `false(0)` window not found or not closed
 
@@ -1688,16 +1510,12 @@ NK_API nk_bool nk_window_is_collapsed(const struct nk_context *ctx, const char *
 NK_API nk_bool nk_window_is_closed(const struct nk_context *ctx, const char* name);
 
 /**
- * # # nk_window_is_hidden
- * \returns if the window with given name is hidden
- * ```c
- * nk_bool nk_window_is_hidden(struct nk_context *ctx, const char *name);
- * ```
+ * \brief \returns if the window with given name is hidden
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] name    | Identifier of window you want to check if it is hidden
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] name     Identifier of window you want to check if it is hidden
  *
  * \returns `true(1)` if current window is hidden or `false(0)` window not found or visible
 
@@ -1705,48 +1523,36 @@ NK_API nk_bool nk_window_is_closed(const struct nk_context *ctx, const char* nam
 NK_API nk_bool nk_window_is_hidden(const struct nk_context *ctx, const char* name);
 
 /**
- * # # nk_window_is_active
- * Same as nk_window_has_focus for some reason
- * ```c
- * nk_bool nk_window_is_active(struct nk_context *ctx, const char *name);
- * ```
+ * \brief Same as nk_window_has_focus for some reason
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] name    | Identifier of window you want to check if it is active
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] name     Identifier of window you want to check if it is active
  *
  * \returns `true(1)` if current window is active or `false(0)` window not found or not active
  */
 NK_API nk_bool nk_window_is_active(const struct nk_context *ctx, const char* name);
 
 /**
- * # # nk_window_is_any_hovered
- * \returns if the any window is being hovered
- * ```c
- * nk_bool nk_window_is_any_hovered(struct nk_context*);
- * ```
+ * \brief \returns if the any window is being hovered
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
  *
  * \returns `true(1)` if any window is hovered or `false(0)` otherwise
  */
 NK_API nk_bool nk_window_is_any_hovered(const struct nk_context *ctx);
 
 /**
- * # # nk_item_is_any_active
- * \returns if the any window is being hovered or any widget is currently active.
+ * \brief \returns if the any window is being hovered or any widget is currently active.
+ *
+ * \details
  * Can be used to decide if input should be processed by UI or your specific input handling.
  * Example could be UI and 3D camera to move inside a 3D space.
- * ```c
- * nk_bool nk_item_is_any_active(struct nk_context*);
- * ```
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
  *
  * \returns `true(1)` if any window is hovered or any item is active or `false(0)` otherwise
 
@@ -1754,179 +1560,129 @@ NK_API nk_bool nk_window_is_any_hovered(const struct nk_context *ctx);
 NK_API nk_bool nk_item_is_any_active(const struct nk_context *ctx);
 
 /**
- * # # nk_window_set_bounds
- * Updates position and size of window with passed in name
- * ```c
- * void nk_window_set_bounds(struct nk_context*, const char *name, struct nk_rect bounds);
- * ```
+ * \brief Updates position and size of window with passed in name
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] name    | Identifier of the window to modify both position and size
- * \param[in] bounds  | Must point to a `nk_rect` struct with the new position and size
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] name     Identifier of the window to modify both position and size
+ * \param[in] bounds   Must point to a `nk_rect` struct with the new position and size
 
  */
 NK_API void nk_window_set_bounds(struct nk_context *ctx, const char *name, struct nk_rect bounds);
 
 /**
- * # # nk_window_set_position
- * Updates position of window with passed name
- * ```c
- * void nk_window_set_position(struct nk_context*, const char *name, struct nk_vec2 pos);
- * ```
+ * \brief Updates position of window with passed name
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] name    | Identifier of the window to modify both position
- * \param[in] pos     | Must point to a `nk_vec2` struct with the new position
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] name     Identifier of the window to modify both position
+ * \param[in] pos      Must point to a `nk_vec2` struct with the new position
 
  */
 NK_API void nk_window_set_position(struct nk_context *ctx, const char *name, struct nk_vec2 pos);
 
 /**
- * # # nk_window_set_size
- * Updates size of window with passed in name
- * ```c
- * void nk_window_set_size(struct nk_context*, const char *name, struct nk_vec2);
- * ```
+ * \brief Updates size of window with passed in name
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] name    | Identifier of the window to modify both window size
- * \param[in] size    | Must point to a `nk_vec2` struct with new window size
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] name     Identifier of the window to modify both window size
+ * \param[in] size     Must point to a `nk_vec2` struct with new window size
 
  */
 NK_API void nk_window_set_size(struct nk_context *ctx, const char *name, struct nk_vec2 size);
 
 /**
- * # # nk_window_set_focus
- * Sets the window with given name as active
- * ```c
- * void nk_window_set_focus(struct nk_context*, const char *name);
- * ```
+ * \brief Sets the window with given name as active
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] name    | Identifier of the window to set focus on
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] name     Identifier of the window to set focus on
 
  */
 NK_API void nk_window_set_focus(struct nk_context *ctx, const char *name);
 
 /**
- * # # nk_window_set_scroll
- * Sets the scroll offset for the current window
+ * \brief Sets the scroll offset for the current window
+ *
+ * \details
  * !!! \warning
  *     Only call this function between calls `nk_begin_xxx` and `nk_end`
  *
- * ```c
- * void nk_window_set_scroll(struct nk_context *ctx, nk_uint offset_x, nk_uint offset_y);
- * ```
  *
- * Parameter    | Description
- * -------------|-----------------------------------------------------------
- * \param[in] ctx      | Must point to an previously initialized `nk_context` struct
- * \param[in] offset_x | The x offset to scroll to
- * \param[in] offset_y | The y offset to scroll to
+ * \param[in] ctx       Must point to an previously initialized `nk_context` struct
+ * \param[in] offset_x  The x offset to scroll to
+ * \param[in] offset_y  The y offset to scroll to
 
  */
 NK_API void nk_window_set_scroll(struct nk_context *ctx, nk_uint offset_x, nk_uint offset_y);
 
 /**
- * # # nk_window_close
- * Closes a window and marks it for being freed at the end of the frame
- * ```c
- * void nk_window_close(struct nk_context *ctx, const char *name);
- * ```
+ * \brief Closes a window and marks it for being freed at the end of the frame
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] name    | Identifier of the window to close
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] name     Identifier of the window to close
 
  */
 NK_API void nk_window_close(struct nk_context *ctx, const char *name);
 
 /**
- * # # nk_window_collapse
- * Updates collapse state of a window with given name
- * ```c
- * void nk_window_collapse(struct nk_context*, const char *name, enum nk_collapse_states state);
- * ```
+ * \brief Updates collapse state of a window with given name
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] name    | Identifier of the window to close
- * \param[in] state   | value out of nk_collapse_states section
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] name     Identifier of the window to close
+ * \param[in] state    value out of nk_collapse_states section
 
  */
 NK_API void nk_window_collapse(struct nk_context *ctx, const char *name, enum nk_collapse_states state);
 
 /**
- * # # nk_window_collapse_if
- * Updates collapse state of a window with given name if given condition is met
- * ```c
- * void nk_window_collapse_if(struct nk_context*, const char *name, enum nk_collapse_states, int cond);
- * ```
+ * \brief Updates collapse state of a window with given name if given condition is met
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] name    | Identifier of the window to either collapse or maximize
- * \param[in] state   | value out of nk_collapse_states section the window should be put into
- * \param[in] cond    | condition that has to be met to actually commit the collapse state change
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] name     Identifier of the window to either collapse or maximize
+ * \param[in] state    value out of nk_collapse_states section the window should be put into
+ * \param[in] cond     condition that has to be met to actually commit the collapse state change
 
  */
 NK_API void nk_window_collapse_if(struct nk_context *ctx, const char *name, enum nk_collapse_states state, int cond);
 
 /**
- * # # nk_window_show
- * updates visibility state of a window with given name
- * ```c
- * void nk_window_show(struct nk_context*, const char *name, enum nk_show_states);
- * ```
+ * \brief updates visibility state of a window with given name
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] name    | Identifier of the window to either collapse or maximize
- * \param[in] state   | state with either visible or hidden to modify the window with
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] name     Identifier of the window to either collapse or maximize
+ * \param[in] state    state with either visible or hidden to modify the window with
  */
 NK_API void nk_window_show(struct nk_context *ctx, const char *name, enum nk_show_states state);
 
 /**
- * # # nk_window_show_if
- * Updates visibility state of a window with given name if a given condition is met
- * ```c
- * void nk_window_show_if(struct nk_context*, const char *name, enum nk_show_states, int cond);
- * ```
+ * \brief Updates visibility state of a window with given name if a given condition is met
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] name    | Identifier of the window to either hide or show
- * \param[in] state   | state with either visible or hidden to modify the window with
- * \param[in] cond    | condition that has to be met to actually commit the visibility state change
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] name     Identifier of the window to either hide or show
+ * \param[in] state    state with either visible or hidden to modify the window with
+ * \param[in] cond     condition that has to be met to actually commit the visibility state change
 
  */
 NK_API void nk_window_show_if(struct nk_context *ctx, const char *name, enum nk_show_states state, int cond);
 
 /**
- * # # nk_window_show_if
- * Line for visual separation. Draws a line with thickness determined by the current row height.
- * ```c
- * void nk_rule_horizontal(struct nk_context *ctx, struct nk_color color, NK_BOOL rounding)
- * ```
+ * \brief Line for visual separation. Draws a line with thickness determined by the current row height.
  *
- * Parameter       | Description
- * ----------------|-------------------------------------------------------
- * \param[in] ctx         | Must point to an previously initialized `nk_context` struct
- * \param[in] color       | Color of the horizontal line
- * \param[in] rounding    | Whether or not to make the line round
+ * \details
+ *
+ * \param[in] ctx          Must point to an previously initialized `nk_context` struct
+ * \param[in] color        Color of the horizontal line
+ * \param[in] rounding     Whether or not to make the line round
  */
 NK_API void nk_rule_horizontal(struct nk_context *ctx, struct nk_color color, nk_bool rounding);
 
@@ -2174,31 +1930,31 @@ NK_API void nk_rule_horizontal(struct nk_context *ctx, struct nk_color color, nk
  *     ```
  *
  * # Reference
- * Function                                     | Description
- * ---------------------------------------------|------------------------------------
- * \ref nk_layout_set_min_row_height            | Set the currently used minimum row height to a specified value
- * \ref nk_layout_reset_min_row_height          | Resets the currently used minimum row height to font height
- * \ref nk_layout_widget_bounds                 | Calculates current width a static layout row can fit inside a window
- * \ref nk_layout_ratio_from_pixel              | Utility functions to calculate window ratio from pixel size
- * \ref nk_layout_row_dynamic                   | Current layout is divided into n same sized growing columns
- * \ref nk_layout_row_static                    | Current layout is divided into n same fixed sized columns
- * \ref nk_layout_row_begin                     | Starts a new row with given height and number of columns
- * \ref nk_layout_row_push                      | Pushes another column with given size or window ratio
- * \ref nk_layout_row_end                       | Finished previously started row
- * \ref nk_layout_row                           | Specifies row columns in array as either window ratio or size
- * \ref nk_layout_row_template_begin            | Begins the row template declaration
- * \ref nk_layout_row_template_push_dynamic     | Adds a dynamic column that dynamically grows and can go to zero if not enough space
- * \ref nk_layout_row_template_push_variable    | Adds a variable column that dynamically grows but does not shrink below specified pixel width
- * \ref nk_layout_row_template_push_static      | Adds a static column that does not grow and will always have the same size
- * \ref nk_layout_row_template_end              | Marks the end of the row template
- * \ref nk_layout_space_begin                   | Begins a new layouting space that allows to specify each widgets position and size
- * \ref nk_layout_space_push                    | Pushes position and size of the next widget in own coordinate space either as pixel or ratio
- * \ref nk_layout_space_end                     | Marks the end of the layouting space
- * \ref nk_layout_space_bounds                  | Callable after nk_layout_space_begin and returns total space allocated
- * \ref nk_layout_space_to_screen               | Converts vector from nk_layout_space coordinate space into screen space
- * \ref nk_layout_space_to_local                | Converts vector from screen space into nk_layout_space coordinates
- * \ref nk_layout_space_rect_to_screen          | Converts rectangle from nk_layout_space coordinate space into screen space
- * \ref nk_layout_space_rect_to_local           | Converts rectangle from screen space into nk_layout_space coordinates
+ * | Function                                  | Description                                                                                   |
+ * | ---------------------                     | ---------------                                                                               |
+ * | \ref nk_layout_set_min_row_height         | Set the currently used minimum row height to a specified value                                |
+ * | \ref nk_layout_reset_min_row_height       | Resets the currently used minimum row height to font height                                   |
+ * | \ref nk_layout_widget_bounds              | Calculates current width a static layout row can fit inside a window                          |
+ * | \ref nk_layout_ratio_from_pixel           | Utility functions to calculate window ratio from pixel size                                   |
+ * | \ref nk_layout_row_dynamic                | Current layout is divided into n same sized growing columns                                   |
+ * | \ref nk_layout_row_static                 | Current layout is divided into n same fixed sized columns                                     |
+ * | \ref nk_layout_row_begin                  | Starts a new row with given height and number of columns                                      |
+ * | \ref nk_layout_row_push                   | Pushes another column with given size or window ratio                                         |
+ * | \ref nk_layout_row_end                    | Finished previously started row                                                               |
+ * | \ref nk_layout_row                        | Specifies row columns in array as either window ratio or size                                 |
+ * | \ref nk_layout_row_template_begin         | Begins the row template declaration                                                           |
+ * | \ref nk_layout_row_template_push_dynamic  | Adds a dynamic column that dynamically grows and can go to zero if not enough space           |
+ * | \ref nk_layout_row_template_push_variable | Adds a variable column that dynamically grows but does not shrink below specified pixel width |
+ * | \ref nk_layout_row_template_push_static   | Adds a static column that does not grow and will always have the same size                    |
+ * | \ref nk_layout_row_template_end           | Marks the end of the row template                                                             |
+ * | \ref nk_layout_space_begin                | Begins a new layouting space that allows to specify each widgets position and size            |
+ * | \ref nk_layout_space_push                 | Pushes position and size of the next widget in own coordinate space either as pixel or ratio  |
+ * | \ref nk_layout_space_end                  | Marks the end of the layouting space                                                          |
+ * | \ref nk_layout_space_bounds               | Callable after nk_layout_space_begin and returns total space allocated                        |
+ * | \ref nk_layout_space_to_screen            | Converts vector from nk_layout_space coordinate space into screen space                       |
+ * | \ref nk_layout_space_to_local             | Converts vector from screen space into nk_layout_space coordinates                            |
+ * | \ref nk_layout_space_rect_to_screen       | Converts rectangle from nk_layout_space coordinate space into screen space                    |
+ * | \ref nk_layout_space_rect_to_local        | Converts rectangle from screen space into nk_layout_space coordinates                         |
  */
 
 
@@ -2218,27 +1974,25 @@ enum nk_widget_alignment {
 };
 
 /**
- * Sets the currently used minimum row height.
+ * \brief Sets the currently used minimum row height.
+ *
+ * \details
  * !!! \warning
  *     The passed height needs to include both your preferred row height
  *     as well as padding. No internal padding is added.
  *
- * ```c
- * void nk_layout_set_min_row_height(struct nk_context*, float height);
- * ```
  *
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
- * \param[in] height  | New minimum row height to be used for auto generating the row height
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
+ * \param[in] height   New minimum row height to be used for auto generating the row height
  */
 NK_API void nk_layout_set_min_row_height(struct nk_context*, float height);
 
 /**
- * Reset the currently used minimum row height back to `font_height + text_padding + padding`
- * ```c
- * void nk_layout_reset_min_row_height(struct nk_context*);
- * ```
+ * \brief Reset the currently used minimum row height back to `font_height + text_padding + padding`
  *
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
  */
 NK_API void nk_layout_reset_min_row_height(struct nk_context*);
 
@@ -2246,11 +2000,8 @@ NK_API void nk_layout_reset_min_row_height(struct nk_context*);
  * \brief Returns the width of the next row allocate by one of the layouting functions
  *
  * \details
- * ```c
- * struct nk_rect nk_layout_widget_bounds(struct nk_context*);
- * ```
  *
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
  *
  * \return `nk_rect` with both position and size of the next row
  */
@@ -2260,12 +2011,9 @@ NK_API struct nk_rect nk_layout_widget_bounds(const struct nk_context *ctx);
  * \brief Utility functions to calculate window ratio from pixel size
  *
  * \details
- * ```c
- * float nk_layout_ratio_from_pixel(struct nk_context*, float pixel_width);
- * ```
  *
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
- * \param[in] pixel   | Pixel_width to convert to window ratio
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
+ * \param[in] pixel    Pixel_width to convert to window ratio
  *
  * \returns `nk_rect` with both position and size of the next row
  */
@@ -2277,13 +2025,10 @@ NK_API float nk_layout_ratio_from_pixel(const struct nk_context *ctx, float pixe
  * calls greater than `cols` will allocate a new row with same layout.
  *
  * \details
- * ```c
- * void nk_layout_row_dynamic(struct nk_context *ctx, float height, int cols);
- * ```
  *
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
- * \param[in] height  | Holds height of each widget in row or zero for auto layouting
- * \param[in] columns | Number of widget inside row
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
+ * \param[in] height   Holds height of each widget in row or zero for auto layouting
+ * \param[in] columns  Number of widget inside row
  */
 NK_API void nk_layout_row_dynamic(struct nk_context *ctx, float height, int cols);
 
@@ -2293,14 +2038,11 @@ NK_API void nk_layout_row_dynamic(struct nk_context *ctx, float height, int cols
  * calls greater than `cols` will allocate a new row with same layout.
  *
  * \details
- * ```c
- * void nk_layout_row_static(struct nk_context *ctx, float height, int item_width, int cols);
- * ```
  *
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
- * \param[in] height  | Holds height of each widget in row or zero for auto layouting
- * \param[in] width   | Holds pixel width of each widget in the row
- * \param[in] columns | Number of widget inside row
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
+ * \param[in] height   Holds height of each widget in row or zero for auto layouting
+ * \param[in] width    Holds pixel width of each widget in the row
+ * \param[in] columns  Number of widget inside row
  */
 NK_API void nk_layout_row_static(struct nk_context *ctx, float height, int item_width, int cols);
 
@@ -2308,14 +2050,11 @@ NK_API void nk_layout_row_static(struct nk_context *ctx, float height, int item_
  * \brief Starts a new dynamic or fixed row with given height and columns.
  *
  * \details
- * ```c
- * void nk_layout_row_begin(struct nk_context *ctx, enum nk_layout_format fmt, float row_height, int cols);
- * ```
  *
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
- * \param[in] fmt     | either `NK_DYNAMIC` for window ratio or `NK_STATIC` for fixed size columns
- * \param[in] height  | holds height of each widget in row or zero for auto layouting
- * \param[in] columns | Number of widget inside row
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
+ * \param[in] fmt      either `NK_DYNAMIC` for window ratio or `NK_STATIC` for fixed size columns
+ * \param[in] height   holds height of each widget in row or zero for auto layouting
+ * \param[in] columns  Number of widget inside row
  */
 NK_API void nk_layout_row_begin(struct nk_context *ctx, enum nk_layout_format fmt, float row_height, int cols);
 
@@ -2323,12 +2062,9 @@ NK_API void nk_layout_row_begin(struct nk_context *ctx, enum nk_layout_format fm
  * \brief Specifies either window ratio or width of a single column
  *
  * \details
- * ```c
- * void nk_layout_row_push(struct nk_context*, float value);
- * ```
  *
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
- * \param[in] value   | either a window ratio or fixed width depending on @fmt in previous `nk_layout_row_begin` call
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
+ * \param[in] value    either a window ratio or fixed width depending on @fmt in previous `nk_layout_row_begin` call
  */
 NK_API void nk_layout_row_push(struct nk_context*, float value);
 
@@ -2336,11 +2072,8 @@ NK_API void nk_layout_row_push(struct nk_context*, float value);
  * \brief Finished previously started row
  *
  * \details
- * ```c
- * void nk_layout_row_end(struct nk_context*);
- * ```
  *
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
  */
 NK_API void nk_layout_row_end(struct nk_context*);
 
@@ -2348,218 +2081,159 @@ NK_API void nk_layout_row_end(struct nk_context*);
  * \brief Specifies row columns in array as either window ratio or size
  *
  * \details
- * ```c
- * void nk_layout_row(struct nk_context*, enum nk_layout_format, float height, int cols, const float *ratio);
- * ```
  *
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
- * \param[in] fmt     | Either `NK_DYNAMIC` for window ratio or `NK_STATIC` for fixed size columns
- * \param[in] height  | Holds height of each widget in row or zero for auto layouting
- * \param[in] columns | Number of widget inside row
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
+ * \param[in] fmt      Either `NK_DYNAMIC` for window ratio or `NK_STATIC` for fixed size columns
+ * \param[in] height   Holds height of each widget in row or zero for auto layouting
+ * \param[in] columns  Number of widget inside row
  */
 NK_API void nk_layout_row(struct nk_context*, enum nk_layout_format, float height, int cols, const float *ratio);
 
 /**
- * # # nk_layout_row_template_begin
- * Begins the row template declaration
- * ```c
- * void nk_layout_row_template_begin(struct nk_context*, float row_height);
- * ```
+ * \brief Begins the row template declaration
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
- * \param[in] height  | Holds height of each widget in row or zero for auto layouting
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
+ * \param[in] height   Holds height of each widget in row or zero for auto layouting
  */
 NK_API void nk_layout_row_template_begin(struct nk_context*, float row_height);
 
 /**
- * # # nk_layout_row_template_push_dynamic
- * Adds a dynamic column that dynamically grows and can go to zero if not enough space
- * ```c
- * void nk_layout_row_template_push_dynamic(struct nk_context*);
- * ```
+ * \brief Adds a dynamic column that dynamically grows and can go to zero if not enough space
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
- * \param[in] height  | Holds height of each widget in row or zero for auto layouting
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
+ * \param[in] height   Holds height of each widget in row or zero for auto layouting
  */
 NK_API void nk_layout_row_template_push_dynamic(struct nk_context*);
 
 /**
- * # # nk_layout_row_template_push_variable
- * Adds a variable column that dynamically grows but does not shrink below specified pixel width
- * ```c
- * void nk_layout_row_template_push_variable(struct nk_context*, float min_width);
- * ```
+ * \brief Adds a variable column that dynamically grows but does not shrink below specified pixel width
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
- * \param[in] width   | Holds the minimum pixel width the next column must always be
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
+ * \param[in] width    Holds the minimum pixel width the next column must always be
  */
 NK_API void nk_layout_row_template_push_variable(struct nk_context*, float min_width);
 
 /**
- * # # nk_layout_row_template_push_static
- * Adds a static column that does not grow and will always have the same size
- * ```c
- * void nk_layout_row_template_push_static(struct nk_context*, float width);
- * ```
+ * \brief Adds a static column that does not grow and will always have the same size
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
- * \param[in] width   | Holds the absolute pixel width value the next column must be
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
+ * \param[in] width    Holds the absolute pixel width value the next column must be
  */
 NK_API void nk_layout_row_template_push_static(struct nk_context*, float width);
 
 /**
- * # # nk_layout_row_template_end
- * Marks the end of the row template
- * ```c
- * void nk_layout_row_template_end(struct nk_context*);
- * ```
+ * \brief Marks the end of the row template
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
  */
 NK_API void nk_layout_row_template_end(struct nk_context*);
 
 /**
- * # # nk_layout_space_begin
- * Begins a new layouting space that allows to specify each widgets position and size.
- * ```c
- * void nk_layout_space_begin(struct nk_context*, enum nk_layout_format, float height, int widget_count);
- * ```
+ * \brief Begins a new layouting space that allows to specify each widgets position and size.
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
- * \param[in] fmt     | Either `NK_DYNAMIC` for window ratio or `NK_STATIC` for fixed size columns
- * \param[in] height  | Holds height of each widget in row or zero for auto layouting
- * \param[in] columns | Number of widgets inside row
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
+ * \param[in] fmt      Either `NK_DYNAMIC` for window ratio or `NK_STATIC` for fixed size columns
+ * \param[in] height   Holds height of each widget in row or zero for auto layouting
+ * \param[in] columns  Number of widgets inside row
  */
 NK_API void nk_layout_space_begin(struct nk_context*, enum nk_layout_format, float height, int widget_count);
 
 /**
- * # # nk_layout_space_push
- * Pushes position and size of the next widget in own coordinate space either as pixel or ratio
- * ```c
- * void nk_layout_space_push(struct nk_context *ctx, struct nk_rect bounds);
- * ```
+ * \brief Pushes position and size of the next widget in own coordinate space either as pixel or ratio
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_layout_space_begin`
- * \param[in] bounds  | Position and size in laoyut space local coordinates
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_layout_space_begin`
+ * \param[in] bounds   Position and size in laoyut space local coordinates
  */
 NK_API void nk_layout_space_push(struct nk_context*, struct nk_rect bounds);
 
 /**
- * # # nk_layout_space_end
- * Marks the end of the layout space
- * ```c
- * void nk_layout_space_end(struct nk_context*);
- * ```
+ * \brief Marks the end of the layout space
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_layout_space_begin`
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_layout_space_begin`
  */
 NK_API void nk_layout_space_end(struct nk_context*);
 
 /**
- * # # nk_layout_space_bounds
- * Utility function to calculate total space allocated for `nk_layout_space`
- * ```c
- * struct nk_rect nk_layout_space_bounds(struct nk_context*);
- * ```
+ * \brief Utility function to calculate total space allocated for `nk_layout_space`
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_layout_space_begin`
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_layout_space_begin`
  *
  * \returns `nk_rect` holding the total space allocated
  */
 NK_API struct nk_rect nk_layout_space_bounds(const struct nk_context *ctx);
 
 /**
- * # # nk_layout_space_to_screen
- * Converts vector from nk_layout_space coordinate space into screen space
- * ```c
- * struct nk_vec2 nk_layout_space_to_screen(struct nk_context*, struct nk_vec2);
- * ```
+ * \brief Converts vector from nk_layout_space coordinate space into screen space
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_layout_space_begin`
- * \param[in] vec     | Position to convert from layout space into screen coordinate space
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_layout_space_begin`
+ * \param[in] vec      Position to convert from layout space into screen coordinate space
  *
  * \returns transformed `nk_vec2` in screen space coordinates
  */
 NK_API struct nk_vec2 nk_layout_space_to_screen(const struct nk_context* ctx, struct nk_vec2 vec);
 
 /**
- * # # nk_layout_space_to_local
- * Converts vector from layout space into screen space
- * ```c
- * struct nk_vec2 nk_layout_space_to_local(struct nk_context*, struct nk_vec2);
- * ```
+ * \brief Converts vector from layout space into screen space
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_layout_space_begin`
- * \param[in] vec     | Position to convert from screen space into layout coordinate space
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_layout_space_begin`
+ * \param[in] vec      Position to convert from screen space into layout coordinate space
  *
  * \returns transformed `nk_vec2` in layout space coordinates
  */
 NK_API struct nk_vec2 nk_layout_space_to_local(const struct nk_context *ctx, struct nk_vec2 vec);
 
 /**
- * # # nk_layout_space_rect_to_screen
- * Converts rectangle from screen space into layout space
- * ```c
- * struct nk_rect nk_layout_space_rect_to_screen(struct nk_context*, struct nk_rect);
- * ```
+ * \brief Converts rectangle from screen space into layout space
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_layout_space_begin`
- * \param[in] bounds  | Rectangle to convert from layout space into screen space
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_layout_space_begin`
+ * \param[in] bounds   Rectangle to convert from layout space into screen space
  *
  * \returns transformed `nk_rect` in screen space coordinates
  */
 NK_API struct nk_rect nk_layout_space_rect_to_screen(const struct nk_context *ctx, struct nk_rect bounds);
 
 /**
- * # # nk_layout_space_rect_to_local
- * Converts rectangle from layout space into screen space
- * ```c
- * struct nk_rect nk_layout_space_rect_to_local(struct nk_context*, struct nk_rect);
- * ```
+ * \brief Converts rectangle from layout space into screen space
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_layout_space_begin`
- * \param[in] bounds  | Rectangle to convert from layout space into screen space
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_layout_space_begin`
+ * \param[in] bounds   Rectangle to convert from layout space into screen space
  *
  * \returns transformed `nk_rect` in layout space coordinates
  */
 NK_API struct nk_rect nk_layout_space_rect_to_local(const struct nk_context *ctx, struct nk_rect bounds);
 
 /**
- * # # nk_spacer
- * Spacer is a dummy widget that consumes space as usual but doesn't draw anything
- * ```c
- * void nk_spacer(struct nk_context* );
- * ```
+ * \brief Spacer is a dummy widget that consumes space as usual but doesn't draw anything
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_layout_space_begin`
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_layout_space_begin`
  *
  */
 NK_API void nk_spacer(struct nk_context *ctx);
@@ -2643,29 +2317,24 @@ NK_API void nk_spacer(struct nk_context *ctx);
  * nk_free(&ctx);
  * ```
  * # Reference
- * Function                        | Description
- * --------------------------------|-------------------------------------------
- * \ref nk_group_begin                  | Start a new group with internal scrollbar handling
- * \ref nk_group_begin_titled           | Start a new group with separated name and title and internal scrollbar handling
- * \ref nk_group_end                    | Ends a group. Should only be called if nk_group_begin returned non-zero
- * \ref nk_group_scrolled_offset_begin  | Start a new group with manual separated handling of scrollbar x- and y-offset
- * \ref nk_group_scrolled_begin         | Start a new group with manual scrollbar handling
- * \ref nk_group_scrolled_end           | Ends a group with manual scrollbar handling. Should only be called if nk_group_begin returned non-zero
- * \ref nk_group_get_scroll             | Gets the scroll offset for the given group
- * \ref nk_group_set_scroll             | Sets the scroll offset for the given group
+ * | Function                            | Description                                                                                            |
+ * | ---------------------               | ---------------                                                                                        |
+ * | \ref nk_group_begin                 | Start a new group with internal scrollbar handling                                                     |
+ * | \ref nk_group_begin_titled          | Start a new group with separated name and title and internal scrollbar handling                        |
+ * | \ref nk_group_end                   | Ends a group. Should only be called if nk_group_begin returned non-zero                                |
+ * | \ref nk_group_scrolled_offset_begin | Start a new group with manual separated handling of scrollbar x- and y-offset                          |
+ * | \ref nk_group_scrolled_begin        | Start a new group with manual scrollbar handling                                                       |
+ * | \ref nk_group_scrolled_end          | Ends a group with manual scrollbar handling. Should only be called if nk_group_begin returned non-zero |
+ * | \ref nk_group_get_scroll            | Gets the scroll offset for the given group                                                             |
+ * | \ref nk_group_set_scroll            | Sets the scroll offset for the given group                                                             |
  */
 
  /**
  * \brief Starts a new widget group. Requires a previous layouting function to specify a pos/size.
- * ```c
- * nk_bool nk_group_begin(struct nk_context*, const char *title, nk_flags);
- * ```
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] title   | Must be an unique identifier for this group that is also used for the group header
- * \param[in] flags   | Window flags defined in the nk_panel_flags section with a number of different group behaviors
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] title    Must be an unique identifier for this group that is also used for the group header
+ * \param[in] flags    Window flags defined in the nk_panel_flags section with a number of different group behaviors
  *
  * \returns `true(1)` if visible and fillable with widgets or `false(0)` otherwise
  */
@@ -2673,113 +2342,85 @@ NK_API nk_bool nk_group_begin(struct nk_context*, const char *title, nk_flags);
 
  /**
  * \brief Starts a new widget group. Requires a previous layouting function to specify a pos/size.
- * ```c
- * nk_bool nk_group_begin_titled(struct nk_context*, const char *name, const char *title, nk_flags);
- * ```
  *
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] id      | Must be an unique identifier for this group
- * \param[in] title   | Group header title
- * \param[in] flags   | Window flags defined in the nk_panel_flags section with a number of different group behaviors
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] id       Must be an unique identifier for this group
+ * \param[in] title    Group header title
+ * \param[in] flags    Window flags defined in the nk_panel_flags section with a number of different group behaviors
  *
  * \returns `true(1)` if visible and fillable with widgets or `false(0)` otherwise
  */
 NK_API nk_bool nk_group_begin_titled(struct nk_context*, const char *name, const char *title, nk_flags);
 
 /**
- * # # nk_group_end
- * Ends a widget group
- * ```c
- * void nk_group_end(struct nk_context*);
- * ```
+ * \brief Ends a widget group
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
  */
 NK_API void nk_group_end(struct nk_context*);
 
 /**
- * # # nk_group_scrolled_offset_begin
- * starts a new widget group. requires a previous layouting function to specify
+ * \brief starts a new widget group. requires a previous layouting function to specify
  * a size. Does not keep track of scrollbar.
- * ```c
- * nk_bool nk_group_scrolled_offset_begin(struct nk_context*, nk_uint *x_offset, nk_uint *y_offset, const char *title, nk_flags flags);
- * ```
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] x_offset| Scrollbar x-offset to offset all widgets inside the group horizontally.
- * \param[in] y_offset| Scrollbar y-offset to offset all widgets inside the group vertically
- * \param[in] title   | Window unique group title used to both identify and display in the group header
- * \param[in] flags   | Window flags from the nk_panel_flags section
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] x_offset Scrollbar x-offset to offset all widgets inside the group horizontally.
+ * \param[in] y_offset Scrollbar y-offset to offset all widgets inside the group vertically
+ * \param[in] title    Window unique group title used to both identify and display in the group header
+ * \param[in] flags    Window flags from the nk_panel_flags section
  *
  * \returns `true(1)` if visible and fillable with widgets or `false(0)` otherwise
  */
 NK_API nk_bool nk_group_scrolled_offset_begin(struct nk_context*, nk_uint *x_offset, nk_uint *y_offset, const char *title, nk_flags flags);
 
 /**
- * # # nk_group_scrolled_begin
- * Starts a new widget group. requires a previous
- * layouting function to specify a size. Does not keep track of scrollbar.
- * ```c
- * nk_bool nk_group_scrolled_begin(struct nk_context*, struct nk_scroll *off, const char *title, nk_flags);
- * ```
+ * \brief Starts a new widget group. requires a previous layouting function to specify a size. Does not keep track of scrollbar.
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] off     | Both x- and y- scroll offset. Allows for manual scrollbar control
- * \param[in] title   | Window unique group title used to both identify and display in the group header
- * \param[in] flags   | Window flags from nk_panel_flags section
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] off      Both x- and y- scroll offset. Allows for manual scrollbar control
+ * \param[in] title    Window unique group title used to both identify and display in the group header
+ * \param[in] flags    Window flags from nk_panel_flags section
  *
  * \returns `true(1)` if visible and fillable with widgets or `false(0)` otherwise
  */
 NK_API nk_bool nk_group_scrolled_begin(struct nk_context*, struct nk_scroll *off, const char *title, nk_flags);
 
 /**
- * # # nk_group_scrolled_end
- * Ends a widget group after calling nk_group_scrolled_offset_begin or nk_group_scrolled_begin.
- * ```c
- * void nk_group_scrolled_end(struct nk_context*);
- * ```
+ * \brief Ends a widget group after calling nk_group_scrolled_offset_begin or nk_group_scrolled_begin.
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
  */
 NK_API void nk_group_scrolled_end(struct nk_context*);
 
 /**
- * # # nk_group_get_scroll
- * Gets the scroll position of the given group.
- * ```c
- * void nk_group_get_scroll(struct nk_context*, const char *id, nk_uint *x_offset, nk_uint *y_offset);
- * ```
+ * \brief Gets the scroll position of the given group.
  *
- * Parameter    | Description
- * -------------|-----------------------------------------------------------
- * \param[in] ctx      | Must point to an previously initialized `nk_context` struct
- * \param[in] id       | The id of the group to get the scroll position of
- * \param[in] x_offset | A pointer to the x offset output (or NULL to ignore)
- * \param[in] y_offset | A pointer to the y offset output (or NULL to ignore)
+ * \details
+ *
+ * \param[in] ctx       Must point to an previously initialized `nk_context` struct
+ * \param[in] id        The id of the group to get the scroll position of
+ * \param[in] x_offset  A pointer to the x offset output (or NULL to ignore)
+ * \param[in] y_offset  A pointer to the y offset output (or NULL to ignore)
  */
 NK_API void nk_group_get_scroll(struct nk_context*, const char *id, nk_uint *x_offset, nk_uint *y_offset);
 
 /**
- * # # nk_group_set_scroll
- * Sets the scroll position of the given group.
- * ```c
- * void nk_group_set_scroll(struct nk_context*, const char *id, nk_uint x_offset, nk_uint y_offset);
- * ```
+ * \brief Sets the scroll position of the given group.
  *
- * Parameter    | Description
- * -------------|-----------------------------------------------------------
- * \param[in] ctx      | Must point to an previously initialized `nk_context` struct
- * \param[in] id       | The id of the group to scroll
- * \param[in] x_offset | The x offset to scroll to
- * \param[in] y_offset | The y offset to scroll to
+ * \details
+ *
+ * \param[in] ctx       Must point to an previously initialized `nk_context` struct
+ * \param[in] id        The id of the group to scroll
+ * \param[in] x_offset  The x offset to scroll to
+ * \param[in] y_offset  The y offset to scroll to
  */
 NK_API void nk_group_set_scroll(struct nk_context*, const char *id, nk_uint x_offset, nk_uint y_offset);
 
@@ -2834,220 +2475,177 @@ NK_API void nk_group_set_scroll(struct nk_context*, const char *id, nk_uint x_of
  * ```
  *
  * # Reference
- * Function                    | Description
- * ----------------------------|-------------------------------------------
- * nk_tree_push                | Start a collapsible UI section with internal state management
- * nk_tree_push_id             | Start a collapsible UI section with internal state management callable in a look
- * nk_tree_push_hashed         | Start a collapsible UI section with internal state management with full control over internal unique ID use to store state
- * nk_tree_image_push          | Start a collapsible UI section with image and label header
- * nk_tree_image_push_id       | Start a collapsible UI section with image and label header and internal state management callable in a look
- * nk_tree_image_push_hashed   | Start a collapsible UI section with image and label header and internal state management with full control over internal unique ID use to store state
- * nk_tree_pop                 | Ends a collapsible UI section
- * nk_tree_state_push          | Start a collapsible UI section with external state management
- * nk_tree_state_image_push    | Start a collapsible UI section with image and label header and external state management
- * nk_tree_state_pop           | Ends a collapsabale UI section
+ * | Function                       | Description                                                                                                                                           |
+ * | ---------------------          | ---------------                                                                                                                                       |
+ * | \ref nk_tree_push              | Start a collapsible UI section with internal state management                                                                                         |
+ * | \ref nk_tree_push_id           | Start a collapsible UI section with internal state management callable in a look                                                                      |
+ * | \ref nk_tree_push_hashed       | Start a collapsible UI section with internal state management with full control over internal unique ID use to store state                            |
+ * | \ref nk_tree_image_push        | Start a collapsible UI section with image and label header                                                                                            |
+ * | \ref nk_tree_image_push_id     | Start a collapsible UI section with image and label header and internal state management callable in a look                                           |
+ * | \ref nk_tree_image_push_hashed | Start a collapsible UI section with image and label header and internal state management with full control over internal unique ID use to store state |
+ * | \ref nk_tree_pop               | Ends a collapsible UI section                                                                                                                         |
+ * | \ref nk_tree_state_push        | Start a collapsible UI section with external state management                                                                                         |
+ * | \ref nk_tree_state_image_push  | Start a collapsible UI section with image and label header and external state management                                                              |
+ * | \ref nk_tree_state_pop         | Ends a collapsabale UI section                                                                                                                        |
  *
  * # nk_tree_type
- * Flag            | Description
- * ----------------|----------------------------------------
- * NK_TREE_NODE    | Highlighted tree header to mark a collapsible UI section
- * NK_TREE_TAB     | Non-highlighted tree header closer to tree representations
+ * | Flag                  | Description                                                |
+ * | --------------------- | ---------------                                            |
+ * | \ref NK_TREE_NODE     | Highlighted tree header to mark a collapsible UI section   |
+ * | \ref NK_TREE_TAB      | Non-highlighted tree header closer to tree representations |
  */
 
 /**
- * # # nk_tree_push
- * Starts a collapsible UI section with internal state management
+ * \brief Starts a collapsible UI section with internal state management
+ *
+ * \details
  * !!! \warning
  *     To keep track of the runtime tree collapsible state this function uses
  *     defines `__FILE__` and `__LINE__` to generate a unique ID. If you want
  *     to call this function in a loop please use `nk_tree_push_id` or
  *     `nk_tree_push_hashed` instead.
  *
- * ```c
- * #define nk_tree_push(ctx, type, title, state)
- * ```
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] type    | Value from the nk_tree_type section to visually mark a tree node header as either a collapseable UI section or tree node
- * \param[in] title   | Label printed in the tree header
- * \param[in] state   | Initial tree state value out of nk_collapse_states
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] type     Value from the nk_tree_type section to visually mark a tree node header as either a collapseable UI section or tree node
+ * \param[in] title    Label printed in the tree header
+ * \param[in] state    Initial tree state value out of nk_collapse_states
  *
  * \returns `true(1)` if visible and fillable with widgets or `false(0)` otherwise
  */
 #define nk_tree_push(ctx, type, title, state) nk_tree_push_hashed(ctx, type, title, state, NK_FILE_LINE,nk_strlen(NK_FILE_LINE),__LINE__)
 
 /**
- * # # nk_tree_push_id
- * Starts a collapsible UI section with internal state management callable in a look
- * ```c
- * #define nk_tree_push_id(ctx, type, title, state, id)
- * ```
+ * \brief Starts a collapsible UI section with internal state management callable in a look
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] type    | Value from the nk_tree_type section to visually mark a tree node header as either a collapseable UI section or tree node
- * \param[in] title   | Label printed in the tree header
- * \param[in] state   | Initial tree state value out of nk_collapse_states
- * \param[in] id      | Loop counter index if this function is called in a loop
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] type     Value from the nk_tree_type section to visually mark a tree node header as either a collapseable UI section or tree node
+ * \param[in] title    Label printed in the tree header
+ * \param[in] state    Initial tree state value out of nk_collapse_states
+ * \param[in] id       Loop counter index if this function is called in a loop
  *
  * \returns `true(1)` if visible and fillable with widgets or `false(0)` otherwise
  */
 #define nk_tree_push_id(ctx, type, title, state, id) nk_tree_push_hashed(ctx, type, title, state, NK_FILE_LINE,nk_strlen(NK_FILE_LINE),id)
 
 /**
- * # # nk_tree_push_hashed
- * Start a collapsible UI section with internal state management with full
- * control over internal unique ID used to store state
- * ```c
- * nk_bool nk_tree_push_hashed(struct nk_context*, enum nk_tree_type, const char *title, enum nk_collapse_states initial_state, const char *hash, int len,int seed);
- * ```
+ * \brief Start a collapsible UI section with internal state management with full control over internal unique ID used to store state
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] type    | Value from the nk_tree_type section to visually mark a tree node header as either a collapseable UI section or tree node
- * \param[in] title   | Label printed in the tree header
- * \param[in] state   | Initial tree state value out of nk_collapse_states
- * \param[in] hash    | Memory block or string to generate the ID from
- * \param[in] len     | Size of passed memory block or string in __hash__
- * \param[in] seed    | Seeding value if this function is called in a loop or default to `0`
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] type     Value from the nk_tree_type section to visually mark a tree node header as either a collapseable UI section or tree node
+ * \param[in] title    Label printed in the tree header
+ * \param[in] state    Initial tree state value out of nk_collapse_states
+ * \param[in] hash     Memory block or string to generate the ID from
+ * \param[in] len      Size of passed memory block or string in __hash__
+ * \param[in] seed     Seeding value if this function is called in a loop or default to `0`
  *
  * \returns `true(1)` if visible and fillable with widgets or `false(0)` otherwise
  */
 NK_API nk_bool nk_tree_push_hashed(struct nk_context*, enum nk_tree_type, const char *title, enum nk_collapse_states initial_state, const char *hash, int len,int seed);
 
 /**
- * # # nk_tree_image_push
- * Start a collapsible UI section with image and label header
+ * \brief Start a collapsible UI section with image and label header
+ *
+ * \details
  * !!! \warning
  *     To keep track of the runtime tree collapsible state this function uses
  *     defines `__FILE__` and `__LINE__` to generate a unique ID. If you want
  *     to call this function in a loop please use `nk_tree_image_push_id` or
  *     `nk_tree_image_push_hashed` instead.
  *
- * ```c
- * #define nk_tree_image_push(ctx, type, img, title, state)
- * ```
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] type    | Value from the nk_tree_type section to visually mark a tree node header as either a collapseable UI section or tree node
- * \param[in] img     | Image to display inside the header on the left of the label
- * \param[in] title   | Label printed in the tree header
- * \param[in] state   | Initial tree state value out of nk_collapse_states
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] type     Value from the nk_tree_type section to visually mark a tree node header as either a collapseable UI section or tree node
+ * \param[in] img      Image to display inside the header on the left of the label
+ * \param[in] title    Label printed in the tree header
+ * \param[in] state    Initial tree state value out of nk_collapse_states
  *
  * \returns `true(1)` if visible and fillable with widgets or `false(0)` otherwise
  */
 #define nk_tree_image_push(ctx, type, img, title, state) nk_tree_image_push_hashed(ctx, type, img, title, state, NK_FILE_LINE,nk_strlen(NK_FILE_LINE),__LINE__)
 
 /**
- * # # nk_tree_image_push_id
- * Start a collapsible UI section with image and label header and internal state
- * management callable in a look
+ * \brief Start a collapsible UI section with image and label header and internal state management callable in a look
  *
- * ```c
- * #define nk_tree_image_push_id(ctx, type, img, title, state, id)
- * ```
+ * \details
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] type    | Value from the nk_tree_type section to visually mark a tree node header as either a collapseable UI section or tree node
- * \param[in] img     | Image to display inside the header on the left of the label
- * \param[in] title   | Label printed in the tree header
- * \param[in] state   | Initial tree state value out of nk_collapse_states
- * \param[in] id      | Loop counter index if this function is called in a loop
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] type     Value from the nk_tree_type section to visually mark a tree node header as either a collapseable UI section or tree node
+ * \param[in] img      Image to display inside the header on the left of the label
+ * \param[in] title    Label printed in the tree header
+ * \param[in] state    Initial tree state value out of nk_collapse_states
+ * \param[in] id       Loop counter index if this function is called in a loop
  *
  * \returns `true(1)` if visible and fillable with widgets or `false(0)` otherwise
  */
 #define nk_tree_image_push_id(ctx, type, img, title, state, id) nk_tree_image_push_hashed(ctx, type, img, title, state, NK_FILE_LINE,nk_strlen(NK_FILE_LINE),id)
 
 /**
- * # # nk_tree_image_push_hashed
- * Start a collapsible UI section with internal state management with full
- * control over internal unique ID used to store state
- * ```c
- * nk_bool nk_tree_image_push_hashed(struct nk_context*, enum nk_tree_type, struct nk_image, const char *title, enum nk_collapse_states initial_state, const char *hash, int len,int seed);
- * ```
+ * \brief Start a collapsible UI section with internal state management with full control over internal unique ID used to store state
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] type    | Value from the nk_tree_type section to visually mark a tree node header as either a collapseable UI section or tree node
- * \param[in] img     | Image to display inside the header on the left of the label
- * \param[in] title   | Label printed in the tree header
- * \param[in] state   | Initial tree state value out of nk_collapse_states
- * \param[in] hash    | Memory block or string to generate the ID from
- * \param[in] len     | Size of passed memory block or string in __hash__
- * \param[in] seed    | Seeding value if this function is called in a loop or default to `0`
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] type     Value from the nk_tree_type section to visually mark a tree node header as either a collapseable UI section or tree node
+ * \param[in] img      Image to display inside the header on the left of the label
+ * \param[in] title    Label printed in the tree header
+ * \param[in] state    Initial tree state value out of nk_collapse_states
+ * \param[in] hash     Memory block or string to generate the ID from
+ * \param[in] len      Size of passed memory block or string in __hash__
+ * \param[in] seed     Seeding value if this function is called in a loop or default to `0`
  *
  * \returns `true(1)` if visible and fillable with widgets or `false(0)` otherwise
  */
 NK_API nk_bool nk_tree_image_push_hashed(struct nk_context*, enum nk_tree_type, struct nk_image, const char *title, enum nk_collapse_states initial_state, const char *hash, int len,int seed);
 
 /**
- * # # nk_tree_pop
- * Ends a collapsabale UI section
- * ```c
- * void nk_tree_pop(struct nk_context*);
- * ```
+ * \brief Ends a collapsabale UI section
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after calling `nk_tree_xxx_push_xxx`
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after calling `nk_tree_xxx_push_xxx`
  */
 NK_API void nk_tree_pop(struct nk_context*);
 
 /**
- * # # nk_tree_state_push
- * Start a collapsible UI section with external state management
- * ```c
- * nk_bool nk_tree_state_push(struct nk_context*, enum nk_tree_type, const char *title, enum nk_collapse_states *state);
- * ```
+ * \brief Start a collapsible UI section with external state management
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after calling `nk_tree_xxx_push_xxx`
- * \param[in] type    | Value from the nk_tree_type section to visually mark a tree node header as either a collapseable UI section or tree node
- * \param[in] title   | Label printed in the tree header
- * \param[in] state   | Persistent state to update
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after calling `nk_tree_xxx_push_xxx`
+ * \param[in] type     Value from the nk_tree_type section to visually mark a tree node header as either a collapseable UI section or tree node
+ * \param[in] title    Label printed in the tree header
+ * \param[in] state    Persistent state to update
  *
  * \returns `true(1)` if visible and fillable with widgets or `false(0)` otherwise
  */
 NK_API nk_bool nk_tree_state_push(struct nk_context*, enum nk_tree_type, const char *title, enum nk_collapse_states *state);
 
 /**
- * # # nk_tree_state_image_push
- * Start a collapsible UI section with image and label header and external state management
- * ```c
- * nk_bool nk_tree_state_image_push(struct nk_context*, enum nk_tree_type, struct nk_image, const char *title, enum nk_collapse_states *state);
- * ```
+ * \brief Start a collapsible UI section with image and label header and external state management
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after calling `nk_tree_xxx_push_xxx`
- * \param[in] img     | Image to display inside the header on the left of the label
- * \param[in] type    | Value from the nk_tree_type section to visually mark a tree node header as either a collapseable UI section or tree node
- * \param[in] title   | Label printed in the tree header
- * \param[in] state   | Persistent state to update
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after calling `nk_tree_xxx_push_xxx`
+ * \param[in] img      Image to display inside the header on the left of the label
+ * \param[in] type     Value from the nk_tree_type section to visually mark a tree node header as either a collapseable UI section or tree node
+ * \param[in] title    Label printed in the tree header
+ * \param[in] state    Persistent state to update
  *
  * \returns `true(1)` if visible and fillable with widgets or `false(0)` otherwise
  */
 NK_API nk_bool nk_tree_state_image_push(struct nk_context*, enum nk_tree_type, struct nk_image, const char *title, enum nk_collapse_states *state);
 
 /**
- * # # nk_tree_state_pop
- * Ends a collapsabale UI section
- * ```c
- * void nk_tree_state_pop(struct nk_context*);
- * ```
+ * \brief Ends a collapsabale UI section
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after calling `nk_tree_xxx_push_xxx`
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after calling `nk_tree_xxx_push_xxx`
  */
 NK_API void nk_tree_state_pop(struct nk_context*);
 
@@ -3325,94 +2923,76 @@ NK_API nk_bool nk_color_pick(struct nk_context*, struct nk_colorf*, enum nk_colo
  * ```
  *
  * # Reference
- * Function            | Description
- * --------------------|-------------------------------------------
- * \ref nk_property_int     | Integer property directly modifying a passed in value
- * \ref nk_property_float   | Float property directly modifying a passed in value
- * \ref nk_property_double  | Double property directly modifying a passed in value
- * \ref nk_propertyi        | Integer property returning the modified int value
- * \ref nk_propertyf        | Float property returning the modified float value
- * \ref nk_propertyd        | Double property returning the modified double value
+ * | Function                | Description                                           |
+ * | ---------------------   | ---------------                                       |
+ * | \ref nk_property_int    | Integer property directly modifying a passed in value |
+ * | \ref nk_property_float  | Float property directly modifying a passed in value   |
+ * | \ref nk_property_double | Double property directly modifying a passed in value  |
+ * | \ref nk_propertyi       | Integer property returning the modified int value     |
+ * | \ref nk_propertyf       | Float property returning the modified float value     |
+ * | \ref nk_propertyd       | Double property returning the modified double value   |
  *
 
- * # # nk_property_int
  * Integer property directly modifying a passed in value
  * !!! \warning
  *     To generate a unique property ID using the same label make sure to insert
  *     a `#` at the beginning. It will not be shown but guarantees correct behavior.
  *
- * ```c
- * void nk_property_int(struct nk_context *ctx, const char *name, int min, int *val, int max, int step, float inc_per_pixel);
- * ```
  *
- * Parameter           | Description
- * --------------------|-----------------------------------------------------------
- * \param[in] ctx             | Must point to an previously initialized `nk_context` struct after calling a layouting function
- * \param[in] name            | String used both as a label as well as a unique identifier
- * \param[in] min             | Minimum value not allowed to be underflown
- * \param[in] val             | Integer pointer to be modified
- * \param[in] max             | Maximum value not allowed to be overflown
- * \param[in] step            | Increment added and subtracted on increment and decrement button
- * \param[in] inc_per_pixel   | Value per pixel added or subtracted on dragging
+ * \param[in] ctx              Must point to an previously initialized `nk_context` struct after calling a layouting function
+ * \param[in] name             String used both as a label as well as a unique identifier
+ * \param[in] min              Minimum value not allowed to be underflown
+ * \param[in] val              Integer pointer to be modified
+ * \param[in] max              Maximum value not allowed to be overflown
+ * \param[in] step             Increment added and subtracted on increment and decrement button
+ * \param[in] inc_per_pixel    Value per pixel added or subtracted on dragging
  */
 NK_API void nk_property_int(struct nk_context*, const char *name, int min, int *val, int max, int step, float inc_per_pixel);
 
 /**
- * # # nk_property_float
- * Float property directly modifying a passed in value
+ * \brief Float property directly modifying a passed in value
  * !!! \warning
  *     To generate a unique property ID using the same label make sure to insert
  *     a `#` at the beginning. It will not be shown but guarantees correct behavior.
  *
- * ```c
- * void nk_property_float(struct nk_context *ctx, const char *name, float min, float *val, float max, float step, float inc_per_pixel);
- * ```
  *
- * Parameter           | Description
- * --------------------|-----------------------------------------------------------
- * \param[in] ctx             | Must point to an previously initialized `nk_context` struct after calling a layouting function
- * \param[in] name            | String used both as a label as well as a unique identifier
- * \param[in] min             | Minimum value not allowed to be underflown
- * \param[in] val             | Float pointer to be modified
- * \param[in] max             | Maximum value not allowed to be overflown
- * \param[in] step            | Increment added and subtracted on increment and decrement button
- * \param[in] inc_per_pixel   | Value per pixel added or subtracted on dragging
+ * \param[in] ctx              Must point to an previously initialized `nk_context` struct after calling a layouting function
+ * \param[in] name             String used both as a label as well as a unique identifier
+ * \param[in] min              Minimum value not allowed to be underflown
+ * \param[in] val              Float pointer to be modified
+ * \param[in] max              Maximum value not allowed to be overflown
+ * \param[in] step             Increment added and subtracted on increment and decrement button
+ * \param[in] inc_per_pixel    Value per pixel added or subtracted on dragging
  */
 NK_API void nk_property_float(struct nk_context*, const char *name, float min, float *val, float max, float step, float inc_per_pixel);
 
 /**
- * # # nk_property_double
- * Double property directly modifying a passed in value
+ * \brief Double property directly modifying a passed in value
+ *
+ * \details
  * !!! \warning
  *     To generate a unique property ID using the same label make sure to insert
  *     a `#` at the beginning. It will not be shown but guarantees correct behavior.
  *
- * ```c
- * void nk_property_double(struct nk_context *ctx, const char *name, double min, double *val, double max, double step, double inc_per_pixel);
- * ```
  *
- * Parameter           | Description
- * --------------------|-----------------------------------------------------------
- * \param[in] ctx             | Must point to an previously initialized `nk_context` struct after calling a layouting function
- * \param[in] name            | String used both as a label as well as a unique identifier
- * \param[in] min             | Minimum value not allowed to be underflown
- * \param[in] val             | Double pointer to be modified
- * \param[in] max             | Maximum value not allowed to be overflown
- * \param[in] step            | Increment added and subtracted on increment and decrement button
- * \param[in] inc_per_pixel   | Value per pixel added or subtracted on dragging
+ * \param[in] ctx              Must point to an previously initialized `nk_context` struct after calling a layouting function
+ * \param[in] name             String used both as a label as well as a unique identifier
+ * \param[in] min              Minimum value not allowed to be underflown
+ * \param[in] val              Double pointer to be modified
+ * \param[in] max              Maximum value not allowed to be overflown
+ * \param[in] step             Increment added and subtracted on increment and decrement button
+ * \param[in] inc_per_pixel    Value per pixel added or subtracted on dragging
  */
 NK_API void nk_property_double(struct nk_context*, const char *name, double min, double *val, double max, double step, float inc_per_pixel);
 
 /**
- * # # nk_propertyi
- * Integer property modifying a passed in value and returning the new value
+ * \brief Integer property modifying a passed in value and returning the new value
+ *
+ * \details
  * !!! \warning
  *     To generate a unique property ID using the same label make sure to insert
  *     a `#` at the beginning. It will not be shown but guarantees correct behavior.
  *
- * ```c
- * int nk_propertyi(struct nk_context *ctx, const char *name, int min, int val, int max, int step, float inc_per_pixel);
- * ```
  *
  * \param[in] ctx              Must point to an previously initialized `nk_context` struct after calling a layouting function
  * \param[in] name             String used both as a label as well as a unique identifier
@@ -3427,15 +3007,13 @@ NK_API void nk_property_double(struct nk_context*, const char *name, double min,
 NK_API int nk_propertyi(struct nk_context*, const char *name, int min, int val, int max, int step, float inc_per_pixel);
 
 /**
- * # # nk_propertyf
- * Float property modifying a passed in value and returning the new value
+ * \brief Float property modifying a passed in value and returning the new value
+ *
+ * \details
  * !!! \warning
  *     To generate a unique property ID using the same label make sure to insert
  *     a `#` at the beginning. It will not be shown but guarantees correct behavior.
  *
- * ```c
- * float nk_propertyf(struct nk_context *ctx, const char *name, float min, float val, float max, float step, float inc_per_pixel);
- * ```
  *
  * \param[in] ctx              Must point to an previously initialized `nk_context` struct after calling a layouting function
  * \param[in] name             String used both as a label as well as a unique identifier
@@ -3450,15 +3028,13 @@ NK_API int nk_propertyi(struct nk_context*, const char *name, int min, int val, 
 NK_API float nk_propertyf(struct nk_context*, const char *name, float min, float val, float max, float step, float inc_per_pixel);
 
 /**
- * # # nk_propertyd
- * Float property modifying a passed in value and returning the new value
+ * \brief Float property modifying a passed in value and returning the new value
+ *
+ * \details
  * !!! \warning
  *     To generate a unique property ID using the same label make sure to insert
  *     a `#` at the beginning. It will not be shown but guarantees correct behavior.
  *
- * ```c
- * float nk_propertyd(struct nk_context *ctx, const char *name, double min, double val, double max, double step, double inc_per_pixel);
- * ```
  *
  * \param[in] ctx              Must point to an previously initialized `nk_context` struct after calling a layouting function
  * \param[in] name             String used both as a label as well as a unique identifier

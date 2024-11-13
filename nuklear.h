@@ -566,78 +566,60 @@ enum nk_symbol_type {
  * ```
  *
  * # Reference
- * Function            | Description
- * --------------------|-------------------------------------------------------
- * \ref nk_init_default | Initializes context with standard library memory allocation (malloc,free)
- * \ref nk_init_fixed   | Initializes context from single fixed size memory block
- * \ref nk_init         | Initializes context with memory allocator callbacks for alloc and free
- * \ref nk_init_custom  | Initializes context from two buffers. One for draw commands the other for window/panel/table allocations
- * \ref nk_clear        | Called at the end of the frame to reset and prepare the context for the next frame
- * \ref nk_free         | Shutdown and free all memory allocated inside the context
- * \ref nk_set_user_data| Utility function to pass user data to draw command
+ * | Function              | Description                                                                                              |
+ * | --------------------- | ---------------                                                                                          |
+ * | \ref nk_init_default  | Initializes context with standard library memory allocation (malloc,free)                                |
+ * | \ref nk_init_fixed    | Initializes context from single fixed size memory block                                                  |
+ * | \ref nk_init          | Initializes context with memory allocator callbacks for alloc and free                                   |
+ * | \ref nk_init_custom   | Initializes context from two buffers. One for draw commands the other for window/panel/table allocations |
+ * | \ref nk_clear         | Called at the end of the frame to reset and prepare the context for the next frame                       |
+ * | \ref nk_free          | Shutdown and free all memory allocated inside the context                                                |
+ * | \ref nk_set_user_data | Utility function to pass user data to draw command
  */
 
 #ifdef NK_INCLUDE_DEFAULT_ALLOCATOR
 
 /**
- * # nk_init_default
- * Initializes a `nk_context` struct with a default standard library allocator.
+ * \brief Initializes a `nk_context` struct with a default standard library allocator.
  * Should be used if you don't want to be bothered with memory management in nuklear.
  *
- * ```c
- * nk_bool nk_init_default(struct nk_context *ctx, const struct nk_user_font *font);
- * ```
  *
- * Parameter   | Description
- * ------------|---------------------------------------------------------------
- * \param[in] ctx     | Must point to an either stack or heap allocated `nk_context` struct
- * \param[in] font    | Must point to a previously initialized font handle for more info look at font documentation
+ * \param[in] ctx      Must point to an either stack or heap allocated `nk_context` struct
+ * \param[in] font     Must point to a previously initialized font handle for more info look at font documentation
  *
  * \returns either `false(0)` on failure or `true(1)` on success.
  */
 NK_API nk_bool nk_init_default(struct nk_context*, const struct nk_user_font*);
 #endif
 /**
- * # nk_init_fixed
- * Initializes a `nk_context` struct from single fixed size memory block
+ * \brief Initializes a `nk_context` struct from single fixed size memory block
  * Should be used if you want complete control over nuklear's memory management.
  * Especially recommended for system with little memory or systems with virtual memory.
  * For the later case you can just allocate for example 16MB of virtual memory
  * and only the required amount of memory will actually be committed.
  *
- * ```c
- * nk_bool nk_init_fixed(struct nk_context *ctx, void *memory, nk_size size, const struct nk_user_font *font);
- * ```
  *
  * !!! Warning
  *     make sure the passed memory block is aligned correctly for `nk_draw_commands`.
  *
- * Parameter   | Description
- * ------------|--------------------------------------------------------------
- * \param[in] ctx     | Must point to an either stack or heap allocated `nk_context` struct
- * \param[in] memory  | Must point to a previously allocated memory block
- * \param[in] size    | Must contain the total size of memory
- * \param[in] font    | Must point to a previously initialized font handle for more info look at font documentation
+ * \param[in] ctx      Must point to an either stack or heap allocated `nk_context` struct
+ * \param[in] memory   Must point to a previously allocated memory block
+ * \param[in] size     Must contain the total size of memory
+ * \param[in] font     Must point to a previously initialized font handle for more info look at font documentation
  *
  * \returns either `false(0)` on failure or `true(1)` on success.
  */
 NK_API nk_bool nk_init_fixed(struct nk_context*, void *memory, nk_size size, const struct nk_user_font*);
 
 /**
- * # nk_init
- * Initializes a `nk_context` struct with memory allocation callbacks for nuklear to allocate
+ * \brief Initializes a `nk_context` struct with memory allocation callbacks for nuklear to allocate
  * memory from. Used internally for `nk_init_default` and provides a kitchen sink allocation
  * interface to nuklear. Can be useful for cases like monitoring memory consumption.
  *
- * ```c
- * nk_bool nk_init(struct nk_context *ctx, const struct nk_allocator *alloc, const struct nk_user_font *font);
- * ```
  *
- * Parameter   | Description
- * ------------|---------------------------------------------------------------
- * \param[in] ctx     | Must point to an either stack or heap allocated `nk_context` struct
- * \param[in] alloc   | Must point to a previously allocated memory allocator
- * \param[in] font    | Must point to a previously initialized font handle for more info look at font documentation
+ * \param[in] ctx      Must point to an either stack or heap allocated `nk_context` struct
+ * \param[in] alloc    Must point to a previously allocated memory allocator
+ * \param[in] font     Must point to a previously initialized font handle for more info look at font documentation
  *
  * \returns either `false(0)` on failure or `true(1)` on success.
  */
@@ -650,9 +632,6 @@ NK_API nk_bool nk_init(struct nk_context*, const struct nk_allocator*, const str
  * The first buffer is for allocating draw commands while the second buffer is
  * used for allocating windows, panels and state tables.
  *
- * ```c
- * nk_bool nk_init_custom(struct nk_context *ctx, struct nk_buffer *cmds, struct nk_buffer *pool, const struct nk_user_font *font);
- * ```
  *
  * \param[in] ctx    Must point to an either stack or heap allocated `nk_context` struct
  * \param[in] cmds   Must point to a previously initialized memory buffer either fixed or dynamic to store draw commands into
@@ -670,9 +649,6 @@ NK_API nk_bool nk_init_custom(struct nk_context*, struct nk_buffer *cmds, struct
  * This includes mostly garbage collector tasks like removing windows or table
  * not called and therefore used anymore.
  *
- * ```c
- * void nk_clear(struct nk_context *ctx);
- * ```
  *
  * \param[in] ctx  Must point to a previously initialized `nk_context` struct
  */
@@ -682,9 +658,6 @@ NK_API void nk_clear(struct nk_context*);
  * \brief Frees all memory allocated by nuklear; Not needed if context was initialized with `nk_init_fixed`.
  *
  * \details
- * ```c
- * void nk_free(struct nk_context *ctx);
- * ```
  *
  * \param[in] ctx  Must point to a previously initialized `nk_context` struct
  */
@@ -695,9 +668,6 @@ NK_API void nk_free(struct nk_context*);
  * \brief Sets the currently passed userdata passed down into each draw command.
  *
  * \details
- * ```c
- * void nk_set_user_data(struct nk_context *ctx, nk_handle data);
- * ```
  *
  * \param[in] ctx Must point to a previously initialized `nk_context` struct
  * \param[in] data  Handle with either pointer or index to be passed into every draw commands
@@ -760,17 +730,17 @@ NK_API void nk_set_user_data(struct nk_context*, nk_handle handle);
  * ```
  *
  * # Reference
- * Function            | Description
- * --------------------|-------------------------------------------------------
- * \ref nk_input_begin  | Begins the input mirroring process. Needs to be called before all other `nk_input_xxx` calls
- * \ref nk_input_motion | Mirrors mouse cursor position
- * \ref nk_input_key    | Mirrors key state with either pressed or released
- * \ref nk_input_button | Mirrors mouse button state with either pressed or released
- * \ref nk_input_scroll | Mirrors mouse scroll values
- * \ref nk_input_char   | Adds a single ASCII text character into an internal text buffer
- * \ref nk_input_glyph  | Adds a single multi-byte UTF-8 character into an internal text buffer
- * \ref nk_input_unicode| Adds a single unicode rune into an internal text buffer
- * \ref nk_input_end    | Ends the input mirroring process by calculating state changes. Don't call any `nk_input_xxx` function referenced above after this call
+ * | Function              | Description                                                                                                                            |
+ * | --------------------- | ---------------                                                                                                                        |
+ * | \ref nk_input_begin   | Begins the input mirroring process. Needs to be called before all other `nk_input_xxx` calls                                           |
+ * | \ref nk_input_motion  | Mirrors mouse cursor position                                                                                                          |
+ * | \ref nk_input_key     | Mirrors key state with either pressed or released                                                                                      |
+ * | \ref nk_input_button  | Mirrors mouse button state with either pressed or released                                                                             |
+ * | \ref nk_input_scroll  | Mirrors mouse scroll values                                                                                                            |
+ * | \ref nk_input_char    | Adds a single ASCII text character into an internal text buffer                                                                        |
+ * | \ref nk_input_glyph   | Adds a single multi-byte UTF-8 character into an internal text buffer                                                                  |
+ * | \ref nk_input_unicode | Adds a single unicode rune into an internal text buffer                                                                                |
+ * | \ref nk_input_end     | Ends the input mirroring process by calculating state changes. Don't call any `nk_input_xxx` function referenced above after this call |
  */
 
 enum nk_keys {
@@ -821,9 +791,6 @@ enum nk_buttons {
  * mouse, previous mouse position and movement as well as key state transitions.
  *
  * \details
- * ```c
- * void nk_input_begin(struct nk_context*);
- * ```
  *
  * \param[in] ctx Must point to a previously initialized `nk_context` struct
  */
@@ -833,9 +800,6 @@ NK_API void nk_input_begin(struct nk_context*);
  * \brief Mirrors current mouse position to nuklear
  *
  * \details
- * ```c
- * void nk_input_motion(struct nk_context *ctx, int x, int y);
- * ```
  *
  * \param[in] ctx   Must point to a previously initialized `nk_context` struct
  * \param[in] x     Must hold an integer describing the current mouse cursor x-position
@@ -847,9 +811,6 @@ NK_API void nk_input_motion(struct nk_context*, int x, int y);
  * \brief Mirrors the state of a specific key to nuklear
  *
  * \details
- * ```c
- * void nk_input_key(struct nk_context*, enum nk_keys key, nk_bool down);
- * ```
  *
  * \param[in] ctx      Must point to a previously initialized `nk_context` struct
  * \param[in] key      Must be any value specified in enum `nk_keys` that needs to be mirrored
@@ -861,9 +822,6 @@ NK_API void nk_input_key(struct nk_context*, enum nk_keys, nk_bool down);
  * \brief Mirrors the state of a specific mouse button to nuklear
  *
  * \details
- * ```c
- * void nk_input_button(struct nk_context *ctx, enum nk_buttons btn, int x, int y, nk_bool down);
- * ```
  *
  * \param[in] ctx     Must point to a previously initialized `nk_context` struct
  * \param[in] btn     Must be any value specified in enum `nk_buttons` that needs to be mirrored
@@ -880,12 +838,9 @@ NK_API void nk_input_button(struct nk_context*, enum nk_buttons, int x, int y, n
  * Is generally a scroll value. So does not have to come from mouse and could
  * also originate from balls, tracks, linear guide rails, or other programs.
  *
- * ```c
- * void nk_input_scroll(struct nk_context *ctx, struct nk_vec2 val);
- * ```
  *
- * \param[in] ctx     | Must point to a previously initialized `nk_context` struct
- * \param[in] val     | vector with both X- as well as Y-scroll value
+ * \param[in] ctx      Must point to a previously initialized `nk_context` struct
+ * \param[in] val      vector with both X- as well as Y-scroll value
  */
 NK_API void nk_input_scroll(struct nk_context*, struct nk_vec2 val);
 
@@ -899,12 +854,9 @@ NK_API void nk_input_scroll(struct nk_context*, struct nk_vec2 val);
  * \note
  *     Stores up to NK_INPUT_MAX bytes between `nk_input_begin` and `nk_input_end`.
  *
- * ```c
- * void nk_input_char(struct nk_context *ctx, char c);
- * ```
  *
- * \param[in] ctx     | Must point to a previously initialized `nk_context` struct
- * \param[in] c       | Must be a single ASCII character preferable one that can be printed
+ * \param[in] ctx      Must point to a previously initialized `nk_context` struct
+ * \param[in] c        Must be a single ASCII character preferable one that can be printed
  */
 NK_API void nk_input_char(struct nk_context*, char);
 
@@ -915,12 +867,9 @@ NK_API void nk_input_char(struct nk_context*, char);
  * \note
  *     Stores up to NK_INPUT_MAX bytes between `nk_input_begin` and `nk_input_end`.
  *
- * ```c
- * void nk_input_glyph(struct nk_context *ctx, const nk_glyph g);
- * ```
  *
- * \param[in] ctx     | Must point to a previously initialized `nk_context` struct
- * \param[in] g       | UTF-32 unicode codepoint
+ * \param[in] ctx      Must point to a previously initialized `nk_context` struct
+ * \param[in] g        UTF-32 unicode codepoint
  */
 NK_API void nk_input_glyph(struct nk_context*, const nk_glyph);
 
@@ -932,12 +881,9 @@ NK_API void nk_input_glyph(struct nk_context*, const nk_glyph);
  * \note
  *     Stores up to NK_INPUT_MAX bytes between `nk_input_begin` and `nk_input_end`.
  *
- * ```c
- * void nk_input_unicode(struct nk_context*, nk_rune rune);
- * ```
  *
- * \param[in] ctx     | Must point to a previously initialized `nk_context` struct
- * \param[in] rune    | UTF-32 unicode codepoint
+ * \param[in] ctx      Must point to a previously initialized `nk_context` struct
+ * \param[in] rune     UTF-32 unicode codepoint
  */
 NK_API void nk_input_unicode(struct nk_context*, nk_rune);
 
@@ -946,11 +892,8 @@ NK_API void nk_input_unicode(struct nk_context*, nk_rune);
  * state to ensure the mouse cursor is not grabbed indefinitely.
  *
  * \details
- * ```c
- * void nk_input_end(struct nk_context *ctx);
- * ```
  *
- * \param[in] ctx     | Must point to a previously initialized `nk_context` struct
+ * \param[in] ctx      Must point to a previously initialized `nk_context` struct
  */
 NK_API void nk_input_end(struct nk_context*);
 
@@ -1173,16 +1116,16 @@ NK_API void nk_input_end(struct nk_context*);
  * ```
  *
  * # Reference
- * Function            | Description
- * --------------------|-------------------------------------------------------
- * \ref nk__begin       | Returns the first draw command in the context draw command list to be drawn
- * \ref nk__next        | Increments the draw command iterator to the next command inside the context draw command list
- * \ref nk_foreach      | Iterates over each draw command inside the context draw command list
- * \ref nk_convert      | Converts from the abstract draw commands list into a hardware accessible vertex format
- * \ref nk_draw_begin   | Returns the first vertex command in the context vertex draw list to be executed
- * \ref nk__draw_next   | Increments the vertex command iterator to the next command inside the context vertex command list
- * \ref nk__draw_end    | Returns the end of the vertex draw list
- * \ref nk_draw_foreach | Iterates over each vertex draw command inside the vertex draw list
+ * | Function              | Description                                                                                       |
+ * | --------------------- | ---------------                                                                                   |
+ * | \ref nk__begin        | Returns the first draw command in the context draw command list to be drawn                       |
+ * | \ref nk__next         | Increments the draw command iterator to the next command inside the context draw command list     |
+ * | \ref nk_foreach       | Iterates over each draw command inside the context draw command list                              |
+ * | \ref nk_convert       | Converts from the abstract draw commands list into a hardware accessible vertex format            |
+ * | \ref nk_draw_begin    | Returns the first vertex command in the context vertex draw list to be executed                   |
+ * | \ref nk__draw_next    | Increments the vertex command iterator to the next command inside the context vertex command list |
+ * | \ref nk__draw_end     | Returns the end of the vertex draw list                                                           |
+ * | \ref nk_draw_foreach  | Iterates over each vertex draw command inside the vertex draw list                                |
  */
 
 enum nk_anti_aliasing {NK_ANTI_ALIASING_OFF, NK_ANTI_ALIASING_ON};
@@ -1215,11 +1158,8 @@ struct nk_convert_config {
  * commands accumulated over one frame.
  *
  * \details
- * ```c
- * const struct nk_command* nk__begin(struct nk_context*);
- * ```
  *
- * \param[in] ctx     | must point to an previously initialized `nk_context` struct at the end of a frame
+ * \param[in] ctx      must point to an previously initialized `nk_context` struct at the end of a frame
  *
  * \returns draw command pointer pointing to the first command inside the draw command list
  */
@@ -1229,12 +1169,9 @@ NK_API const struct nk_command* nk__begin(struct nk_context*);
  * \brief Returns draw command pointer pointing to the next command inside the draw command list
  *
  * \details
- * ```c
- * const struct nk_command* nk__next(struct nk_context*, const struct nk_command*);
- * ```
  *
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct at the end of a frame
- * \param[in] cmd     | Must point to an previously a draw command either returned by `nk__begin` or `nk__next`
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct at the end of a frame
+ * \param[in] cmd      Must point to an previously a draw command either returned by `nk__begin` or `nk__next`
  *
  * \returns draw command pointer pointing to the next command inside the draw command list
  */
@@ -1243,12 +1180,9 @@ NK_API const struct nk_command* nk__next(struct nk_context*, const struct nk_com
 /**
  * \brief Iterates over each draw command inside the context draw command list
  *
- * ```c
- * #define nk_foreach(c, ctx)
- * ```
  *
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct at the end of a frame
- * \param[in] cmd     | Command pointer initialized to NULL
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct at the end of a frame
+ * \param[in] cmd      Command pointer initialized to NULL
  */
 #define nk_foreach(c, ctx) for((c) = nk__begin(ctx); (c) != 0; (c) = nk__next(ctx,c))
 
@@ -1262,9 +1196,6 @@ NK_API const struct nk_command* nk__next(struct nk_context*, const struct nk_com
  * The vertex format as well as some other configuration values have to be
  * configured by filling out a `nk_convert_config` struct.
  *
- * ```c
- * nk_flags nk_convert(struct nk_context *ctx, struct nk_buffer *cmds,
- *     struct nk_buffer *vertices, struct nk_buffer *elements, const struct nk_convert_config*);
  * ```
  *
  * \param[in] ctx      Must point to an previously initialized `nk_context` struct at the end of a frame
@@ -1275,13 +1206,11 @@ NK_API const struct nk_command* nk__next(struct nk_context*, const struct nk_com
  *
  * \returns one of enum nk_convert_result error codes
  *
- * Parameter                       | Description
- * --------------------------------|-----------------------------------------------------------
- * NK_CONVERT_SUCCESS              | Signals a successful draw command to vertex buffer conversion
- * NK_CONVERT_INVALID_PARAM        | An invalid argument was passed in the function call
- * NK_CONVERT_COMMAND_BUFFER_FULL  | The provided buffer for storing draw commands is full or failed to allocate more memory
- * NK_CONVERT_VERTEX_BUFFER_FULL   | The provided buffer for storing vertices is full or failed to allocate more memory
- * NK_CONVERT_ELEMENT_BUFFER_FULL  | The provided buffer for storing indices is full or failed to allocate more memory
+ * NK_CONVERT_SUCCESS               Signals a successful draw command to vertex buffer conversion
+ * NK_CONVERT_INVALID_PARAM         An invalid argument was passed in the function call
+ * NK_CONVERT_COMMAND_BUFFER_FULL   The provided buffer for storing draw commands is full or failed to allocate more memory
+ * NK_CONVERT_VERTEX_BUFFER_FULL    The provided buffer for storing vertices is full or failed to allocate more memory
+ * NK_CONVERT_ELEMENT_BUFFER_FULL   The provided buffer for storing indices is full or failed to allocate more memory
  */
 NK_API nk_flags nk_convert(struct nk_context*, struct nk_buffer *cmds, struct nk_buffer *vertices, struct nk_buffer *elements, const struct nk_convert_config*);
 
@@ -1289,49 +1218,32 @@ NK_API nk_flags nk_convert(struct nk_context*, struct nk_buffer *cmds, struct nk
  * \brief Returns a draw vertex command buffer iterator to iterate over the vertex draw command buffer
  *
  * \details
- * ```c
- * const struct nk_draw_command* nk__draw_begin(const struct nk_context*, const struct nk_buffer*);
- * ```
  *
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct at the end of a frame
- * \param[in] buf     | Must point to an previously by `nk_convert` filled out vertex draw command buffer
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct at the end of a frame
+ * \param[in] buf      Must point to an previously by `nk_convert` filled out vertex draw command buffer
  *
  * \returns vertex draw command pointer pointing to the first command inside the vertex draw command buffer
  */
 NK_API const struct nk_draw_command* nk__draw_begin(const struct nk_context*, const struct nk_buffer*);
 
 /**
-
- * # # nk__draw_end
- * \returns the vertex draw command at the end of the vertex draw command buffer
+ * \brief returns the vertex draw command at the end of the vertex draw command * buffer.
  *
- * ```c
- * const struct nk_draw_command* nk__draw_end(const struct nk_context *ctx, const struct nk_buffer *buf);
- * ```
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct at the end of a frame
+ * \param[in] buf      Must point to an previously by `nk_convert` filled out vertex draw command buffer
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct at the end of a frame
- * \param[in] buf     | Must point to an previously by `nk_convert` filled out vertex draw command buffer
- *
- * \returns vertex draw command pointer pointing to the end of the last vertex draw command inside the vertex draw command buffer
+ * \returns vertex draw command pointer pointing to the end of the last vertex draw command inside the vertex draw command buffer.
 
  */
 NK_API const struct nk_draw_command* nk__draw_end(const struct nk_context*, const struct nk_buffer*);
 
 /**
- * # # nk__draw_next
  * Increments the vertex draw command buffer iterator
  *
- * ```c
- * const struct nk_draw_command* nk__draw_next(const struct nk_draw_command*, const struct nk_buffer*, const struct nk_context*);
- * ```
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] cmd     | Must point to an previously either by `nk__draw_begin` or `nk__draw_next` returned vertex draw command
- * \param[in] buf     | Must point to an previously by `nk_convert` filled out vertex draw command buffer
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct at the end of a frame
+ * \param[in] cmd      Must point to an previously either by `nk__draw_begin` or `nk__draw_next` returned vertex draw command
+ * \param[in] buf      Must point to an previously by `nk_convert` filled out vertex draw command buffer
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct at the end of a frame
  *
  * \returns vertex draw command pointer pointing to the end of the last vertex draw command inside the vertex draw command buffer
 
@@ -1339,18 +1251,12 @@ NK_API const struct nk_draw_command* nk__draw_end(const struct nk_context*, cons
 NK_API const struct nk_draw_command* nk__draw_next(const struct nk_draw_command*, const struct nk_buffer*, const struct nk_context*);
 
 /**
- * # # nk_draw_foreach
  * Iterates over each vertex draw command inside a vertex draw command buffer
  *
- * ```c
- * #define nk_draw_foreach(cmd,ctx, b)
- * ```
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] cmd     | `nk_draw_command`iterator set to NULL
- * \param[in] buf     | Must point to an previously by `nk_convert` filled out vertex draw command buffer
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct at the end of a frame
+ * \param[in] cmd      `nk_draw_command`iterator set to NULL
+ * \param[in] buf      Must point to an previously by `nk_convert` filled out vertex draw command buffer
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct at the end of a frame
  */
 
 #define nk_draw_foreach(cmd,ctx, b) for((cmd)=nk__draw_begin(ctx, b); (cmd)!=0; (cmd)=nk__draw_next(cmd, b, ctx))
@@ -1441,66 +1347,63 @@ NK_API const struct nk_draw_command* nk__draw_next(const struct nk_draw_command*
  * ```
  *
  * # Reference
- * Function                            | Description
- * ------------------------------------|----------------------------------------
- * \ref nk_begin                            | Starts a new window; needs to be called every frame for every window (unless hidden) or otherwise the window gets removed
- * \ref nk_begin_titled                     | Extended window start with separated title and identifier to allow multiple windows with same name but not title
- * \ref nk_end                              | Needs to be called at the end of the window building process to process scaling, scrollbars and general cleanup
- *
- * \ref nk_window_find                      | Finds and returns the window with give name
- * \ref nk_window_get_bounds                | Returns a rectangle with screen position and size of the currently processed window.
- * \ref nk_window_get_position              | Returns the position of the currently processed window
- * \ref nk_window_get_size                  | Returns the size with width and height of the currently processed window
- * \ref nk_window_get_width                 | Returns the width of the currently processed window
- * \ref nk_window_get_height                | Returns the height of the currently processed window
- * \ref nk_window_get_panel                 | Returns the underlying panel which contains all processing state of the current window
- * \ref nk_window_get_content_region        | Returns the position and size of the currently visible and non-clipped space inside the currently processed window
- * \ref nk_window_get_content_region_min    | Returns the upper rectangle position of the currently visible and non-clipped space inside the currently processed window
- * \ref nk_window_get_content_region_max    | Returns the upper rectangle position of the currently visible and non-clipped space inside the currently processed window
- * \ref nk_window_get_content_region_size   | Returns the size of the currently visible and non-clipped space inside the currently processed window
- * \ref nk_window_get_canvas                | Returns the draw command buffer. Can be used to draw custom widgets
- * \ref nk_window_get_scroll                | Gets the scroll offset of the current window
- * \ref nk_window_has_focus                 | Returns if the currently processed window is currently active
- * \ref nk_window_is_collapsed              | Returns if the window with given name is currently minimized/collapsed
- * \ref nk_window_is_closed                 | Returns if the currently processed window was closed
- * \ref nk_window_is_hidden                 | Returns if the currently processed window was hidden
- * \ref nk_window_is_active                 | Same as nk_window_has_focus for some reason
- * \ref nk_window_is_hovered                | Returns if the currently processed window is currently being hovered by mouse
- * \ref nk_window_is_any_hovered            | Return if any window currently hovered
- * \ref nk_item_is_any_active               | Returns if any window or widgets is currently hovered or active
-//
- * \ref nk_window_set_bounds                | Updates position and size of the currently processed window
- * \ref nk_window_set_position              | Updates position of the currently process window
- * \ref nk_window_set_size                  | Updates the size of the currently processed window
- * \ref nk_window_set_focus                 | Set the currently processed window as active window
- * \ref nk_window_set_scroll                | Sets the scroll offset of the current window
-//
- * \ref nk_window_close                     | Closes the window with given window name which deletes the window at the end of the frame
- * \ref nk_window_collapse                  | Collapses the window with given window name
- * \ref nk_window_collapse_if               | Collapses the window with given window name if the given condition was met
- * \ref nk_window_show                      | Hides a visible or reshows a hidden window
- * \ref nk_window_show_if                   | Hides/shows a window depending on condition
+ * | Function                               | Description                                                                                                               |
+ * | ---------------------                  | ---------------                                                                                                           |
+ * | \ref nk_begin                          | Starts a new window; needs to be called every frame for every window (unless hidden) or otherwise the window gets removed |
+ * | \ref nk_begin_titled                   | Extended window start with separated title and identifier to allow multiple windows with same name but not title          |
+ * | \ref nk_end                            | Needs to be called at the end of the window building process to process scaling, scrollbars and general cleanup           |
+ * | \ref nk_window_find                    | Finds and returns the window with give name                                                                               |
+ * | \ref nk_window_get_bounds              | Returns a rectangle with screen position and size of the currently processed window.                                      |
+ * | \ref nk_window_get_position            | Returns the position of the currently processed window                                                                    |
+ * | \ref nk_window_get_size                | Returns the size with width and height of the currently processed window                                                  |
+ * | \ref nk_window_get_width               | Returns the width of the currently processed window                                                                       |
+ * | \ref nk_window_get_height              | Returns the height of the currently processed window                                                                      |
+ * | \ref nk_window_get_panel               | Returns the underlying panel which contains all processing state of the current window                                    |
+ * | \ref nk_window_get_content_region      | Returns the position and size of the currently visible and non-clipped space inside the currently processed window        |
+ * | \ref nk_window_get_content_region_min  | Returns the upper rectangle position of the currently visible and non-clipped space inside the currently processed window |
+ * | \ref nk_window_get_content_region_max  | Returns the upper rectangle position of the currently visible and non-clipped space inside the currently processed window |
+ * | \ref nk_window_get_content_region_size | Returns the size of the currently visible and non-clipped space inside the currently processed window                     |
+ * | \ref nk_window_get_canvas              | Returns the draw command buffer. Can be used to draw custom widgets                                                       |
+ * | \ref nk_window_get_scroll              | Gets the scroll offset of the current window                                                                              |
+ * | \ref nk_window_has_focus               | Returns if the currently processed window is currently active                                                             |
+ * | \ref nk_window_is_collapsed            | Returns if the window with given name is currently minimized/collapsed                                                    |
+ * | \ref nk_window_is_closed               | Returns if the currently processed window was closed                                                                      |
+ * | \ref nk_window_is_hidden               | Returns if the currently processed window was hidden                                                                      |
+ * | \ref nk_window_is_active               | Same as nk_window_has_focus for some reason                                                                               |
+ * | \ref nk_window_is_hovered              | Returns if the currently processed window is currently being hovered by mouse                                             |
+ * | \ref nk_window_is_any_hovered          | Return if any window currently hovered                                                                                    |
+ * | \ref nk_item_is_any_active             | Returns if any window or widgets is currently hovered or active                                                           |
+ * | \ref nk_window_set_bounds              | Updates position and size of the currently processed window                                                               |
+ * | \ref nk_window_set_position            | Updates position of the currently process window                                                                          |
+ * | \ref nk_window_set_size                | Updates the size of the currently processed window                                                                        |
+ * | \ref nk_window_set_focus               | Set the currently processed window as active window                                                                       |
+ * | \ref nk_window_set_scroll              | Sets the scroll offset of the current window                                                                              |
+ * | \ref nk_window_close                   | Closes the window with given window name which deletes the window at the end of the frame                                 |
+ * | \ref nk_window_collapse                | Collapses the window with given window name                                                                               |
+ * | \ref nk_window_collapse_if             | Collapses the window with given window name if the given condition was met                                                |
+ * | \ref nk_window_show                    | Hides a visible or reshows a hidden window                                                                                |
+ * | \ref nk_window_show_if                 | Hides/shows a window depending on condition                                                                               |
 
  * # nk_panel_flags
- * Flag                        | Description
- * ----------------------------|----------------------------------------
- * NK_WINDOW_BORDER            | Draws a border around the window to visually separate window from the background
- * NK_WINDOW_MOVABLE           | The movable flag indicates that a window can be moved by user input or by dragging the window header
- * NK_WINDOW_SCALABLE          | The scalable flag indicates that a window can be scaled by user input by dragging a scaler icon at the button of the window
- * NK_WINDOW_CLOSABLE          | Adds a closable icon into the header
- * NK_WINDOW_MINIMIZABLE       | Adds a minimize icon into the header
- * NK_WINDOW_NO_SCROLLBAR      | Removes the scrollbar from the window
- * NK_WINDOW_TITLE             | Forces a header at the top at the window showing the title
- * NK_WINDOW_SCROLL_AUTO_HIDE  | Automatically hides the window scrollbar if no user interaction: also requires delta time in `nk_context` to be set each frame
- * NK_WINDOW_BACKGROUND        | Always keep window in the background
- * NK_WINDOW_SCALE_LEFT        | Puts window scaler in the left-bottom corner instead right-bottom
- * NK_WINDOW_NO_INPUT          | Prevents window of scaling, moving or getting focus
+ * | Flag                            | Description                                                                                                                    |
+ * | ---------------------           | ---------------                                                                                                                |
+ * | \ref NK_WINDOW_BORDER           | Draws a border around the window to visually separate window from the background                                               |
+ * | \ref NK_WINDOW_MOVABLE          | The movable flag indicates that a window can be moved by user input or by dragging the window header                           |
+ * | \ref NK_WINDOW_SCALABLE         | The scalable flag indicates that a window can be scaled by user input by dragging a scaler icon at the button of the window    |
+ * | \ref NK_WINDOW_CLOSABLE         | Adds a closable icon into the header                                                                                           |
+ * | \ref NK_WINDOW_MINIMIZABLE      | Adds a minimize icon into the header                                                                                           |
+ * | \ref NK_WINDOW_NO_SCROLLBAR     | Removes the scrollbar from the window                                                                                          |
+ * | \ref NK_WINDOW_TITLE            | Forces a header at the top at the window showing the title                                                                     |
+ * | \ref NK_WINDOW_SCROLL_AUTO_HIDE | Automatically hides the window scrollbar if no user interaction: also requires delta time in `nk_context` to be set each frame |
+ * | \ref NK_WINDOW_BACKGROUND       | Always keep window in the background                                                                                           |
+ * | \ref NK_WINDOW_SCALE_LEFT       | Puts window scaler in the left-bottom corner instead right-bottom                                                              |
+ * | \ref NK_WINDOW_NO_INPUT         | Prevents window of scaling, moving or getting focus                                                                            |
  *
  * # nk_collapse_states
- * State           | Description
- * ----------------|-----------------------------------------------------------
- * NK_MINIMIZED| UI section is collapsed and not visible until maximized
- * NK_MAXIMIZED| UI section is extended and visible until minimized
+ * | State                 | Description                                             |
+ * | --------------------- | ---------------                                         |
+ * | \ref NK_MINIMIZED     | UI section is collapsed and not visible until maximized |
+ * | \ref NK_MAXIMIZED     | UI section is extended and visible until minimized      |
  */
 
 enum nk_panel_flags {
@@ -1518,20 +1421,16 @@ enum nk_panel_flags {
 };
 
 /**
- * # # nk_begin
- * Starts a new window; needs to be called every frame for every
+ * \brief Starts a new window; needs to be called every frame for every
+ *
+ * \details
  * window (unless hidden) or otherwise the window gets removed
  *
- * ```c
- * nk_bool nk_begin(struct nk_context *ctx, const char *title, struct nk_rect bounds, nk_flags flags);
- * ```
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] title   | Window title and identifier. Needs to be persistent over frames to identify the window
- * \param[in] bounds  | Initial position and window size. However if you do not define `NK_WINDOW_SCALABLE` or `NK_WINDOW_MOVABLE` you can set window position and size every frame
- * \param[in] flags   | Window flags defined in the nk_panel_flags section with a number of different window behaviors
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] title    Window title and identifier. Needs to be persistent over frames to identify the window
+ * \param[in] bounds   Initial position and window size. However if you do not define `NK_WINDOW_SCALABLE` or `NK_WINDOW_MOVABLE` you can set window position and size every frame
+ * \param[in] flags    Window flags defined in the nk_panel_flags section with a number of different window behaviors
  *
  * \returns `true(1)` if the window can be filled up with widgets from this point
  * until `nk_end` or `false(0)` otherwise for example if minimized
@@ -1540,21 +1439,17 @@ enum nk_panel_flags {
 NK_API nk_bool nk_begin(struct nk_context *ctx, const char *title, struct nk_rect bounds, nk_flags flags);
 
 /**
- * # # nk_begin_titled
- * Extended window start with separated title and identifier to allow multiple
+ * \brief Extended window start with separated title and identifier to allow multiple
+ *
+ * \details
  * windows with same title but not name
  *
- * ```c
- * nk_bool nk_begin_titled(struct nk_context *ctx, const char *name, const char *title, struct nk_rect bounds, nk_flags flags);
- * ```
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] name    | Window identifier. Needs to be persistent over frames to identify the window
- * \param[in] title   | Window title displayed inside header if flag `NK_WINDOW_TITLE` or either `NK_WINDOW_CLOSABLE` or `NK_WINDOW_MINIMIZED` was set
- * \param[in] bounds  | Initial position and window size. However if you do not define `NK_WINDOW_SCALABLE` or `NK_WINDOW_MOVABLE` you can set window position and size every frame
- * \param[in] flags   | Window flags defined in the nk_panel_flags section with a number of different window behaviors
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] name     Window identifier. Needs to be persistent over frames to identify the window
+ * \param[in] title    Window title displayed inside header if flag `NK_WINDOW_TITLE` or either `NK_WINDOW_CLOSABLE` or `NK_WINDOW_MINIMIZED` was set
+ * \param[in] bounds   Initial position and window size. However if you do not define `NK_WINDOW_SCALABLE` or `NK_WINDOW_MOVABLE` you can set window position and size every frame
+ * \param[in] flags    Window flags defined in the nk_panel_flags section with a number of different window behaviors
  *
  * \returns `true(1)` if the window can be filled up with widgets from this point
  * until `nk_end` or `false(0)` otherwise for example if minimized
@@ -1563,33 +1458,25 @@ NK_API nk_bool nk_begin(struct nk_context *ctx, const char *title, struct nk_rec
 NK_API nk_bool nk_begin_titled(struct nk_context *ctx, const char *name, const char *title, struct nk_rect bounds, nk_flags flags);
 
 /**
- * # # nk_end
- * Needs to be called at the end of the window building process to process scaling, scrollbars and general cleanup.
+ * \brief Needs to be called at the end of the window building process to process scaling, scrollbars and general cleanup.
+ *
+ * \details
  * All widget calls after this functions will result in asserts or no state changes
  *
- * ```c
- * void nk_end(struct nk_context *ctx);
- * ```
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
 
  */
 NK_API void nk_end(struct nk_context *ctx);
 
 /**
- * # # nk_window_find
- * Finds and returns a window from passed name
+ * \brief Finds and returns a window from passed name
  *
- * ```c
- * struct nk_window *nk_window_find(struct nk_context *ctx, const char *name);
- * ```
+ * \details
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] name    | Window identifier
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] name     Window identifier
  *
  * \returns a `nk_window` struct pointing to the identified window or NULL if
  * no window with the given name was found
@@ -1597,18 +1484,14 @@ NK_API void nk_end(struct nk_context *ctx);
 NK_API struct nk_window *nk_window_find(const struct nk_context *ctx, const char *name);
 
 /**
- * # # nk_window_get_bounds
- * \returns a rectangle with screen position and size of the currently processed window
+ * \brief \returns a rectangle with screen position and size of the currently processed window
+ *
+ * \details
  *
  * !!! \warning
  *     Only call this function between calls `nk_begin_xxx` and `nk_end`
- * ```c
- * struct nk_rect nk_window_get_bounds(const struct nk_context *ctx);
- * ```
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
  *
  * \returns a `nk_rect` struct with window upper left window position and size
 
@@ -1616,18 +1499,14 @@ NK_API struct nk_window *nk_window_find(const struct nk_context *ctx, const char
 NK_API struct nk_rect nk_window_get_bounds(const struct nk_context *ctx);
 
 /**
- * # # nk_window_get_position
- * \returns the position of the currently processed window.
+ * \brief \returns the position of the currently processed window.
+ *
+ * \details
  *
  * !!! \warning
  *     Only call this function between calls `nk_begin_xxx` and `nk_end`
- * ```c
- * struct nk_vec2 nk_window_get_position(const struct nk_context *ctx);
- * ```
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
  *
  * \returns a `nk_vec2` struct with window upper left position
 
@@ -1635,18 +1514,14 @@ NK_API struct nk_rect nk_window_get_bounds(const struct nk_context *ctx);
 NK_API struct nk_vec2 nk_window_get_position(const struct nk_context *ctx);
 
 /**
- * # # nk_window_get_size
- * \returns the size with width and height of the currently processed window.
+ * \brief \returns the size with width and height of the currently processed window.
+ *
+ * \details
  *
  * !!! \warning
  *     Only call this function between calls `nk_begin_xxx` and `nk_end`
- * ```c
- * struct nk_vec2 nk_window_get_size(const struct nk_context *ctx);
- * ```
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
  *
  * \returns a `nk_vec2` struct with window width and height
 
@@ -1654,36 +1529,28 @@ NK_API struct nk_vec2 nk_window_get_position(const struct nk_context *ctx);
 NK_API struct nk_vec2 nk_window_get_size(const struct nk_context *ctx);
 
 /**
- * nk_window_get_width
- * \returns the width of the currently processed window.
+ * \brief \returns the width of the currently processed window.
+ *
+ * \details
  *
  * !!! \warning
  *     Only call this function between calls `nk_begin_xxx` and `nk_end`
- * ```c
- * float nk_window_get_width(const struct nk_context *ctx);
- * ```
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
  *
  * \returns the current window width
  */
 NK_API float nk_window_get_width(const struct nk_context *ctx);
 
 /**
- * # # nk_window_get_height
- * \returns the height of the currently processed window.
+ * \brief \returns the height of the currently processed window.
+ *
+ * \details
  *
  * !!! \warning
  *     Only call this function between calls `nk_begin_xxx` and `nk_end`
- * ```c
- * float nk_window_get_height(const struct nk_context *ctx);
- * ```
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
  *
  * \returns the current window height
 
@@ -1691,20 +1558,16 @@ NK_API float nk_window_get_width(const struct nk_context *ctx);
 NK_API float nk_window_get_height(const struct nk_context* ctx);
 
 /**
- * # # nk_window_get_panel
- * \returns the underlying panel which contains all processing state of the current window.
+ * \brief \returns the underlying panel which contains all processing state of the current window.
+ *
+ * \details
  *
  * !!! \warning
  *     Only call this function between calls `nk_begin_xxx` and `nk_end`
  * !!! \warning
  *     Do not keep the returned panel pointer around, it is only valid until `nk_end`
- * ```c
- * struct nk_panel* nk_window_get_panel(struct nk_context *ctx);
- * ```
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
  *
  * \returns a pointer to window internal `nk_panel` state.
 
@@ -1712,20 +1575,16 @@ NK_API float nk_window_get_height(const struct nk_context* ctx);
 NK_API struct nk_panel* nk_window_get_panel(const struct nk_context* ctx);
 
 /**
- * # # nk_window_get_content_region
- * \returns the position and size of the currently visible and non-clipped space
+ * \brief \returns the position and size of the currently visible and non-clipped space
  * inside the currently processed window.
+ *
+ * \details
  *
  * !!! \warning
  *     Only call this function between calls `nk_begin_xxx` and `nk_end`
  *
- * ```c
- * struct nk_rect nk_window_get_content_region(struct nk_context *ctx);
- * ```
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
  *
  * \returns `nk_rect` struct with screen position and size (no scrollbar offset)
  * of the visible space inside the current window
@@ -1734,20 +1593,16 @@ NK_API struct nk_panel* nk_window_get_panel(const struct nk_context* ctx);
 NK_API struct nk_rect nk_window_get_content_region(const struct nk_context* ctx);
 
 /**
- * # # nk_window_get_content_region_min
- * \returns the upper left position of the currently visible and non-clipped
+ * \brief \returns the upper left position of the currently visible and non-clipped
  * space inside the currently processed window.
+ *
+ * \details
  *
  * !!! \warning
  *     Only call this function between calls `nk_begin_xxx` and `nk_end`
  *
- * ```c
- * struct nk_vec2 nk_window_get_content_region_min(struct nk_context *ctx);
- * ```
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
  *
  * returns `nk_vec2` struct with  upper left screen position (no scrollbar offset)
  * of the visible space inside the current window
@@ -1756,20 +1611,16 @@ NK_API struct nk_rect nk_window_get_content_region(const struct nk_context* ctx)
 NK_API struct nk_vec2 nk_window_get_content_region_min(const struct nk_context *ctx);
 
 /**
- * # # nk_window_get_content_region_max
- * \returns the lower right screen position of the currently visible and
+ * \brief \returns the lower right screen position of the currently visible and
  * non-clipped space inside the currently processed window.
+ *
+ * \details
  *
  * !!! \warning
  *     Only call this function between calls `nk_begin_xxx` and `nk_end`
  *
- * ```c
- * struct nk_vec2 nk_window_get_content_region_max(struct nk_context *ctx);
- * ```
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
  *
  * \returns `nk_vec2` struct with lower right screen position (no scrollbar offset)
  * of the visible space inside the current window
@@ -1778,20 +1629,15 @@ NK_API struct nk_vec2 nk_window_get_content_region_min(const struct nk_context *
 NK_API struct nk_vec2 nk_window_get_content_region_max(const struct nk_context *ctx);
 
 /**
- * # # nk_window_get_content_region_size
- * \returns the size of the currently visible and non-clipped space inside the
- * currently processed window
+ * \brief \returns the size of the currently visible and non-clipped space inside the currently processed window
+ *
+ * \details
  *
  * !!! \warning
  *     Only call this function between calls `nk_begin_xxx` and `nk_end`
  *
- * ```c
- * struct nk_vec2 nk_window_get_content_region_size(struct nk_context *ctx);
- * ```
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
  *
  * \returns `nk_vec2` struct with size the visible space inside the current window
 
@@ -1799,20 +1645,16 @@ NK_API struct nk_vec2 nk_window_get_content_region_max(const struct nk_context *
 NK_API struct nk_vec2 nk_window_get_content_region_size(const struct nk_context *ctx);
 
 /**
- * # # nk_window_get_canvas
- * \returns the draw command buffer. Can be used to draw custom widgets
+ * \brief \returns the draw command buffer. Can be used to draw custom widgets
+ *
+ * \details
  * !!! \warning
  *     Only call this function between calls `nk_begin_xxx` and `nk_end`
  * !!! \warning
  *     Do not keep the returned command buffer pointer around it is only valid until `nk_end`
  *
- * ```c
- * struct nk_command_buffer* nk_window_get_canvas(struct nk_context *ctx);
- * ```
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
  *
  * \returns a pointer to window internal `nk_command_buffer` struct used as
  * drawing canvas. Can be used to do custom drawing.
@@ -1820,36 +1662,28 @@ NK_API struct nk_vec2 nk_window_get_content_region_size(const struct nk_context 
 NK_API struct nk_command_buffer* nk_window_get_canvas(const struct nk_context* ctx);
 
 /**
- * # # nk_window_get_scroll
- * Gets the scroll offset for the current window
+ * \brief Gets the scroll offset for the current window
+ *
+ * \details
  * !!! \warning
  *     Only call this function between calls `nk_begin_xxx` and `nk_end`
  *
- * ```c
- * void nk_window_get_scroll(struct nk_context *ctx, nk_uint *offset_x, nk_uint *offset_y);
- * ```
  *
- * Parameter    | Description
- * -------------|-----------------------------------------------------------
- * \param[in] ctx      | Must point to an previously initialized `nk_context` struct
- * \param[in] offset_x | A pointer to the x offset output (or NULL to ignore)
- * \param[in] offset_y | A pointer to the y offset output (or NULL to ignore)
+ * \param[in] ctx       Must point to an previously initialized `nk_context` struct
+ * \param[in] offset_x  A pointer to the x offset output (or NULL to ignore)
+ * \param[in] offset_y  A pointer to the y offset output (or NULL to ignore)
 
  */
 NK_API void nk_window_get_scroll(const struct nk_context *ctx, nk_uint *offset_x, nk_uint *offset_y);
 
 /**
- * # # nk_window_has_focus
- * \returns if the currently processed window is currently active
+ * \brief \returns if the currently processed window is currently active
+ *
+ * \details
  * !!! \warning
  *     Only call this function between calls `nk_begin_xxx` and `nk_end`
- * ```c
- * nk_bool nk_window_has_focus(const struct nk_context *ctx);
- * ```
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
  *
  * \returns `false(0)` if current window is not active or `true(1)` if it is
 
@@ -1857,17 +1691,13 @@ NK_API void nk_window_get_scroll(const struct nk_context *ctx, nk_uint *offset_x
 NK_API nk_bool nk_window_has_focus(const struct nk_context *ctx);
 
 /**
- * # # nk_window_is_hovered
- * Return if the current window is being hovered
+ * \brief Return if the current window is being hovered
+ *
+ * \details
  * !!! \warning
  *     Only call this function between calls `nk_begin_xxx` and `nk_end`
- * ```c
- * nk_bool nk_window_is_hovered(struct nk_context *ctx);
- * ```
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
  *
  * \returns `true(1)` if current window is hovered or `false(0)` otherwise
 
@@ -1875,16 +1705,12 @@ NK_API nk_bool nk_window_has_focus(const struct nk_context *ctx);
 NK_API nk_bool nk_window_is_hovered(const struct nk_context *ctx);
 
 /**
- * # # nk_window_is_collapsed
- * \returns if the window with given name is currently minimized/collapsed
- * ```c
- * nk_bool nk_window_is_collapsed(struct nk_context *ctx, const char *name);
- * ```
+ * \brief \returns if the window with given name is currently minimized/collapsed
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] name    | Identifier of window you want to check if it is collapsed
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] name     Identifier of window you want to check if it is collapsed
  *
  * \returns `true(1)` if current window is minimized and `false(0)` if window not
  * found or is not minimized
@@ -1893,16 +1719,12 @@ NK_API nk_bool nk_window_is_hovered(const struct nk_context *ctx);
 NK_API nk_bool nk_window_is_collapsed(const struct nk_context *ctx, const char *name);
 
 /**
- * # # nk_window_is_closed
- * \returns if the window with given name was closed by calling `nk_close`
- * ```c
- * nk_bool nk_window_is_closed(struct nk_context *ctx, const char *name);
- * ```
+ * \brief \returns if the window with given name was closed by calling `nk_close`
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] name    | Identifier of window you want to check if it is closed
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] name     Identifier of window you want to check if it is closed
  *
  * \returns `true(1)` if current window was closed or `false(0)` window not found or not closed
 
@@ -1910,16 +1732,12 @@ NK_API nk_bool nk_window_is_collapsed(const struct nk_context *ctx, const char *
 NK_API nk_bool nk_window_is_closed(const struct nk_context *ctx, const char* name);
 
 /**
- * # # nk_window_is_hidden
- * \returns if the window with given name is hidden
- * ```c
- * nk_bool nk_window_is_hidden(struct nk_context *ctx, const char *name);
- * ```
+ * \brief \returns if the window with given name is hidden
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] name    | Identifier of window you want to check if it is hidden
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] name     Identifier of window you want to check if it is hidden
  *
  * \returns `true(1)` if current window is hidden or `false(0)` window not found or visible
 
@@ -1927,48 +1745,36 @@ NK_API nk_bool nk_window_is_closed(const struct nk_context *ctx, const char* nam
 NK_API nk_bool nk_window_is_hidden(const struct nk_context *ctx, const char* name);
 
 /**
- * # # nk_window_is_active
- * Same as nk_window_has_focus for some reason
- * ```c
- * nk_bool nk_window_is_active(struct nk_context *ctx, const char *name);
- * ```
+ * \brief Same as nk_window_has_focus for some reason
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] name    | Identifier of window you want to check if it is active
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] name     Identifier of window you want to check if it is active
  *
  * \returns `true(1)` if current window is active or `false(0)` window not found or not active
  */
 NK_API nk_bool nk_window_is_active(const struct nk_context *ctx, const char* name);
 
 /**
- * # # nk_window_is_any_hovered
- * \returns if the any window is being hovered
- * ```c
- * nk_bool nk_window_is_any_hovered(struct nk_context*);
- * ```
+ * \brief \returns if the any window is being hovered
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
  *
  * \returns `true(1)` if any window is hovered or `false(0)` otherwise
  */
 NK_API nk_bool nk_window_is_any_hovered(const struct nk_context *ctx);
 
 /**
- * # # nk_item_is_any_active
- * \returns if the any window is being hovered or any widget is currently active.
+ * \brief \returns if the any window is being hovered or any widget is currently active.
+ *
+ * \details
  * Can be used to decide if input should be processed by UI or your specific input handling.
  * Example could be UI and 3D camera to move inside a 3D space.
- * ```c
- * nk_bool nk_item_is_any_active(struct nk_context*);
- * ```
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
  *
  * \returns `true(1)` if any window is hovered or any item is active or `false(0)` otherwise
 
@@ -1976,179 +1782,129 @@ NK_API nk_bool nk_window_is_any_hovered(const struct nk_context *ctx);
 NK_API nk_bool nk_item_is_any_active(const struct nk_context *ctx);
 
 /**
- * # # nk_window_set_bounds
- * Updates position and size of window with passed in name
- * ```c
- * void nk_window_set_bounds(struct nk_context*, const char *name, struct nk_rect bounds);
- * ```
+ * \brief Updates position and size of window with passed in name
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] name    | Identifier of the window to modify both position and size
- * \param[in] bounds  | Must point to a `nk_rect` struct with the new position and size
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] name     Identifier of the window to modify both position and size
+ * \param[in] bounds   Must point to a `nk_rect` struct with the new position and size
 
  */
 NK_API void nk_window_set_bounds(struct nk_context *ctx, const char *name, struct nk_rect bounds);
 
 /**
- * # # nk_window_set_position
- * Updates position of window with passed name
- * ```c
- * void nk_window_set_position(struct nk_context*, const char *name, struct nk_vec2 pos);
- * ```
+ * \brief Updates position of window with passed name
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] name    | Identifier of the window to modify both position
- * \param[in] pos     | Must point to a `nk_vec2` struct with the new position
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] name     Identifier of the window to modify both position
+ * \param[in] pos      Must point to a `nk_vec2` struct with the new position
 
  */
 NK_API void nk_window_set_position(struct nk_context *ctx, const char *name, struct nk_vec2 pos);
 
 /**
- * # # nk_window_set_size
- * Updates size of window with passed in name
- * ```c
- * void nk_window_set_size(struct nk_context*, const char *name, struct nk_vec2);
- * ```
+ * \brief Updates size of window with passed in name
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] name    | Identifier of the window to modify both window size
- * \param[in] size    | Must point to a `nk_vec2` struct with new window size
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] name     Identifier of the window to modify both window size
+ * \param[in] size     Must point to a `nk_vec2` struct with new window size
 
  */
 NK_API void nk_window_set_size(struct nk_context *ctx, const char *name, struct nk_vec2 size);
 
 /**
- * # # nk_window_set_focus
- * Sets the window with given name as active
- * ```c
- * void nk_window_set_focus(struct nk_context*, const char *name);
- * ```
+ * \brief Sets the window with given name as active
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] name    | Identifier of the window to set focus on
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] name     Identifier of the window to set focus on
 
  */
 NK_API void nk_window_set_focus(struct nk_context *ctx, const char *name);
 
 /**
- * # # nk_window_set_scroll
- * Sets the scroll offset for the current window
+ * \brief Sets the scroll offset for the current window
+ *
+ * \details
  * !!! \warning
  *     Only call this function between calls `nk_begin_xxx` and `nk_end`
  *
- * ```c
- * void nk_window_set_scroll(struct nk_context *ctx, nk_uint offset_x, nk_uint offset_y);
- * ```
  *
- * Parameter    | Description
- * -------------|-----------------------------------------------------------
- * \param[in] ctx      | Must point to an previously initialized `nk_context` struct
- * \param[in] offset_x | The x offset to scroll to
- * \param[in] offset_y | The y offset to scroll to
+ * \param[in] ctx       Must point to an previously initialized `nk_context` struct
+ * \param[in] offset_x  The x offset to scroll to
+ * \param[in] offset_y  The y offset to scroll to
 
  */
 NK_API void nk_window_set_scroll(struct nk_context *ctx, nk_uint offset_x, nk_uint offset_y);
 
 /**
- * # # nk_window_close
- * Closes a window and marks it for being freed at the end of the frame
- * ```c
- * void nk_window_close(struct nk_context *ctx, const char *name);
- * ```
+ * \brief Closes a window and marks it for being freed at the end of the frame
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] name    | Identifier of the window to close
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] name     Identifier of the window to close
 
  */
 NK_API void nk_window_close(struct nk_context *ctx, const char *name);
 
 /**
- * # # nk_window_collapse
- * Updates collapse state of a window with given name
- * ```c
- * void nk_window_collapse(struct nk_context*, const char *name, enum nk_collapse_states state);
- * ```
+ * \brief Updates collapse state of a window with given name
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] name    | Identifier of the window to close
- * \param[in] state   | value out of nk_collapse_states section
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] name     Identifier of the window to close
+ * \param[in] state    value out of nk_collapse_states section
 
  */
 NK_API void nk_window_collapse(struct nk_context *ctx, const char *name, enum nk_collapse_states state);
 
 /**
- * # # nk_window_collapse_if
- * Updates collapse state of a window with given name if given condition is met
- * ```c
- * void nk_window_collapse_if(struct nk_context*, const char *name, enum nk_collapse_states, int cond);
- * ```
+ * \brief Updates collapse state of a window with given name if given condition is met
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] name    | Identifier of the window to either collapse or maximize
- * \param[in] state   | value out of nk_collapse_states section the window should be put into
- * \param[in] cond    | condition that has to be met to actually commit the collapse state change
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] name     Identifier of the window to either collapse or maximize
+ * \param[in] state    value out of nk_collapse_states section the window should be put into
+ * \param[in] cond     condition that has to be met to actually commit the collapse state change
 
  */
 NK_API void nk_window_collapse_if(struct nk_context *ctx, const char *name, enum nk_collapse_states state, int cond);
 
 /**
- * # # nk_window_show
- * updates visibility state of a window with given name
- * ```c
- * void nk_window_show(struct nk_context*, const char *name, enum nk_show_states);
- * ```
+ * \brief updates visibility state of a window with given name
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] name    | Identifier of the window to either collapse or maximize
- * \param[in] state   | state with either visible or hidden to modify the window with
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] name     Identifier of the window to either collapse or maximize
+ * \param[in] state    state with either visible or hidden to modify the window with
  */
 NK_API void nk_window_show(struct nk_context *ctx, const char *name, enum nk_show_states state);
 
 /**
- * # # nk_window_show_if
- * Updates visibility state of a window with given name if a given condition is met
- * ```c
- * void nk_window_show_if(struct nk_context*, const char *name, enum nk_show_states, int cond);
- * ```
+ * \brief Updates visibility state of a window with given name if a given condition is met
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] name    | Identifier of the window to either hide or show
- * \param[in] state   | state with either visible or hidden to modify the window with
- * \param[in] cond    | condition that has to be met to actually commit the visibility state change
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] name     Identifier of the window to either hide or show
+ * \param[in] state    state with either visible or hidden to modify the window with
+ * \param[in] cond     condition that has to be met to actually commit the visibility state change
 
  */
 NK_API void nk_window_show_if(struct nk_context *ctx, const char *name, enum nk_show_states state, int cond);
 
 /**
- * # # nk_window_show_if
- * Line for visual separation. Draws a line with thickness determined by the current row height.
- * ```c
- * void nk_rule_horizontal(struct nk_context *ctx, struct nk_color color, NK_BOOL rounding)
- * ```
+ * \brief Line for visual separation. Draws a line with thickness determined by the current row height.
  *
- * Parameter       | Description
- * ----------------|-------------------------------------------------------
- * \param[in] ctx         | Must point to an previously initialized `nk_context` struct
- * \param[in] color       | Color of the horizontal line
- * \param[in] rounding    | Whether or not to make the line round
+ * \details
+ *
+ * \param[in] ctx          Must point to an previously initialized `nk_context` struct
+ * \param[in] color        Color of the horizontal line
+ * \param[in] rounding     Whether or not to make the line round
  */
 NK_API void nk_rule_horizontal(struct nk_context *ctx, struct nk_color color, nk_bool rounding);
 
@@ -2396,31 +2152,31 @@ NK_API void nk_rule_horizontal(struct nk_context *ctx, struct nk_color color, nk
  *     ```
  *
  * # Reference
- * Function                                     | Description
- * ---------------------------------------------|------------------------------------
- * \ref nk_layout_set_min_row_height            | Set the currently used minimum row height to a specified value
- * \ref nk_layout_reset_min_row_height          | Resets the currently used minimum row height to font height
- * \ref nk_layout_widget_bounds                 | Calculates current width a static layout row can fit inside a window
- * \ref nk_layout_ratio_from_pixel              | Utility functions to calculate window ratio from pixel size
- * \ref nk_layout_row_dynamic                   | Current layout is divided into n same sized growing columns
- * \ref nk_layout_row_static                    | Current layout is divided into n same fixed sized columns
- * \ref nk_layout_row_begin                     | Starts a new row with given height and number of columns
- * \ref nk_layout_row_push                      | Pushes another column with given size or window ratio
- * \ref nk_layout_row_end                       | Finished previously started row
- * \ref nk_layout_row                           | Specifies row columns in array as either window ratio or size
- * \ref nk_layout_row_template_begin            | Begins the row template declaration
- * \ref nk_layout_row_template_push_dynamic     | Adds a dynamic column that dynamically grows and can go to zero if not enough space
- * \ref nk_layout_row_template_push_variable    | Adds a variable column that dynamically grows but does not shrink below specified pixel width
- * \ref nk_layout_row_template_push_static      | Adds a static column that does not grow and will always have the same size
- * \ref nk_layout_row_template_end              | Marks the end of the row template
- * \ref nk_layout_space_begin                   | Begins a new layouting space that allows to specify each widgets position and size
- * \ref nk_layout_space_push                    | Pushes position and size of the next widget in own coordinate space either as pixel or ratio
- * \ref nk_layout_space_end                     | Marks the end of the layouting space
- * \ref nk_layout_space_bounds                  | Callable after nk_layout_space_begin and returns total space allocated
- * \ref nk_layout_space_to_screen               | Converts vector from nk_layout_space coordinate space into screen space
- * \ref nk_layout_space_to_local                | Converts vector from screen space into nk_layout_space coordinates
- * \ref nk_layout_space_rect_to_screen          | Converts rectangle from nk_layout_space coordinate space into screen space
- * \ref nk_layout_space_rect_to_local           | Converts rectangle from screen space into nk_layout_space coordinates
+ * | Function                                  | Description                                                                                   |
+ * | ---------------------                     | ---------------                                                                               |
+ * | \ref nk_layout_set_min_row_height         | Set the currently used minimum row height to a specified value                                |
+ * | \ref nk_layout_reset_min_row_height       | Resets the currently used minimum row height to font height                                   |
+ * | \ref nk_layout_widget_bounds              | Calculates current width a static layout row can fit inside a window                          |
+ * | \ref nk_layout_ratio_from_pixel           | Utility functions to calculate window ratio from pixel size                                   |
+ * | \ref nk_layout_row_dynamic                | Current layout is divided into n same sized growing columns                                   |
+ * | \ref nk_layout_row_static                 | Current layout is divided into n same fixed sized columns                                     |
+ * | \ref nk_layout_row_begin                  | Starts a new row with given height and number of columns                                      |
+ * | \ref nk_layout_row_push                   | Pushes another column with given size or window ratio                                         |
+ * | \ref nk_layout_row_end                    | Finished previously started row                                                               |
+ * | \ref nk_layout_row                        | Specifies row columns in array as either window ratio or size                                 |
+ * | \ref nk_layout_row_template_begin         | Begins the row template declaration                                                           |
+ * | \ref nk_layout_row_template_push_dynamic  | Adds a dynamic column that dynamically grows and can go to zero if not enough space           |
+ * | \ref nk_layout_row_template_push_variable | Adds a variable column that dynamically grows but does not shrink below specified pixel width |
+ * | \ref nk_layout_row_template_push_static   | Adds a static column that does not grow and will always have the same size                    |
+ * | \ref nk_layout_row_template_end           | Marks the end of the row template                                                             |
+ * | \ref nk_layout_space_begin                | Begins a new layouting space that allows to specify each widgets position and size            |
+ * | \ref nk_layout_space_push                 | Pushes position and size of the next widget in own coordinate space either as pixel or ratio  |
+ * | \ref nk_layout_space_end                  | Marks the end of the layouting space                                                          |
+ * | \ref nk_layout_space_bounds               | Callable after nk_layout_space_begin and returns total space allocated                        |
+ * | \ref nk_layout_space_to_screen            | Converts vector from nk_layout_space coordinate space into screen space                       |
+ * | \ref nk_layout_space_to_local             | Converts vector from screen space into nk_layout_space coordinates                            |
+ * | \ref nk_layout_space_rect_to_screen       | Converts rectangle from nk_layout_space coordinate space into screen space                    |
+ * | \ref nk_layout_space_rect_to_local        | Converts rectangle from screen space into nk_layout_space coordinates                         |
  */
 
 
@@ -2440,27 +2196,25 @@ enum nk_widget_alignment {
 };
 
 /**
- * Sets the currently used minimum row height.
+ * \brief Sets the currently used minimum row height.
+ *
+ * \details
  * !!! \warning
  *     The passed height needs to include both your preferred row height
  *     as well as padding. No internal padding is added.
  *
- * ```c
- * void nk_layout_set_min_row_height(struct nk_context*, float height);
- * ```
  *
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
- * \param[in] height  | New minimum row height to be used for auto generating the row height
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
+ * \param[in] height   New minimum row height to be used for auto generating the row height
  */
 NK_API void nk_layout_set_min_row_height(struct nk_context*, float height);
 
 /**
- * Reset the currently used minimum row height back to `font_height + text_padding + padding`
- * ```c
- * void nk_layout_reset_min_row_height(struct nk_context*);
- * ```
+ * \brief Reset the currently used minimum row height back to `font_height + text_padding + padding`
  *
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
  */
 NK_API void nk_layout_reset_min_row_height(struct nk_context*);
 
@@ -2468,11 +2222,8 @@ NK_API void nk_layout_reset_min_row_height(struct nk_context*);
  * \brief Returns the width of the next row allocate by one of the layouting functions
  *
  * \details
- * ```c
- * struct nk_rect nk_layout_widget_bounds(struct nk_context*);
- * ```
  *
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
  *
  * \return `nk_rect` with both position and size of the next row
  */
@@ -2482,12 +2233,9 @@ NK_API struct nk_rect nk_layout_widget_bounds(const struct nk_context *ctx);
  * \brief Utility functions to calculate window ratio from pixel size
  *
  * \details
- * ```c
- * float nk_layout_ratio_from_pixel(struct nk_context*, float pixel_width);
- * ```
  *
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
- * \param[in] pixel   | Pixel_width to convert to window ratio
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
+ * \param[in] pixel    Pixel_width to convert to window ratio
  *
  * \returns `nk_rect` with both position and size of the next row
  */
@@ -2495,34 +2243,28 @@ NK_API float nk_layout_ratio_from_pixel(const struct nk_context *ctx, float pixe
 
 /**
  * \brief Sets current row layout to share horizontal space
- * between @cols number of widgets evenly. Once called all subsequent widget
- * calls greater than @cols will allocate a new row with same layout.
+ * between `cols` number of widgets evenly. Once called all subsequent widget
+ * calls greater than `cols` will allocate a new row with same layout.
  *
  * \details
- * ```c
- * void nk_layout_row_dynamic(struct nk_context *ctx, float height, int cols);
- * ```
  *
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
- * \param[in] height  | Holds height of each widget in row or zero for auto layouting
- * \param[in] columns | Number of widget inside row
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
+ * \param[in] height   Holds height of each widget in row or zero for auto layouting
+ * \param[in] columns  Number of widget inside row
  */
 NK_API void nk_layout_row_dynamic(struct nk_context *ctx, float height, int cols);
 
 /**
- * \brief Sets current row layout to fill @cols number of widgets
+ * \brief Sets current row layout to fill `cols` number of widgets
  * in row with same @item_width horizontal size. Once called all subsequent widget
- * calls greater than @cols will allocate a new row with same layout.
+ * calls greater than `cols` will allocate a new row with same layout.
  *
  * \details
- * ```c
- * void nk_layout_row_static(struct nk_context *ctx, float height, int item_width, int cols);
- * ```
  *
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
- * \param[in] height  | Holds height of each widget in row or zero for auto layouting
- * \param[in] width   | Holds pixel width of each widget in the row
- * \param[in] columns | Number of widget inside row
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
+ * \param[in] height   Holds height of each widget in row or zero for auto layouting
+ * \param[in] width    Holds pixel width of each widget in the row
+ * \param[in] columns  Number of widget inside row
  */
 NK_API void nk_layout_row_static(struct nk_context *ctx, float height, int item_width, int cols);
 
@@ -2530,27 +2272,21 @@ NK_API void nk_layout_row_static(struct nk_context *ctx, float height, int item_
  * \brief Starts a new dynamic or fixed row with given height and columns.
  *
  * \details
- * ```c
- * void nk_layout_row_begin(struct nk_context *ctx, enum nk_layout_format fmt, float row_height, int cols);
- * ```
  *
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
- * \param[in] fmt     | either `NK_DYNAMIC` for window ratio or `NK_STATIC` for fixed size columns
- * \param[in] height  | holds height of each widget in row or zero for auto layouting
- * \param[in] columns | Number of widget inside row
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
+ * \param[in] fmt      either `NK_DYNAMIC` for window ratio or `NK_STATIC` for fixed size columns
+ * \param[in] height   holds height of each widget in row or zero for auto layouting
+ * \param[in] columns  Number of widget inside row
  */
 NK_API void nk_layout_row_begin(struct nk_context *ctx, enum nk_layout_format fmt, float row_height, int cols);
 
 /**
- * \breif Specifies either window ratio or width of a single column
+ * \brief Specifies either window ratio or width of a single column
  *
  * \details
- * ```c
- * void nk_layout_row_push(struct nk_context*, float value);
- * ```
  *
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
- * \param[in] value   | either a window ratio or fixed width depending on @fmt in previous `nk_layout_row_begin` call
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
+ * \param[in] value    either a window ratio or fixed width depending on @fmt in previous `nk_layout_row_begin` call
  */
 NK_API void nk_layout_row_push(struct nk_context*, float value);
 
@@ -2558,11 +2294,8 @@ NK_API void nk_layout_row_push(struct nk_context*, float value);
  * \brief Finished previously started row
  *
  * \details
- * ```c
- * void nk_layout_row_end(struct nk_context*);
- * ```
  *
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
  */
 NK_API void nk_layout_row_end(struct nk_context*);
 
@@ -2570,218 +2303,159 @@ NK_API void nk_layout_row_end(struct nk_context*);
  * \brief Specifies row columns in array as either window ratio or size
  *
  * \details
- * ```c
- * void nk_layout_row(struct nk_context*, enum nk_layout_format, float height, int cols, const float *ratio);
- * ```
  *
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
- * \param[in] fmt     | Either `NK_DYNAMIC` for window ratio or `NK_STATIC` for fixed size columns
- * \param[in] height  | Holds height of each widget in row or zero for auto layouting
- * \param[in] columns | Number of widget inside row
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
+ * \param[in] fmt      Either `NK_DYNAMIC` for window ratio or `NK_STATIC` for fixed size columns
+ * \param[in] height   Holds height of each widget in row or zero for auto layouting
+ * \param[in] columns  Number of widget inside row
  */
 NK_API void nk_layout_row(struct nk_context*, enum nk_layout_format, float height, int cols, const float *ratio);
 
 /**
- * # # nk_layout_row_template_begin
- * Begins the row template declaration
- * ```c
- * void nk_layout_row_template_begin(struct nk_context*, float row_height);
- * ```
+ * \brief Begins the row template declaration
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
- * \param[in] height  | Holds height of each widget in row or zero for auto layouting
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
+ * \param[in] height   Holds height of each widget in row or zero for auto layouting
  */
 NK_API void nk_layout_row_template_begin(struct nk_context*, float row_height);
 
 /**
- * # # nk_layout_row_template_push_dynamic
- * Adds a dynamic column that dynamically grows and can go to zero if not enough space
- * ```c
- * void nk_layout_row_template_push_dynamic(struct nk_context*);
- * ```
+ * \brief Adds a dynamic column that dynamically grows and can go to zero if not enough space
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
- * \param[in] height  | Holds height of each widget in row or zero for auto layouting
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
+ * \param[in] height   Holds height of each widget in row or zero for auto layouting
  */
 NK_API void nk_layout_row_template_push_dynamic(struct nk_context*);
 
 /**
- * # # nk_layout_row_template_push_variable
- * Adds a variable column that dynamically grows but does not shrink below specified pixel width
- * ```c
- * void nk_layout_row_template_push_variable(struct nk_context*, float min_width);
- * ```
+ * \brief Adds a variable column that dynamically grows but does not shrink below specified pixel width
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
- * \param[in] width   | Holds the minimum pixel width the next column must always be
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
+ * \param[in] width    Holds the minimum pixel width the next column must always be
  */
 NK_API void nk_layout_row_template_push_variable(struct nk_context*, float min_width);
 
 /**
- * # # nk_layout_row_template_push_static
- * Adds a static column that does not grow and will always have the same size
- * ```c
- * void nk_layout_row_template_push_static(struct nk_context*, float width);
- * ```
+ * \brief Adds a static column that does not grow and will always have the same size
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
- * \param[in] width   | Holds the absolute pixel width value the next column must be
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
+ * \param[in] width    Holds the absolute pixel width value the next column must be
  */
 NK_API void nk_layout_row_template_push_static(struct nk_context*, float width);
 
 /**
- * # # nk_layout_row_template_end
- * Marks the end of the row template
- * ```c
- * void nk_layout_row_template_end(struct nk_context*);
- * ```
+ * \brief Marks the end of the row template
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
  */
 NK_API void nk_layout_row_template_end(struct nk_context*);
 
 /**
- * # # nk_layout_space_begin
- * Begins a new layouting space that allows to specify each widgets position and size.
- * ```c
- * void nk_layout_space_begin(struct nk_context*, enum nk_layout_format, float height, int widget_count);
- * ```
+ * \brief Begins a new layouting space that allows to specify each widgets position and size.
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
- * \param[in] fmt     | Either `NK_DYNAMIC` for window ratio or `NK_STATIC` for fixed size columns
- * \param[in] height  | Holds height of each widget in row or zero for auto layouting
- * \param[in] columns | Number of widgets inside row
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_begin_xxx`
+ * \param[in] fmt      Either `NK_DYNAMIC` for window ratio or `NK_STATIC` for fixed size columns
+ * \param[in] height   Holds height of each widget in row or zero for auto layouting
+ * \param[in] columns  Number of widgets inside row
  */
 NK_API void nk_layout_space_begin(struct nk_context*, enum nk_layout_format, float height, int widget_count);
 
 /**
- * # # nk_layout_space_push
- * Pushes position and size of the next widget in own coordinate space either as pixel or ratio
- * ```c
- * void nk_layout_space_push(struct nk_context *ctx, struct nk_rect bounds);
- * ```
+ * \brief Pushes position and size of the next widget in own coordinate space either as pixel or ratio
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_layout_space_begin`
- * \param[in] bounds  | Position and size in laoyut space local coordinates
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_layout_space_begin`
+ * \param[in] bounds   Position and size in laoyut space local coordinates
  */
 NK_API void nk_layout_space_push(struct nk_context*, struct nk_rect bounds);
 
 /**
- * # # nk_layout_space_end
- * Marks the end of the layout space
- * ```c
- * void nk_layout_space_end(struct nk_context*);
- * ```
+ * \brief Marks the end of the layout space
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_layout_space_begin`
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_layout_space_begin`
  */
 NK_API void nk_layout_space_end(struct nk_context*);
 
 /**
- * # # nk_layout_space_bounds
- * Utility function to calculate total space allocated for `nk_layout_space`
- * ```c
- * struct nk_rect nk_layout_space_bounds(struct nk_context*);
- * ```
+ * \brief Utility function to calculate total space allocated for `nk_layout_space`
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_layout_space_begin`
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_layout_space_begin`
  *
  * \returns `nk_rect` holding the total space allocated
  */
 NK_API struct nk_rect nk_layout_space_bounds(const struct nk_context *ctx);
 
 /**
- * # # nk_layout_space_to_screen
- * Converts vector from nk_layout_space coordinate space into screen space
- * ```c
- * struct nk_vec2 nk_layout_space_to_screen(struct nk_context*, struct nk_vec2);
- * ```
+ * \brief Converts vector from nk_layout_space coordinate space into screen space
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_layout_space_begin`
- * \param[in] vec     | Position to convert from layout space into screen coordinate space
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_layout_space_begin`
+ * \param[in] vec      Position to convert from layout space into screen coordinate space
  *
  * \returns transformed `nk_vec2` in screen space coordinates
  */
 NK_API struct nk_vec2 nk_layout_space_to_screen(const struct nk_context* ctx, struct nk_vec2 vec);
 
 /**
- * # # nk_layout_space_to_local
- * Converts vector from layout space into screen space
- * ```c
- * struct nk_vec2 nk_layout_space_to_local(struct nk_context*, struct nk_vec2);
- * ```
+ * \brief Converts vector from layout space into screen space
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_layout_space_begin`
- * \param[in] vec     | Position to convert from screen space into layout coordinate space
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_layout_space_begin`
+ * \param[in] vec      Position to convert from screen space into layout coordinate space
  *
  * \returns transformed `nk_vec2` in layout space coordinates
  */
 NK_API struct nk_vec2 nk_layout_space_to_local(const struct nk_context *ctx, struct nk_vec2 vec);
 
 /**
- * # # nk_layout_space_rect_to_screen
- * Converts rectangle from screen space into layout space
- * ```c
- * struct nk_rect nk_layout_space_rect_to_screen(struct nk_context*, struct nk_rect);
- * ```
+ * \brief Converts rectangle from screen space into layout space
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_layout_space_begin`
- * \param[in] bounds  | Rectangle to convert from layout space into screen space
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_layout_space_begin`
+ * \param[in] bounds   Rectangle to convert from layout space into screen space
  *
  * \returns transformed `nk_rect` in screen space coordinates
  */
 NK_API struct nk_rect nk_layout_space_rect_to_screen(const struct nk_context *ctx, struct nk_rect bounds);
 
 /**
- * # # nk_layout_space_rect_to_local
- * Converts rectangle from layout space into screen space
- * ```c
- * struct nk_rect nk_layout_space_rect_to_local(struct nk_context*, struct nk_rect);
- * ```
+ * \brief Converts rectangle from layout space into screen space
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_layout_space_begin`
- * \param[in] bounds  | Rectangle to convert from layout space into screen space
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_layout_space_begin`
+ * \param[in] bounds   Rectangle to convert from layout space into screen space
  *
  * \returns transformed `nk_rect` in layout space coordinates
  */
 NK_API struct nk_rect nk_layout_space_rect_to_local(const struct nk_context *ctx, struct nk_rect bounds);
 
 /**
- * # # nk_spacer
- * Spacer is a dummy widget that consumes space as usual but doesn't draw anything
- * ```c
- * void nk_spacer(struct nk_context* );
- * ```
+ * \brief Spacer is a dummy widget that consumes space as usual but doesn't draw anything
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after call `nk_layout_space_begin`
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after call `nk_layout_space_begin`
  *
  */
 NK_API void nk_spacer(struct nk_context *ctx);
@@ -2865,29 +2539,24 @@ NK_API void nk_spacer(struct nk_context *ctx);
  * nk_free(&ctx);
  * ```
  * # Reference
- * Function                        | Description
- * --------------------------------|-------------------------------------------
- * \ref nk_group_begin                  | Start a new group with internal scrollbar handling
- * \ref nk_group_begin_titled           | Start a new group with separated name and title and internal scrollbar handling
- * \ref nk_group_end                    | Ends a group. Should only be called if nk_group_begin returned non-zero
- * \ref nk_group_scrolled_offset_begin  | Start a new group with manual separated handling of scrollbar x- and y-offset
- * \ref nk_group_scrolled_begin         | Start a new group with manual scrollbar handling
- * \ref nk_group_scrolled_end           | Ends a group with manual scrollbar handling. Should only be called if nk_group_begin returned non-zero
- * \ref nk_group_get_scroll             | Gets the scroll offset for the given group
- * \ref nk_group_set_scroll             | Sets the scroll offset for the given group
+ * | Function                            | Description                                                                                            |
+ * | ---------------------               | ---------------                                                                                        |
+ * | \ref nk_group_begin                 | Start a new group with internal scrollbar handling                                                     |
+ * | \ref nk_group_begin_titled          | Start a new group with separated name and title and internal scrollbar handling                        |
+ * | \ref nk_group_end                   | Ends a group. Should only be called if nk_group_begin returned non-zero                                |
+ * | \ref nk_group_scrolled_offset_begin | Start a new group with manual separated handling of scrollbar x- and y-offset                          |
+ * | \ref nk_group_scrolled_begin        | Start a new group with manual scrollbar handling                                                       |
+ * | \ref nk_group_scrolled_end          | Ends a group with manual scrollbar handling. Should only be called if nk_group_begin returned non-zero |
+ * | \ref nk_group_get_scroll            | Gets the scroll offset for the given group                                                             |
+ * | \ref nk_group_set_scroll            | Sets the scroll offset for the given group                                                             |
  */
 
  /**
  * \brief Starts a new widget group. Requires a previous layouting function to specify a pos/size.
- * ```c
- * nk_bool nk_group_begin(struct nk_context*, const char *title, nk_flags);
- * ```
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] title   | Must be an unique identifier for this group that is also used for the group header
- * \param[in] flags   | Window flags defined in the nk_panel_flags section with a number of different group behaviors
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] title    Must be an unique identifier for this group that is also used for the group header
+ * \param[in] flags    Window flags defined in the nk_panel_flags section with a number of different group behaviors
  *
  * \returns `true(1)` if visible and fillable with widgets or `false(0)` otherwise
  */
@@ -2895,113 +2564,85 @@ NK_API nk_bool nk_group_begin(struct nk_context*, const char *title, nk_flags);
 
  /**
  * \brief Starts a new widget group. Requires a previous layouting function to specify a pos/size.
- * ```c
- * nk_bool nk_group_begin_titled(struct nk_context*, const char *name, const char *title, nk_flags);
- * ```
  *
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] id      | Must be an unique identifier for this group
- * \param[in] title   | Group header title
- * \param[in] flags   | Window flags defined in the nk_panel_flags section with a number of different group behaviors
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] id       Must be an unique identifier for this group
+ * \param[in] title    Group header title
+ * \param[in] flags    Window flags defined in the nk_panel_flags section with a number of different group behaviors
  *
  * \returns `true(1)` if visible and fillable with widgets or `false(0)` otherwise
  */
 NK_API nk_bool nk_group_begin_titled(struct nk_context*, const char *name, const char *title, nk_flags);
 
 /**
- * # # nk_group_end
- * Ends a widget group
- * ```c
- * void nk_group_end(struct nk_context*);
- * ```
+ * \brief Ends a widget group
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
  */
 NK_API void nk_group_end(struct nk_context*);
 
 /**
- * # # nk_group_scrolled_offset_begin
- * starts a new widget group. requires a previous layouting function to specify
+ * \brief starts a new widget group. requires a previous layouting function to specify
  * a size. Does not keep track of scrollbar.
- * ```c
- * nk_bool nk_group_scrolled_offset_begin(struct nk_context*, nk_uint *x_offset, nk_uint *y_offset, const char *title, nk_flags flags);
- * ```
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] x_offset| Scrollbar x-offset to offset all widgets inside the group horizontally.
- * \param[in] y_offset| Scrollbar y-offset to offset all widgets inside the group vertically
- * \param[in] title   | Window unique group title used to both identify and display in the group header
- * \param[in] flags   | Window flags from the nk_panel_flags section
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] x_offset Scrollbar x-offset to offset all widgets inside the group horizontally.
+ * \param[in] y_offset Scrollbar y-offset to offset all widgets inside the group vertically
+ * \param[in] title    Window unique group title used to both identify and display in the group header
+ * \param[in] flags    Window flags from the nk_panel_flags section
  *
  * \returns `true(1)` if visible and fillable with widgets or `false(0)` otherwise
  */
 NK_API nk_bool nk_group_scrolled_offset_begin(struct nk_context*, nk_uint *x_offset, nk_uint *y_offset, const char *title, nk_flags flags);
 
 /**
- * # # nk_group_scrolled_begin
- * Starts a new widget group. requires a previous
- * layouting function to specify a size. Does not keep track of scrollbar.
- * ```c
- * nk_bool nk_group_scrolled_begin(struct nk_context*, struct nk_scroll *off, const char *title, nk_flags);
- * ```
+ * \brief Starts a new widget group. requires a previous layouting function to specify a size. Does not keep track of scrollbar.
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] off     | Both x- and y- scroll offset. Allows for manual scrollbar control
- * \param[in] title   | Window unique group title used to both identify and display in the group header
- * \param[in] flags   | Window flags from nk_panel_flags section
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] off      Both x- and y- scroll offset. Allows for manual scrollbar control
+ * \param[in] title    Window unique group title used to both identify and display in the group header
+ * \param[in] flags    Window flags from nk_panel_flags section
  *
  * \returns `true(1)` if visible and fillable with widgets or `false(0)` otherwise
  */
 NK_API nk_bool nk_group_scrolled_begin(struct nk_context*, struct nk_scroll *off, const char *title, nk_flags);
 
 /**
- * # # nk_group_scrolled_end
- * Ends a widget group after calling nk_group_scrolled_offset_begin or nk_group_scrolled_begin.
- * ```c
- * void nk_group_scrolled_end(struct nk_context*);
- * ```
+ * \brief Ends a widget group after calling nk_group_scrolled_offset_begin or nk_group_scrolled_begin.
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
  */
 NK_API void nk_group_scrolled_end(struct nk_context*);
 
 /**
- * # # nk_group_get_scroll
- * Gets the scroll position of the given group.
- * ```c
- * void nk_group_get_scroll(struct nk_context*, const char *id, nk_uint *x_offset, nk_uint *y_offset);
- * ```
+ * \brief Gets the scroll position of the given group.
  *
- * Parameter    | Description
- * -------------|-----------------------------------------------------------
- * \param[in] ctx      | Must point to an previously initialized `nk_context` struct
- * \param[in] id       | The id of the group to get the scroll position of
- * \param[in] x_offset | A pointer to the x offset output (or NULL to ignore)
- * \param[in] y_offset | A pointer to the y offset output (or NULL to ignore)
+ * \details
+ *
+ * \param[in] ctx       Must point to an previously initialized `nk_context` struct
+ * \param[in] id        The id of the group to get the scroll position of
+ * \param[in] x_offset  A pointer to the x offset output (or NULL to ignore)
+ * \param[in] y_offset  A pointer to the y offset output (or NULL to ignore)
  */
 NK_API void nk_group_get_scroll(struct nk_context*, const char *id, nk_uint *x_offset, nk_uint *y_offset);
 
 /**
- * # # nk_group_set_scroll
- * Sets the scroll position of the given group.
- * ```c
- * void nk_group_set_scroll(struct nk_context*, const char *id, nk_uint x_offset, nk_uint y_offset);
- * ```
+ * \brief Sets the scroll position of the given group.
  *
- * Parameter    | Description
- * -------------|-----------------------------------------------------------
- * \param[in] ctx      | Must point to an previously initialized `nk_context` struct
- * \param[in] id       | The id of the group to scroll
- * \param[in] x_offset | The x offset to scroll to
- * \param[in] y_offset | The y offset to scroll to
+ * \details
+ *
+ * \param[in] ctx       Must point to an previously initialized `nk_context` struct
+ * \param[in] id        The id of the group to scroll
+ * \param[in] x_offset  The x offset to scroll to
+ * \param[in] y_offset  The y offset to scroll to
  */
 NK_API void nk_group_set_scroll(struct nk_context*, const char *id, nk_uint x_offset, nk_uint y_offset);
 
@@ -3056,220 +2697,177 @@ NK_API void nk_group_set_scroll(struct nk_context*, const char *id, nk_uint x_of
  * ```
  *
  * # Reference
- * Function                    | Description
- * ----------------------------|-------------------------------------------
- * nk_tree_push                | Start a collapsible UI section with internal state management
- * nk_tree_push_id             | Start a collapsible UI section with internal state management callable in a look
- * nk_tree_push_hashed         | Start a collapsible UI section with internal state management with full control over internal unique ID use to store state
- * nk_tree_image_push          | Start a collapsible UI section with image and label header
- * nk_tree_image_push_id       | Start a collapsible UI section with image and label header and internal state management callable in a look
- * nk_tree_image_push_hashed   | Start a collapsible UI section with image and label header and internal state management with full control over internal unique ID use to store state
- * nk_tree_pop                 | Ends a collapsible UI section
- * nk_tree_state_push          | Start a collapsible UI section with external state management
- * nk_tree_state_image_push    | Start a collapsible UI section with image and label header and external state management
- * nk_tree_state_pop           | Ends a collapsabale UI section
+ * | Function                       | Description                                                                                                                                           |
+ * | ---------------------          | ---------------                                                                                                                                       |
+ * | \ref nk_tree_push              | Start a collapsible UI section with internal state management                                                                                         |
+ * | \ref nk_tree_push_id           | Start a collapsible UI section with internal state management callable in a look                                                                      |
+ * | \ref nk_tree_push_hashed       | Start a collapsible UI section with internal state management with full control over internal unique ID use to store state                            |
+ * | \ref nk_tree_image_push        | Start a collapsible UI section with image and label header                                                                                            |
+ * | \ref nk_tree_image_push_id     | Start a collapsible UI section with image and label header and internal state management callable in a look                                           |
+ * | \ref nk_tree_image_push_hashed | Start a collapsible UI section with image and label header and internal state management with full control over internal unique ID use to store state |
+ * | \ref nk_tree_pop               | Ends a collapsible UI section                                                                                                                         |
+ * | \ref nk_tree_state_push        | Start a collapsible UI section with external state management                                                                                         |
+ * | \ref nk_tree_state_image_push  | Start a collapsible UI section with image and label header and external state management                                                              |
+ * | \ref nk_tree_state_pop         | Ends a collapsabale UI section                                                                                                                        |
  *
  * # nk_tree_type
- * Flag            | Description
- * ----------------|----------------------------------------
- * NK_TREE_NODE    | Highlighted tree header to mark a collapsible UI section
- * NK_TREE_TAB     | Non-highlighted tree header closer to tree representations
+ * | Flag                  | Description                                                |
+ * | --------------------- | ---------------                                            |
+ * | \ref NK_TREE_NODE     | Highlighted tree header to mark a collapsible UI section   |
+ * | \ref NK_TREE_TAB      | Non-highlighted tree header closer to tree representations |
  */
 
 /**
- * # # nk_tree_push
- * Starts a collapsible UI section with internal state management
+ * \brief Starts a collapsible UI section with internal state management
+ *
+ * \details
  * !!! \warning
  *     To keep track of the runtime tree collapsible state this function uses
  *     defines `__FILE__` and `__LINE__` to generate a unique ID. If you want
  *     to call this function in a loop please use `nk_tree_push_id` or
  *     `nk_tree_push_hashed` instead.
  *
- * ```c
- * #define nk_tree_push(ctx, type, title, state)
- * ```
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] type    | Value from the nk_tree_type section to visually mark a tree node header as either a collapseable UI section or tree node
- * \param[in] title   | Label printed in the tree header
- * \param[in] state   | Initial tree state value out of nk_collapse_states
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] type     Value from the nk_tree_type section to visually mark a tree node header as either a collapseable UI section or tree node
+ * \param[in] title    Label printed in the tree header
+ * \param[in] state    Initial tree state value out of nk_collapse_states
  *
  * \returns `true(1)` if visible and fillable with widgets or `false(0)` otherwise
  */
 #define nk_tree_push(ctx, type, title, state) nk_tree_push_hashed(ctx, type, title, state, NK_FILE_LINE,nk_strlen(NK_FILE_LINE),__LINE__)
 
 /**
- * # # nk_tree_push_id
- * Starts a collapsible UI section with internal state management callable in a look
- * ```c
- * #define nk_tree_push_id(ctx, type, title, state, id)
- * ```
+ * \brief Starts a collapsible UI section with internal state management callable in a look
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] type    | Value from the nk_tree_type section to visually mark a tree node header as either a collapseable UI section or tree node
- * \param[in] title   | Label printed in the tree header
- * \param[in] state   | Initial tree state value out of nk_collapse_states
- * \param[in] id      | Loop counter index if this function is called in a loop
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] type     Value from the nk_tree_type section to visually mark a tree node header as either a collapseable UI section or tree node
+ * \param[in] title    Label printed in the tree header
+ * \param[in] state    Initial tree state value out of nk_collapse_states
+ * \param[in] id       Loop counter index if this function is called in a loop
  *
  * \returns `true(1)` if visible and fillable with widgets or `false(0)` otherwise
  */
 #define nk_tree_push_id(ctx, type, title, state, id) nk_tree_push_hashed(ctx, type, title, state, NK_FILE_LINE,nk_strlen(NK_FILE_LINE),id)
 
 /**
- * # # nk_tree_push_hashed
- * Start a collapsible UI section with internal state management with full
- * control over internal unique ID used to store state
- * ```c
- * nk_bool nk_tree_push_hashed(struct nk_context*, enum nk_tree_type, const char *title, enum nk_collapse_states initial_state, const char *hash, int len,int seed);
- * ```
+ * \brief Start a collapsible UI section with internal state management with full control over internal unique ID used to store state
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] type    | Value from the nk_tree_type section to visually mark a tree node header as either a collapseable UI section or tree node
- * \param[in] title   | Label printed in the tree header
- * \param[in] state   | Initial tree state value out of nk_collapse_states
- * \param[in] hash    | Memory block or string to generate the ID from
- * \param[in] len     | Size of passed memory block or string in __hash__
- * \param[in] seed    | Seeding value if this function is called in a loop or default to `0`
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] type     Value from the nk_tree_type section to visually mark a tree node header as either a collapseable UI section or tree node
+ * \param[in] title    Label printed in the tree header
+ * \param[in] state    Initial tree state value out of nk_collapse_states
+ * \param[in] hash     Memory block or string to generate the ID from
+ * \param[in] len      Size of passed memory block or string in __hash__
+ * \param[in] seed     Seeding value if this function is called in a loop or default to `0`
  *
  * \returns `true(1)` if visible and fillable with widgets or `false(0)` otherwise
  */
 NK_API nk_bool nk_tree_push_hashed(struct nk_context*, enum nk_tree_type, const char *title, enum nk_collapse_states initial_state, const char *hash, int len,int seed);
 
 /**
- * # # nk_tree_image_push
- * Start a collapsible UI section with image and label header
+ * \brief Start a collapsible UI section with image and label header
+ *
+ * \details
  * !!! \warning
  *     To keep track of the runtime tree collapsible state this function uses
  *     defines `__FILE__` and `__LINE__` to generate a unique ID. If you want
  *     to call this function in a loop please use `nk_tree_image_push_id` or
  *     `nk_tree_image_push_hashed` instead.
  *
- * ```c
- * #define nk_tree_image_push(ctx, type, img, title, state)
- * ```
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] type    | Value from the nk_tree_type section to visually mark a tree node header as either a collapseable UI section or tree node
- * \param[in] img     | Image to display inside the header on the left of the label
- * \param[in] title   | Label printed in the tree header
- * \param[in] state   | Initial tree state value out of nk_collapse_states
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] type     Value from the nk_tree_type section to visually mark a tree node header as either a collapseable UI section or tree node
+ * \param[in] img      Image to display inside the header on the left of the label
+ * \param[in] title    Label printed in the tree header
+ * \param[in] state    Initial tree state value out of nk_collapse_states
  *
  * \returns `true(1)` if visible and fillable with widgets or `false(0)` otherwise
  */
 #define nk_tree_image_push(ctx, type, img, title, state) nk_tree_image_push_hashed(ctx, type, img, title, state, NK_FILE_LINE,nk_strlen(NK_FILE_LINE),__LINE__)
 
 /**
- * # # nk_tree_image_push_id
- * Start a collapsible UI section with image and label header and internal state
- * management callable in a look
+ * \brief Start a collapsible UI section with image and label header and internal state management callable in a look
  *
- * ```c
- * #define nk_tree_image_push_id(ctx, type, img, title, state, id)
- * ```
+ * \details
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] type    | Value from the nk_tree_type section to visually mark a tree node header as either a collapseable UI section or tree node
- * \param[in] img     | Image to display inside the header on the left of the label
- * \param[in] title   | Label printed in the tree header
- * \param[in] state   | Initial tree state value out of nk_collapse_states
- * \param[in] id      | Loop counter index if this function is called in a loop
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] type     Value from the nk_tree_type section to visually mark a tree node header as either a collapseable UI section or tree node
+ * \param[in] img      Image to display inside the header on the left of the label
+ * \param[in] title    Label printed in the tree header
+ * \param[in] state    Initial tree state value out of nk_collapse_states
+ * \param[in] id       Loop counter index if this function is called in a loop
  *
  * \returns `true(1)` if visible and fillable with widgets or `false(0)` otherwise
  */
 #define nk_tree_image_push_id(ctx, type, img, title, state, id) nk_tree_image_push_hashed(ctx, type, img, title, state, NK_FILE_LINE,nk_strlen(NK_FILE_LINE),id)
 
 /**
- * # # nk_tree_image_push_hashed
- * Start a collapsible UI section with internal state management with full
- * control over internal unique ID used to store state
- * ```c
- * nk_bool nk_tree_image_push_hashed(struct nk_context*, enum nk_tree_type, struct nk_image, const char *title, enum nk_collapse_states initial_state, const char *hash, int len,int seed);
- * ```
+ * \brief Start a collapsible UI section with internal state management with full control over internal unique ID used to store state
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct
- * \param[in] type    | Value from the nk_tree_type section to visually mark a tree node header as either a collapseable UI section or tree node
- * \param[in] img     | Image to display inside the header on the left of the label
- * \param[in] title   | Label printed in the tree header
- * \param[in] state   | Initial tree state value out of nk_collapse_states
- * \param[in] hash    | Memory block or string to generate the ID from
- * \param[in] len     | Size of passed memory block or string in __hash__
- * \param[in] seed    | Seeding value if this function is called in a loop or default to `0`
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct
+ * \param[in] type     Value from the nk_tree_type section to visually mark a tree node header as either a collapseable UI section or tree node
+ * \param[in] img      Image to display inside the header on the left of the label
+ * \param[in] title    Label printed in the tree header
+ * \param[in] state    Initial tree state value out of nk_collapse_states
+ * \param[in] hash     Memory block or string to generate the ID from
+ * \param[in] len      Size of passed memory block or string in __hash__
+ * \param[in] seed     Seeding value if this function is called in a loop or default to `0`
  *
  * \returns `true(1)` if visible and fillable with widgets or `false(0)` otherwise
  */
 NK_API nk_bool nk_tree_image_push_hashed(struct nk_context*, enum nk_tree_type, struct nk_image, const char *title, enum nk_collapse_states initial_state, const char *hash, int len,int seed);
 
 /**
- * # # nk_tree_pop
- * Ends a collapsabale UI section
- * ```c
- * void nk_tree_pop(struct nk_context*);
- * ```
+ * \brief Ends a collapsabale UI section
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after calling `nk_tree_xxx_push_xxx`
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after calling `nk_tree_xxx_push_xxx`
  */
 NK_API void nk_tree_pop(struct nk_context*);
 
 /**
- * # # nk_tree_state_push
- * Start a collapsible UI section with external state management
- * ```c
- * nk_bool nk_tree_state_push(struct nk_context*, enum nk_tree_type, const char *title, enum nk_collapse_states *state);
- * ```
+ * \brief Start a collapsible UI section with external state management
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after calling `nk_tree_xxx_push_xxx`
- * \param[in] type    | Value from the nk_tree_type section to visually mark a tree node header as either a collapseable UI section or tree node
- * \param[in] title   | Label printed in the tree header
- * \param[in] state   | Persistent state to update
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after calling `nk_tree_xxx_push_xxx`
+ * \param[in] type     Value from the nk_tree_type section to visually mark a tree node header as either a collapseable UI section or tree node
+ * \param[in] title    Label printed in the tree header
+ * \param[in] state    Persistent state to update
  *
  * \returns `true(1)` if visible and fillable with widgets or `false(0)` otherwise
  */
 NK_API nk_bool nk_tree_state_push(struct nk_context*, enum nk_tree_type, const char *title, enum nk_collapse_states *state);
 
 /**
- * # # nk_tree_state_image_push
- * Start a collapsible UI section with image and label header and external state management
- * ```c
- * nk_bool nk_tree_state_image_push(struct nk_context*, enum nk_tree_type, struct nk_image, const char *title, enum nk_collapse_states *state);
- * ```
+ * \brief Start a collapsible UI section with image and label header and external state management
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after calling `nk_tree_xxx_push_xxx`
- * \param[in] img     | Image to display inside the header on the left of the label
- * \param[in] type    | Value from the nk_tree_type section to visually mark a tree node header as either a collapseable UI section or tree node
- * \param[in] title   | Label printed in the tree header
- * \param[in] state   | Persistent state to update
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after calling `nk_tree_xxx_push_xxx`
+ * \param[in] img      Image to display inside the header on the left of the label
+ * \param[in] type     Value from the nk_tree_type section to visually mark a tree node header as either a collapseable UI section or tree node
+ * \param[in] title    Label printed in the tree header
+ * \param[in] state    Persistent state to update
  *
  * \returns `true(1)` if visible and fillable with widgets or `false(0)` otherwise
  */
 NK_API nk_bool nk_tree_state_image_push(struct nk_context*, enum nk_tree_type, struct nk_image, const char *title, enum nk_collapse_states *state);
 
 /**
- * # # nk_tree_state_pop
- * Ends a collapsabale UI section
- * ```c
- * void nk_tree_state_pop(struct nk_context*);
- * ```
+ * \brief Ends a collapsabale UI section
  *
- * Parameter   | Description
- * ------------|-----------------------------------------------------------
- * \param[in] ctx     | Must point to an previously initialized `nk_context` struct after calling `nk_tree_xxx_push_xxx`
+ * \details
+ *
+ * \param[in] ctx      Must point to an previously initialized `nk_context` struct after calling `nk_tree_xxx_push_xxx`
  */
 NK_API void nk_tree_state_pop(struct nk_context*);
 
@@ -3547,94 +3145,76 @@ NK_API nk_bool nk_color_pick(struct nk_context*, struct nk_colorf*, enum nk_colo
  * ```
  *
  * # Reference
- * Function            | Description
- * --------------------|-------------------------------------------
- * \ref nk_property_int     | Integer property directly modifying a passed in value
- * \ref nk_property_float   | Float property directly modifying a passed in value
- * \ref nk_property_double  | Double property directly modifying a passed in value
- * \ref nk_propertyi        | Integer property returning the modified int value
- * \ref nk_propertyf        | Float property returning the modified float value
- * \ref nk_propertyd        | Double property returning the modified double value
+ * | Function                | Description                                           |
+ * | ---------------------   | ---------------                                       |
+ * | \ref nk_property_int    | Integer property directly modifying a passed in value |
+ * | \ref nk_property_float  | Float property directly modifying a passed in value   |
+ * | \ref nk_property_double | Double property directly modifying a passed in value  |
+ * | \ref nk_propertyi       | Integer property returning the modified int value     |
+ * | \ref nk_propertyf       | Float property returning the modified float value     |
+ * | \ref nk_propertyd       | Double property returning the modified double value   |
  *
 
- * # # nk_property_int
  * Integer property directly modifying a passed in value
  * !!! \warning
  *     To generate a unique property ID using the same label make sure to insert
  *     a `#` at the beginning. It will not be shown but guarantees correct behavior.
  *
- * ```c
- * void nk_property_int(struct nk_context *ctx, const char *name, int min, int *val, int max, int step, float inc_per_pixel);
- * ```
  *
- * Parameter           | Description
- * --------------------|-----------------------------------------------------------
- * \param[in] ctx             | Must point to an previously initialized `nk_context` struct after calling a layouting function
- * \param[in] name            | String used both as a label as well as a unique identifier
- * \param[in] min             | Minimum value not allowed to be underflown
- * \param[in] val             | Integer pointer to be modified
- * \param[in] max             | Maximum value not allowed to be overflown
- * \param[in] step            | Increment added and subtracted on increment and decrement button
- * \param[in] inc_per_pixel   | Value per pixel added or subtracted on dragging
+ * \param[in] ctx              Must point to an previously initialized `nk_context` struct after calling a layouting function
+ * \param[in] name             String used both as a label as well as a unique identifier
+ * \param[in] min              Minimum value not allowed to be underflown
+ * \param[in] val              Integer pointer to be modified
+ * \param[in] max              Maximum value not allowed to be overflown
+ * \param[in] step             Increment added and subtracted on increment and decrement button
+ * \param[in] inc_per_pixel    Value per pixel added or subtracted on dragging
  */
 NK_API void nk_property_int(struct nk_context*, const char *name, int min, int *val, int max, int step, float inc_per_pixel);
 
 /**
- * # # nk_property_float
- * Float property directly modifying a passed in value
+ * \brief Float property directly modifying a passed in value
  * !!! \warning
  *     To generate a unique property ID using the same label make sure to insert
  *     a `#` at the beginning. It will not be shown but guarantees correct behavior.
  *
- * ```c
- * void nk_property_float(struct nk_context *ctx, const char *name, float min, float *val, float max, float step, float inc_per_pixel);
- * ```
  *
- * Parameter           | Description
- * --------------------|-----------------------------------------------------------
- * \param[in] ctx             | Must point to an previously initialized `nk_context` struct after calling a layouting function
- * \param[in] name            | String used both as a label as well as a unique identifier
- * \param[in] min             | Minimum value not allowed to be underflown
- * \param[in] val             | Float pointer to be modified
- * \param[in] max             | Maximum value not allowed to be overflown
- * \param[in] step            | Increment added and subtracted on increment and decrement button
- * \param[in] inc_per_pixel   | Value per pixel added or subtracted on dragging
+ * \param[in] ctx              Must point to an previously initialized `nk_context` struct after calling a layouting function
+ * \param[in] name             String used both as a label as well as a unique identifier
+ * \param[in] min              Minimum value not allowed to be underflown
+ * \param[in] val              Float pointer to be modified
+ * \param[in] max              Maximum value not allowed to be overflown
+ * \param[in] step             Increment added and subtracted on increment and decrement button
+ * \param[in] inc_per_pixel    Value per pixel added or subtracted on dragging
  */
 NK_API void nk_property_float(struct nk_context*, const char *name, float min, float *val, float max, float step, float inc_per_pixel);
 
 /**
- * # # nk_property_double
- * Double property directly modifying a passed in value
+ * \brief Double property directly modifying a passed in value
+ *
+ * \details
  * !!! \warning
  *     To generate a unique property ID using the same label make sure to insert
  *     a `#` at the beginning. It will not be shown but guarantees correct behavior.
  *
- * ```c
- * void nk_property_double(struct nk_context *ctx, const char *name, double min, double *val, double max, double step, double inc_per_pixel);
- * ```
  *
- * Parameter           | Description
- * --------------------|-----------------------------------------------------------
- * \param[in] ctx             | Must point to an previously initialized `nk_context` struct after calling a layouting function
- * \param[in] name            | String used both as a label as well as a unique identifier
- * \param[in] min             | Minimum value not allowed to be underflown
- * \param[in] val             | Double pointer to be modified
- * \param[in] max             | Maximum value not allowed to be overflown
- * \param[in] step            | Increment added and subtracted on increment and decrement button
- * \param[in] inc_per_pixel   | Value per pixel added or subtracted on dragging
+ * \param[in] ctx              Must point to an previously initialized `nk_context` struct after calling a layouting function
+ * \param[in] name             String used both as a label as well as a unique identifier
+ * \param[in] min              Minimum value not allowed to be underflown
+ * \param[in] val              Double pointer to be modified
+ * \param[in] max              Maximum value not allowed to be overflown
+ * \param[in] step             Increment added and subtracted on increment and decrement button
+ * \param[in] inc_per_pixel    Value per pixel added or subtracted on dragging
  */
 NK_API void nk_property_double(struct nk_context*, const char *name, double min, double *val, double max, double step, float inc_per_pixel);
 
 /**
- * # # nk_propertyi
- * Integer property modifying a passed in value and returning the new value
+ * \brief Integer property modifying a passed in value and returning the new value
+ *
+ * \details
  * !!! \warning
  *     To generate a unique property ID using the same label make sure to insert
  *     a `#` at the beginning. It will not be shown but guarantees correct behavior.
  *
- * ```c
- * int nk_propertyi(struct nk_context *ctx, const char *name, int min, int val, int max, int step, float inc_per_pixel);
- * ```
  *
  * \param[in] ctx              Must point to an previously initialized `nk_context` struct after calling a layouting function
  * \param[in] name             String used both as a label as well as a unique identifier
@@ -3649,15 +3229,13 @@ NK_API void nk_property_double(struct nk_context*, const char *name, double min,
 NK_API int nk_propertyi(struct nk_context*, const char *name, int min, int val, int max, int step, float inc_per_pixel);
 
 /**
- * # # nk_propertyf
- * Float property modifying a passed in value and returning the new value
+ * \brief Float property modifying a passed in value and returning the new value
+ *
+ * \details
  * !!! \warning
  *     To generate a unique property ID using the same label make sure to insert
  *     a `#` at the beginning. It will not be shown but guarantees correct behavior.
  *
- * ```c
- * float nk_propertyf(struct nk_context *ctx, const char *name, float min, float val, float max, float step, float inc_per_pixel);
- * ```
  *
  * \param[in] ctx              Must point to an previously initialized `nk_context` struct after calling a layouting function
  * \param[in] name             String used both as a label as well as a unique identifier
@@ -3672,15 +3250,13 @@ NK_API int nk_propertyi(struct nk_context*, const char *name, int min, int val, 
 NK_API float nk_propertyf(struct nk_context*, const char *name, float min, float val, float max, float step, float inc_per_pixel);
 
 /**
- * # # nk_propertyd
- * Float property modifying a passed in value and returning the new value
+ * \brief Float property modifying a passed in value and returning the new value
+ *
+ * \details
  * !!! \warning
  *     To generate a unique property ID using the same label make sure to insert
  *     a `#` at the beginning. It will not be shown but guarantees correct behavior.
  *
- * ```c
- * float nk_propertyd(struct nk_context *ctx, const char *name, double min, double val, double max, double step, double inc_per_pixel);
- * ```
  *
  * \param[in] ctx              Must point to an previously initialized `nk_context` struct after calling a layouting function
  * \param[in] name             String used both as a label as well as a unique identifier
@@ -6433,36 +6009,46 @@ nk_stbtt_free(void *ptr, void *user_data) {
  *                              MATH
  *
  * ===============================================================*/
-/*/// ### Math
-///  Since nuklear is supposed to work on all systems providing floating point
-///  math without any dependencies I also had to implement my own math functions
-///  for sqrt, sin and cos. Since the actual highly accurate implementations for
-///  the standard library functions are quite complex and I do not need high
-///  precision for my use cases I use approximations.
-///
-///  Sqrt
-///  ----
-///  For square root nuklear uses the famous fast inverse square root:
-///  https://en.wikipedia.org/wiki/Fast_inverse_square_root with
-///  slightly tweaked magic constant. While on today's hardware it is
-///  probably not faster it is still fast and accurate enough for
-///  nuklear's use cases. IMPORTANT: this requires float format IEEE 754
-///
-///  Sine/Cosine
-///  -----------
-///  All constants inside both function are generated Remez's minimax
-///  approximations for value range 0...2*PI. The reason why I decided to
-///  approximate exactly that range is that nuklear only needs sine and
-///  cosine to generate circles which only requires that exact range.
-///  In addition I used Remez instead of Taylor for additional precision:
-///  www.lolengine.net/blog/2011/12/21/better-function-approximations.
-///
-///  The tool I used to generate constants for both sine and cosine
-///  (it can actually approximate a lot more functions) can be
-///  found here: www.lolengine.net/wiki/oss/lolremez
+/* ### Math
+  Since nuklear is supposed to work on all systems providing floating point
+  math without any dependencies I also had to implement my own math functions
+  for sqrt, sin and cos. Since the actual highly accurate implementations for
+  the standard library functions are quite complex and I do not need high
+  precision for my use cases I use approximations.
+
+  Sqrt
+  ----
+  For square root nuklear uses the famous fast inverse square root:
+  https://en.wikipedia.org/wiki/Fast_inverse_square_root with
+  slightly tweaked magic constant. While on today's hardware it is
+  probably not faster it is still fast and accurate enough for
+  nuklear's use cases. IMPORTANT: this requires float format IEEE 754
+
+  Sine/Cosine
+  -----------
+  All constants inside both function are generated Remez's minimax
+  approximations for value range 0...2*PI. The reason why I decided to
+  approximate exactly that range is that nuklear only needs sine and
+  cosine to generate circles which only requires that exact range.
+  In addition I used Remez instead of Taylor for additional precision:
+  www.lolengine.net/blog/2011/12/21/better-function-approximations.
+
+  The tool I used to generate constants for both sine and cosine
+  (it can actually approximate a lot more functions) can be
+  found here: www.lolengine.net/wiki/oss/lolremez
 */
 #ifndef NK_INV_SQRT
 #define NK_INV_SQRT nk_inv_sqrt
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] n <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB float
 nk_inv_sqrt(float n)
 {
@@ -6478,6 +6064,16 @@ nk_inv_sqrt(float n)
 #endif
 #ifndef NK_SIN
 #define NK_SIN nk_sin
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] x <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB float
 nk_sin(float x)
 {
@@ -6494,6 +6090,16 @@ nk_sin(float x)
 #endif
 #ifndef NK_COS
 #define NK_COS nk_cos
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] x <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB float
 nk_cos(float x)
 {
@@ -6513,6 +6119,16 @@ nk_cos(float x)
 #endif
 #ifndef NK_ATAN
 #define NK_ATAN nk_atan
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] x <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB float
 nk_atan(float x)
 {
@@ -6533,6 +6149,17 @@ nk_atan(float x)
 #endif
 #ifndef NK_ATAN2
 #define NK_ATAN2 nk_atan2
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] y <fill in>
+ * \param[in] x <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB float
 nk_atan2(float y, float x)
 {
@@ -6557,6 +6184,16 @@ nk_atan2(float y, float x)
     return 0.0f; /* prevents warning */
 }
 #endif
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] v <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB nk_uint
 nk_round_up_pow2(nk_uint v)
 {
@@ -6569,6 +6206,17 @@ nk_round_up_pow2(nk_uint v)
     v++;
     return v;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] x <fill in>
+ * \param[in] n <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB double
 nk_pow(double x, int n)
 {
@@ -6584,18 +6232,48 @@ nk_pow(double x, int n)
     }
     return plus ? r : 1.0 / r;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] x <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB int
 nk_ifloord(double x)
 {
     x = (double)((int)x - ((x < 0.0) ? 1 : 0));
     return (int)x;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] x <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB int
 nk_ifloorf(float x)
 {
     x = (float)((int)x - ((x < 0.0f) ? 1 : 0));
     return (int)x;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] x <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB int
 nk_iceilf(float x)
 {
@@ -6608,6 +6286,16 @@ nk_iceilf(float x)
         return (r > 0.0f) ? t+1: t;
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] n <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB int
 nk_log10(double n)
 {
@@ -6624,16 +6312,49 @@ nk_log10(double n)
     if (neg) exp = -exp;
     return exp;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] x <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB float
 nk_roundf(float x)
 {
     return (x >= 0.0) ? nk_ifloorf(x + 0.5) : nk_iceilf(x - 0.5);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] void <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_rect
 nk_get_null_rect(void)
 {
     return nk_null_rect;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] x <fill in>
+ * \param[in] y <fill in>
+ * \param[in] w <fill in>
+ * \param[in] h <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_rect
 nk_rect(float x, float y, float w, float h)
 {
@@ -6642,6 +6363,19 @@ nk_rect(float x, float y, float w, float h)
     r.w = w; r.h = h;
     return r;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] x <fill in>
+ * \param[in] y <fill in>
+ * \param[in] w <fill in>
+ * \param[in] h <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_rect
 nk_recti(int x, int y, int w, int h)
 {
@@ -6652,21 +6386,62 @@ nk_recti(int x, int y, int w, int h)
     r.h = (float)h;
     return r;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] pos <fill in>
+ * \param[in] size <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_rect
 nk_recta(struct nk_vec2 pos, struct nk_vec2 size)
 {
     return nk_rect(pos.x, pos.y, size.x, size.y);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] r <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_rect
 nk_rectv(const float *r)
 {
     return nk_rect(r[0], r[1], r[2], r[3]);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] r <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_rect
 nk_rectiv(const int *r)
 {
     return nk_recti(r[0], r[1], r[2], r[3]);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] r <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_vec2
 nk_rect_pos(struct nk_rect r)
 {
@@ -6674,6 +6449,16 @@ nk_rect_pos(struct nk_rect r)
     ret.x = r.x; ret.y = r.y;
     return ret;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] r <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_vec2
 nk_rect_size(struct nk_rect r)
 {
@@ -6681,6 +6466,17 @@ nk_rect_size(struct nk_rect r)
     ret.x = r.w; ret.y = r.h;
     return ret;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] r <fill in>
+ * \param[in] amount <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB struct nk_rect
 nk_shrink_rect(struct nk_rect r, float amount)
 {
@@ -6693,6 +6489,17 @@ nk_shrink_rect(struct nk_rect r, float amount)
     res.h = r.h - 2 * amount;
     return res;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] r <fill in>
+ * \param[in] pad <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB struct nk_rect
 nk_pad_rect(struct nk_rect r, struct nk_vec2 pad)
 {
@@ -6703,6 +6510,17 @@ nk_pad_rect(struct nk_rect r, struct nk_vec2 pad)
     r.h -= 2 * pad.y;
     return r;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] x <fill in>
+ * \param[in] y <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_vec2
 nk_vec2(float x, float y)
 {
@@ -6710,6 +6528,17 @@ nk_vec2(float x, float y)
     ret.x = x; ret.y = y;
     return ret;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] x <fill in>
+ * \param[in] y <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_vec2
 nk_vec2i(int x, int y)
 {
@@ -6718,16 +6547,49 @@ nk_vec2i(int x, int y)
     ret.y = (float)y;
     return ret;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] v <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_vec2
 nk_vec2v(const float *v)
 {
     return nk_vec2(v[0], v[1]);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] v <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_vec2
 nk_vec2iv(const int *v)
 {
     return nk_vec2i(v[0], v[1]);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] clip <fill in>
+ * \param[in] a <fill in>
+ * \param[in] x0 <fill in>
+ * \param[in] y0 <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_unify(struct nk_rect *clip, const struct nk_rect *a, float x0, float y0,
     float x1, float y1)
@@ -6742,6 +6604,17 @@ nk_unify(struct nk_rect *clip, const struct nk_rect *a, float x0, float y0,
     clip->h = NK_MAX(0, clip->h);
 }
 
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] result <fill in>
+ * \param[in] r <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_triangle_from_direction(struct nk_vec2 *result, struct nk_rect r,
     float pad_x, float pad_y, enum nk_heading direction)
@@ -6797,6 +6670,18 @@ NK_LIB int nk_to_lower(int c) {return (c >= 'A' && c <= 'Z') ? (c - ('a' + 'A'))
 
 #ifndef NK_MEMCPY
 #define NK_MEMCPY nk_memcopy
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] dst0 <fill in>
+ * \param[in] src0 <fill in>
+ * \param[in] length <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void*
 nk_memcopy(void *dst0, const void *src0, nk_size length)
 {
@@ -6856,6 +6741,18 @@ done:
 #endif
 #ifndef NK_MEMSET
 #define NK_MEMSET nk_memset
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ptr <fill in>
+ * \param[in] c0 <fill in>
+ * \param[in] size <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_memset(void *ptr, int c0, nk_size size)
 {
@@ -6908,12 +6805,33 @@ nk_memset(void *ptr, int c0, nk_size size)
     #undef nk_wmask
 }
 #endif
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ptr <fill in>
+ * \param[in] size <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_zero(void *ptr, nk_size size)
 {
     NK_ASSERT(ptr);
     NK_MEMSET(ptr, 0, size);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] str <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_strlen(const char *str)
 {
@@ -6922,6 +6840,17 @@ nk_strlen(const char *str)
     while (str && *str++ != '\0') siz++;
     return siz;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] str <fill in>
+ * \param[in] endptr <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_strtoi(const char *str, char **endptr)
 {
@@ -6946,6 +6875,17 @@ nk_strtoi(const char *str, char **endptr)
         *endptr = (char *)p;
     return neg*value;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] str <fill in>
+ * \param[in] endptr <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API double
 nk_strtod(const char *str, char **endptr)
 {
@@ -7003,6 +6943,17 @@ nk_strtod(const char *str, char **endptr)
         *endptr = p;
     return number;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] str <fill in>
+ * \param[in] endptr <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API float
 nk_strtof(const char *str, char **endptr)
 {
@@ -7012,6 +6963,17 @@ nk_strtof(const char *str, char **endptr)
     float_value = (float)double_value;
     return float_value;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] s1 <fill in>
+ * \param[in] s2 <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_stricmp(const char *s1, const char *s2)
 {
@@ -7034,6 +6996,18 @@ nk_stricmp(const char *s1, const char *s2)
     } while (c1);
     return 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] s1 <fill in>
+ * \param[in] s2 <fill in>
+ * \param[in] n <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_stricmpn(const char *s1, const char *s2, int n)
 {
@@ -7059,6 +7033,17 @@ nk_stricmpn(const char *s1, const char *s2, int n)
     } while (c1);
     return 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] regexp <fill in>
+ * \param[in] text <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN int
 nk_str_match_here(const char *regexp, const char *text)
 {
@@ -7072,6 +7057,18 @@ nk_str_match_here(const char *regexp, const char *text)
         return nk_str_match_here(regexp+1, text+1);
     return 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] c <fill in>
+ * \param[in] regexp <fill in>
+ * \param[in] text <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN int
 nk_str_match_star(int c, const char *regexp, const char *text)
 {
@@ -7081,6 +7078,17 @@ nk_str_match_star(int c, const char *regexp, const char *text)
     } while (*text != '\0' && (*text++ == c || c == '.'));
     return 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] text <fill in>
+ * \param[in] regexp <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_strfilter(const char *text, const char *regexp)
 {
@@ -7098,6 +7106,17 @@ nk_strfilter(const char *text, const char *regexp)
     } while (*text++ != '\0');
     return 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] str <fill in>
+ * \param[in] str_len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_strmatch_fuzzy_text(const char *str, int str_len,
     const char *pattern, int *out_score)
@@ -7219,11 +7238,34 @@ nk_strmatch_fuzzy_text(const char *str, int str_len,
         *out_score = score;
     return nk_true;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] str <fill in>
+ * \param[in] pattern <fill in>
+ * \param[in] out_score <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_strmatch_fuzzy_string(char const *str, char const *pattern, int *out_score)
 {
     return nk_strmatch_fuzzy_text(str, nk_strlen(str), pattern, out_score);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] string <fill in>
+ * \param[in] prec <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB int
 nk_string_float_limit(char *string, int prec)
 {
@@ -7244,6 +7286,16 @@ nk_string_float_limit(char *string, int prec)
     }
     return (int)(c - string);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] s <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_strrev_ascii(char *s)
 {
@@ -7257,6 +7309,17 @@ nk_strrev_ascii(char *s)
         s[len -1 - i] = t;
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] s <fill in>
+ * \param[in] n <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB char*
 nk_itoa(char *s, long n)
 {
@@ -7283,6 +7346,17 @@ nk_itoa(char *s, long n)
 }
 #ifndef NK_DTOA
 #define NK_DTOA nk_dtoa
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] s <fill in>
+ * \param[in] n <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB char*
 nk_dtoa(char *s, double n)
 {
@@ -7364,6 +7438,19 @@ nk_dtoa(char *s, double n)
 #endif
 #ifdef NK_INCLUDE_STANDARD_VARARGS
 #ifndef NK_INCLUDE_STANDARD_IO
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] buf <fill in>
+ * \param[in] buf_size <fill in>
+ * \param[in] fmt <fill in>
+ * \param[in] args <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN int
 nk_vsnprintf(char *buf, int buf_size, const char *fmt, va_list args)
 {
@@ -7683,6 +7770,19 @@ nk_vsnprintf(char *buf, int buf_size, const char *fmt, va_list args)
     return result;
 }
 #endif
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] buf <fill in>
+ * \param[in] buf_size <fill in>
+ * \param[in] fmt <fill in>
+ * \param[in] args <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB int
 nk_strfmt(char *buf, int buf_size, const char *fmt, va_list args)
 {
@@ -7700,6 +7800,18 @@ nk_strfmt(char *buf, int buf_size, const char *fmt, va_list args)
     return result;
 }
 #endif
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] key <fill in>
+ * \param[in] len <fill in>
+ * \param[in] seed <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_hash
 nk_murmur_hash(const void * key, int len, nk_hash seed)
 {
@@ -7765,6 +7877,18 @@ nk_murmur_hash(const void * key, int len, nk_hash seed)
     return h1;
 }
 #ifdef NK_INCLUDE_STANDARD_IO
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] path <fill in>
+ * \param[in] siz <fill in>
+ * \param[in] alloc <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB char*
 nk_file_load(const char* path, nk_size* siz, const struct nk_allocator *alloc)
 {
@@ -7799,6 +7923,17 @@ nk_file_load(const char* path, nk_size* siz, const struct nk_allocator *alloc)
     return buf;
 }
 #endif
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] font <fill in>
+ * \param[in] text <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB int
 nk_text_clamp(const struct nk_user_font *font, const char *text,
     int text_len, float space, int *glyphs, float *text_width,
@@ -7847,6 +7982,16 @@ nk_text_clamp(const struct nk_user_font *font, const char *text,
         return (!sep_len) ? len: sep_len;
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] font <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB struct nk_vec2
 nk_text_calculate_text_bounds(const struct nk_user_font *font,
     const char *begin, int byte_len, float row_height, const char **remaining,
@@ -7917,6 +8062,17 @@ nk_text_calculate_text_bounds(const struct nk_user_font *font,
  *                          COLOR
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] p <fill in>
+ * \param[in] length <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN int
 nk_parse_hex(const char *p, int length)
 {
@@ -7933,6 +8089,17 @@ nk_parse_hex(const char *p, int length)
     }
     return i;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] col <fill in>
+ * \param[in] factor <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_color
 nk_rgb_factor(struct nk_color col, float factor)
 {
@@ -7943,6 +8110,19 @@ nk_rgb_factor(struct nk_color col, float factor)
     col.b = (nk_byte)(col.b * factor);
     return col;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] r <fill in>
+ * \param[in] g <fill in>
+ * \param[in] b <fill in>
+ * \param[in] a <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_color
 nk_rgba(int r, int g, int b, int a)
 {
@@ -7953,6 +8133,16 @@ nk_rgba(int r, int g, int b, int a)
     ret.a = (nk_byte)NK_CLAMP(0, a, 255);
     return ret;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] rgb <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_color
 nk_rgb_hex(const char *rgb)
 {
@@ -7965,6 +8155,16 @@ nk_rgb_hex(const char *rgb)
     col.a = 255;
     return col;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] rgb <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_color
 nk_rgba_hex(const char *rgb)
 {
@@ -7977,6 +8177,17 @@ nk_rgba_hex(const char *rgb)
     col.a = (nk_byte)nk_parse_hex(c+6, 2);
     return col;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] output <fill in>
+ * \param[in] col <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_color_hex_rgba(char *output, struct nk_color col)
 {
@@ -7992,6 +8203,17 @@ nk_color_hex_rgba(char *output, struct nk_color col)
     output[8] = '\0';
     #undef NK_TO_HEX
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] output <fill in>
+ * \param[in] col <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_color_hex_rgb(char *output, struct nk_color col)
 {
@@ -8005,16 +8227,48 @@ nk_color_hex_rgb(char *output, struct nk_color col)
     output[6] = '\0';
     #undef NK_TO_HEX
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] c <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_color
 nk_rgba_iv(const int *c)
 {
     return nk_rgba(c[0], c[1], c[2], c[3]);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] c <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_color
 nk_rgba_bv(const nk_byte *c)
 {
     return nk_rgba(c[0], c[1], c[2], c[3]);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] r <fill in>
+ * \param[in] g <fill in>
+ * \param[in] b <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_color
 nk_rgb(int r, int g, int b)
 {
@@ -8025,16 +8279,46 @@ nk_rgb(int r, int g, int b)
     ret.a = (nk_byte)255;
     return ret;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] c <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_color
 nk_rgb_iv(const int *c)
 {
     return nk_rgb(c[0], c[1], c[2]);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] c <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_color
 nk_rgb_bv(const nk_byte* c)
 {
     return nk_rgb(c[0], c[1], c[2]);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] in <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_color
 nk_rgba_u32(nk_uint in)
 {
@@ -8045,6 +8329,19 @@ nk_rgba_u32(nk_uint in)
     ret.a = (nk_byte)((in >> 24) & 0xFF);
     return ret;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] r <fill in>
+ * \param[in] g <fill in>
+ * \param[in] b <fill in>
+ * \param[in] a <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_color
 nk_rgba_f(float r, float g, float b, float a)
 {
@@ -8055,16 +8352,48 @@ nk_rgba_f(float r, float g, float b, float a)
     ret.a = (nk_byte)(NK_SATURATE(a) * 255.0f);
     return ret;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] c <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_color
 nk_rgba_fv(const float *c)
 {
     return nk_rgba_f(c[0], c[1], c[2], c[3]);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] c <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_color
 nk_rgba_cf(struct nk_colorf c)
 {
     return nk_rgba_f(c.r, c.g, c.b, c.a);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] r <fill in>
+ * \param[in] g <fill in>
+ * \param[in] b <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_color
 nk_rgb_f(float r, float g, float b)
 {
@@ -8075,41 +8404,128 @@ nk_rgb_f(float r, float g, float b)
     ret.a = 255;
     return ret;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] c <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_color
 nk_rgb_fv(const float *c)
 {
     return nk_rgb_f(c[0], c[1], c[2]);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] c <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_color
 nk_rgb_cf(struct nk_colorf c)
 {
     return nk_rgb_f(c.r, c.g, c.b);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] h <fill in>
+ * \param[in] s <fill in>
+ * \param[in] v <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_color
 nk_hsv(int h, int s, int v)
 {
     return nk_hsva(h, s, v, 255);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] c <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_color
 nk_hsv_iv(const int *c)
 {
     return nk_hsv(c[0], c[1], c[2]);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] c <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_color
 nk_hsv_bv(const nk_byte *c)
 {
     return nk_hsv(c[0], c[1], c[2]);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] h <fill in>
+ * \param[in] s <fill in>
+ * \param[in] v <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_color
 nk_hsv_f(float h, float s, float v)
 {
     return nk_hsva_f(h, s, v, 1.0f);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] c <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_color
 nk_hsv_fv(const float *c)
 {
     return nk_hsv_f(c[0], c[1], c[2]);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] h <fill in>
+ * \param[in] s <fill in>
+ * \param[in] v <fill in>
+ * \param[in] a <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_color
 nk_hsva(int h, int s, int v, int a)
 {
@@ -8119,16 +8535,49 @@ nk_hsva(int h, int s, int v, int a)
     float af = ((float)NK_CLAMP(0, a, 255)) / 255.0f;
     return nk_hsva_f(hf, sf, vf, af);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] c <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_color
 nk_hsva_iv(const int *c)
 {
     return nk_hsva(c[0], c[1], c[2], c[3]);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] c <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_color
 nk_hsva_bv(const nk_byte *c)
 {
     return nk_hsva(c[0], c[1], c[2], c[3]);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] h <fill in>
+ * \param[in] s <fill in>
+ * \param[in] v <fill in>
+ * \param[in] a <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_colorf
 nk_hsva_colorf(float h, float s, float v, float a)
 {
@@ -8156,22 +8605,65 @@ nk_hsva_colorf(float h, float s, float v, float a)
     out.a = a;
     return out;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] c <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_colorf
 nk_hsva_colorfv(const float *c)
 {
     return nk_hsva_colorf(c[0], c[1], c[2], c[3]);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] h <fill in>
+ * \param[in] s <fill in>
+ * \param[in] v <fill in>
+ * \param[in] a <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_color
 nk_hsva_f(float h, float s, float v, float a)
 {
     struct nk_colorf c = nk_hsva_colorf(h, s, v, a);
     return nk_rgba_f(c.r, c.g, c.b, c.a);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] c <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_color
 nk_hsva_fv(const float *c)
 {
     return nk_hsva_f(c[0], c[1], c[2], c[3]);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] in <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_uint
 nk_color_u32(struct nk_color in)
 {
@@ -8181,6 +8673,20 @@ nk_color_u32(struct nk_color in)
     out |= ((nk_uint)in.a << 24);
     return out;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] r <fill in>
+ * \param[in] g <fill in>
+ * \param[in] b <fill in>
+ * \param[in] a <fill in>
+ * \param[in] in <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_color_f(float *r, float *g, float *b, float *a, struct nk_color in)
 {
@@ -8190,11 +8696,32 @@ nk_color_f(float *r, float *g, float *b, float *a, struct nk_color in)
     *b = (float)in.b * s;
     *a = (float)in.a * s;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] c <fill in>
+ * \param[in] in <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_color_fv(float *c, struct nk_color in)
 {
     nk_color_f(&c[0], &c[1], &c[2], &c[3], in);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] in <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_colorf
 nk_color_cf(struct nk_color in)
 {
@@ -8202,6 +8729,20 @@ nk_color_cf(struct nk_color in)
     nk_color_f(&o.r, &o.g, &o.b, &o.a, in);
     return o;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] r <fill in>
+ * \param[in] g <fill in>
+ * \param[in] b <fill in>
+ * \param[in] a <fill in>
+ * \param[in] in <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_color_d(double *r, double *g, double *b, double *a, struct nk_color in)
 {
@@ -8211,23 +8752,69 @@ nk_color_d(double *r, double *g, double *b, double *a, struct nk_color in)
     *b = (double)in.b * s;
     *a = (double)in.a * s;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] c <fill in>
+ * \param[in] in <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_color_dv(double *c, struct nk_color in)
 {
     nk_color_d(&c[0], &c[1], &c[2], &c[3], in);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] out_h <fill in>
+ * \param[in] out_s <fill in>
+ * \param[in] out_v <fill in>
+ * \param[in] in <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_color_hsv_f(float *out_h, float *out_s, float *out_v, struct nk_color in)
 {
     float a;
     nk_color_hsva_f(out_h, out_s, out_v, &a, in);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] out <fill in>
+ * \param[in] in <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_color_hsv_fv(float *out, struct nk_color in)
 {
     float a;
     nk_color_hsva_f(&out[0], &out[1], &out[2], &a, in);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] out_h <fill in>
+ * \param[in] out_s <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_colorf_hsva_f(float *out_h, float *out_s,
     float *out_v, float *out_a, struct nk_colorf in)
@@ -8249,11 +8836,33 @@ nk_colorf_hsva_f(float *out_h, float *out_s,
     *out_a = in.a;
 
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] hsva <fill in>
+ * \param[in] in <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_colorf_hsva_fv(float *hsva, struct nk_colorf in)
 {
     nk_colorf_hsva_f(&hsva[0], &hsva[1], &hsva[2], &hsva[3], in);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] out_h <fill in>
+ * \param[in] out_s <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_color_hsva_f(float *out_h, float *out_s,
     float *out_v, float *out_a, struct nk_color in)
@@ -8262,11 +8871,34 @@ nk_color_hsva_f(float *out_h, float *out_s,
     nk_color_f(&col.r,&col.g,&col.b,&col.a, in);
     nk_colorf_hsva_f(out_h, out_s, out_v, out_a, col);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] out <fill in>
+ * \param[in] in <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_color_hsva_fv(float *out, struct nk_color in)
 {
     nk_color_hsva_f(&out[0], &out[1], &out[2], &out[3], in);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] out_h <fill in>
+ * \param[in] out_s <fill in>
+ * \param[in] out_v <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_color_hsva_i(int *out_h, int *out_s, int *out_v,
                 int *out_a, struct nk_color in)
@@ -8278,11 +8910,33 @@ nk_color_hsva_i(int *out_h, int *out_s, int *out_v,
     *out_v = (nk_byte)(v * 255.0f);
     *out_a = (nk_byte)(a * 255.0f);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] out <fill in>
+ * \param[in] in <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_color_hsva_iv(int *out, struct nk_color in)
 {
     nk_color_hsva_i(&out[0], &out[1], &out[2], &out[3], in);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] out <fill in>
+ * \param[in] in <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_color_hsva_bv(nk_byte *out, struct nk_color in)
 {
@@ -8293,6 +8947,20 @@ nk_color_hsva_bv(nk_byte *out, struct nk_color in)
     out[2] = (nk_byte)tmp[2];
     out[3] = (nk_byte)tmp[3];
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] h <fill in>
+ * \param[in] s <fill in>
+ * \param[in] v <fill in>
+ * \param[in] a <fill in>
+ * \param[in] in <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_color_hsva_b(nk_byte *h, nk_byte *s, nk_byte *v, nk_byte *a, struct nk_color in)
 {
@@ -8303,12 +8971,38 @@ nk_color_hsva_b(nk_byte *h, nk_byte *s, nk_byte *v, nk_byte *a, struct nk_color 
     *v = (nk_byte)tmp[2];
     *a = (nk_byte)tmp[3];
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] out_h <fill in>
+ * \param[in] out_s <fill in>
+ * \param[in] out_v <fill in>
+ * \param[in] in <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_color_hsv_i(int *out_h, int *out_s, int *out_v, struct nk_color in)
 {
     int a;
     nk_color_hsva_i(out_h, out_s, out_v, &a, in);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] out_h <fill in>
+ * \param[in] out_s <fill in>
+ * \param[in] out_v <fill in>
+ * \param[in] in <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_color_hsv_b(nk_byte *out_h, nk_byte *out_s, nk_byte *out_v, struct nk_color in)
 {
@@ -8318,11 +9012,33 @@ nk_color_hsv_b(nk_byte *out_h, nk_byte *out_s, nk_byte *out_v, struct nk_color i
     *out_s = (nk_byte)tmp[1];
     *out_v = (nk_byte)tmp[2];
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] out <fill in>
+ * \param[in] in <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_color_hsv_iv(int *out, struct nk_color in)
 {
     nk_color_hsv_i(&out[0], &out[1], &out[2], in);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] out <fill in>
+ * \param[in] in <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_color_hsv_bv(nk_byte *out, struct nk_color in)
 {
@@ -8346,6 +9062,17 @@ NK_GLOBAL const nk_byte nk_utfmask[NK_UTF_SIZE+1] = {0xC0, 0x80, 0xE0, 0xF0, 0xF
 NK_GLOBAL const nk_uint nk_utfmin[NK_UTF_SIZE+1] = {0, 0, 0x80, 0x800, 0x10000};
 NK_GLOBAL const nk_uint nk_utfmax[NK_UTF_SIZE+1] = {0x10FFFF, 0x7F, 0x7FF, 0xFFFF, 0x10FFFF};
 
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] u <fill in>
+ * \param[in] i <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN int
 nk_utf_validate(nk_rune *u, int i)
 {
@@ -8357,6 +9084,17 @@ nk_utf_validate(nk_rune *u, int i)
     for (i = 1; *u > nk_utfmax[i]; ++i);
     return i;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] c <fill in>
+ * \param[in] i <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN nk_rune
 nk_utf_decode_byte(char c, int *i)
 {
@@ -8368,6 +9106,18 @@ nk_utf_decode_byte(char c, int *i)
     }
     return 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] c <fill in>
+ * \param[in] u <fill in>
+ * \param[in] clen <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_utf_decode(const char *c, nk_rune *u, int clen)
 {
@@ -8396,11 +9146,34 @@ nk_utf_decode(const char *c, nk_rune *u, int clen)
     nk_utf_validate(u, len);
     return len;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] u <fill in>
+ * \param[in] i <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN char
 nk_utf_encode_byte(nk_rune u, int i)
 {
     return (char)((nk_utfbyte[i]) | ((nk_byte)u & ~nk_utfmask[i]));
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] u <fill in>
+ * \param[in] c <fill in>
+ * \param[in] clen <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_utf_encode(nk_rune u, char *c, int clen)
 {
@@ -8416,6 +9189,17 @@ nk_utf_encode(nk_rune u, char *c, int clen)
     c[0] = nk_utf_encode_byte(u, len);
     return len;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] str <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_utf_len(const char *str, int len)
 {
@@ -8439,6 +9223,18 @@ nk_utf_len(const char *str, int len)
     }
     return glyphs;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] buffer <fill in>
+ * \param[in] length <fill in>
+ * \param[in] index <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API const char*
 nk_utf_at(const char *buffer, int length, int index,
     nk_rune *unicode, int *len)
@@ -8487,6 +9283,18 @@ nk_utf_at(const char *buffer, int length, int index,
  *
  * ===============================================================*/
 #ifdef NK_INCLUDE_DEFAULT_ALLOCATOR
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] unused <fill in>
+ * \param[in] old <fill in>
+ * \param[in] size <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void*
 nk_malloc(nk_handle unused, void *old,nk_size size)
 {
@@ -8494,12 +9302,33 @@ nk_malloc(nk_handle unused, void *old,nk_size size)
     NK_UNUSED(old);
     return malloc(size);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] unused <fill in>
+ * \param[in] ptr <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_mfree(nk_handle unused, void *ptr)
 {
     NK_UNUSED(unused);
     free(ptr);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] buffer <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_buffer_init_default(struct nk_buffer *buffer)
 {
@@ -8511,6 +9340,17 @@ nk_buffer_init_default(struct nk_buffer *buffer)
 }
 #endif
 
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] a <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_buffer_init(struct nk_buffer *b, const struct nk_allocator *a,
     nk_size initial_size)
@@ -8528,6 +9368,18 @@ nk_buffer_init(struct nk_buffer *b, const struct nk_allocator *a,
     b->grow_factor = 2.0f;
     b->pool = *a;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] m <fill in>
+ * \param[in] size <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_buffer_init_fixed(struct nk_buffer *b, void *m, nk_size size)
 {
@@ -8542,6 +9394,16 @@ nk_buffer_init_fixed(struct nk_buffer *b, void *m, nk_size size)
     b->memory.size = size;
     b->size = size;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] unaligned <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void*
 nk_buffer_align(void *unaligned,
     nk_size align, nk_size *alignment,
@@ -8572,6 +9434,18 @@ nk_buffer_align(void *unaligned,
     }
     return memory;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] capacity <fill in>
+ * \param[in] size <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void*
 nk_buffer_realloc(struct nk_buffer *b, nk_size capacity, nk_size *size)
 {
@@ -8610,6 +9484,17 @@ nk_buffer_realloc(struct nk_buffer *b, nk_size capacity, nk_size *size)
     }
     return temp;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void*
 nk_buffer_alloc(struct nk_buffer *b, enum nk_buffer_allocation_type type,
     nk_size size, nk_size align)
@@ -8662,6 +9547,17 @@ nk_buffer_alloc(struct nk_buffer *b, enum nk_buffer_allocation_type type,
     b->calls++;
     return memory;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_buffer_push(struct nk_buffer *b, enum nk_buffer_allocation_type type,
     const void *memory, nk_size size, nk_size align)
@@ -8670,6 +9566,17 @@ nk_buffer_push(struct nk_buffer *b, enum nk_buffer_allocation_type type,
     if (!mem) return;
     NK_MEMCPY(mem, memory, size);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] buffer <fill in>
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_buffer_mark(struct nk_buffer *buffer, enum nk_buffer_allocation_type type)
 {
@@ -8680,6 +9587,17 @@ nk_buffer_mark(struct nk_buffer *buffer, enum nk_buffer_allocation_type type)
         buffer->marker[type].offset = buffer->size;
     else buffer->marker[type].offset = buffer->allocated;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] buffer <fill in>
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_buffer_reset(struct nk_buffer *buffer, enum nk_buffer_allocation_type type)
 {
@@ -8701,6 +9619,16 @@ nk_buffer_reset(struct nk_buffer *buffer, enum nk_buffer_allocation_type type)
         buffer->marker[type].active = nk_false;
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_buffer_clear(struct nk_buffer *b)
 {
@@ -8711,6 +9639,16 @@ nk_buffer_clear(struct nk_buffer *b)
     b->calls = 0;
     b->needed = 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_buffer_free(struct nk_buffer *b)
 {
@@ -8721,6 +9659,17 @@ nk_buffer_free(struct nk_buffer *b)
     NK_ASSERT(b->pool.free);
     b->pool.free(b->pool.userdata, b->memory.ptr);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] s <fill in>
+ * \param[in] b <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_buffer_info(struct nk_memory_status *s, const struct nk_buffer *b)
 {
@@ -8733,6 +9682,16 @@ nk_buffer_info(struct nk_memory_status *s, const struct nk_buffer *b)
     s->memory = b->memory.ptr;
     s->calls = b->calls;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] buffer <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void*
 nk_buffer_memory(struct nk_buffer *buffer)
 {
@@ -8740,6 +9699,16 @@ nk_buffer_memory(struct nk_buffer *buffer)
     if (!buffer) return 0;
     return buffer->memory.ptr;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] buffer <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API const void*
 nk_buffer_memory_const(const struct nk_buffer *buffer)
 {
@@ -8747,6 +9716,16 @@ nk_buffer_memory_const(const struct nk_buffer *buffer)
     if (!buffer) return 0;
     return buffer->memory.ptr;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] buffer <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_size
 nk_buffer_total(const struct nk_buffer *buffer)
 {
@@ -8764,6 +9743,16 @@ nk_buffer_total(const struct nk_buffer *buffer)
  *
  * ===============================================================*/
 #ifdef NK_INCLUDE_DEFAULT_ALLOCATOR
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] str <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_str_init_default(struct nk_str *str)
 {
@@ -8776,18 +9765,54 @@ nk_str_init_default(struct nk_str *str)
 }
 #endif
 
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] str <fill in>
+ * \param[in] alloc <fill in>
+ * \param[in] size <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_str_init(struct nk_str *str, const struct nk_allocator *alloc, nk_size size)
 {
     nk_buffer_init(&str->buffer, alloc, size);
     str->len = 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] str <fill in>
+ * \param[in] memory <fill in>
+ * \param[in] size <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_str_init_fixed(struct nk_str *str, void *memory, nk_size size)
 {
     nk_buffer_init_fixed(&str->buffer, memory, size);
     str->len = 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] s <fill in>
+ * \param[in] str <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_str_append_text_char(struct nk_str *s, const char *str, int len)
 {
@@ -8801,11 +9826,34 @@ nk_str_append_text_char(struct nk_str *s, const char *str, int len)
     s->len += nk_utf_len(str, len);
     return len;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] s <fill in>
+ * \param[in] str <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_str_append_str_char(struct nk_str *s, const char *str)
 {
     return nk_str_append_text_char(s, str, nk_strlen(str));
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] str <fill in>
+ * \param[in] text <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_str_append_text_utf8(struct nk_str *str, const char *text, int len)
 {
@@ -8818,6 +9866,17 @@ nk_str_append_text_utf8(struct nk_str *str, const char *text, int len)
     nk_str_append_text_char(str, text, byte_len);
     return len;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] str <fill in>
+ * \param[in] text <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_str_append_str_utf8(struct nk_str *str, const char *text)
 {
@@ -8836,6 +9895,18 @@ nk_str_append_str_utf8(struct nk_str *str, const char *text)
     nk_str_append_text_char(str, text, byte_len);
     return num_runes;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] str <fill in>
+ * \param[in] text <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_str_append_text_runes(struct nk_str *str, const nk_rune *text, int len)
 {
@@ -8852,6 +9923,17 @@ nk_str_append_text_runes(struct nk_str *str, const nk_rune *text, int len)
     }
     return len;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] str <fill in>
+ * \param[in] runes <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_str_append_str_runes(struct nk_str *str, const nk_rune *runes)
 {
@@ -8867,6 +9949,19 @@ nk_str_append_str_runes(struct nk_str *str, const nk_rune *runes)
     }
     return i;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] s <fill in>
+ * \param[in] pos <fill in>
+ * \param[in] str <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_str_insert_at_char(struct nk_str *s, int pos, const char *str, int len)
 {
@@ -8902,6 +9997,19 @@ nk_str_insert_at_char(struct nk_str *s, int pos, const char *str, int len)
     s->len = nk_utf_len((char *)s->buffer.memory.ptr, (int)s->buffer.allocated);
     return 1;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] str <fill in>
+ * \param[in] pos <fill in>
+ * \param[in] cstr <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_str_insert_at_rune(struct nk_str *str, int pos, const char *cstr, int len)
 {
@@ -8921,16 +10029,54 @@ nk_str_insert_at_rune(struct nk_str *str, int pos, const char *cstr, int len)
     if (!begin) return 0;
     return nk_str_insert_at_char(str, (int)(begin - buffer), cstr, len);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] str <fill in>
+ * \param[in] pos <fill in>
+ * \param[in] text <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_str_insert_text_char(struct nk_str *str, int pos, const char *text, int len)
 {
     return nk_str_insert_text_utf8(str, pos, text, len);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] str <fill in>
+ * \param[in] pos <fill in>
+ * \param[in] text <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_str_insert_str_char(struct nk_str *str, int pos, const char *text)
 {
     return nk_str_insert_text_utf8(str, pos, text, nk_strlen(text));
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] str <fill in>
+ * \param[in] pos <fill in>
+ * \param[in] text <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_str_insert_text_utf8(struct nk_str *str, int pos, const char *text, int len)
 {
@@ -8946,6 +10092,18 @@ nk_str_insert_text_utf8(struct nk_str *str, int pos, const char *text, int len)
     nk_str_insert_at_rune(str, pos, text, byte_len);
     return len;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] str <fill in>
+ * \param[in] pos <fill in>
+ * \param[in] text <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_str_insert_str_utf8(struct nk_str *str, int pos, const char *text)
 {
@@ -8964,6 +10122,19 @@ nk_str_insert_str_utf8(struct nk_str *str, int pos, const char *text)
     nk_str_insert_at_rune(str, pos, text, byte_len);
     return num_runes;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] str <fill in>
+ * \param[in] pos <fill in>
+ * \param[in] runes <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_str_insert_text_runes(struct nk_str *str, int pos, const nk_rune *runes, int len)
 {
@@ -8980,6 +10151,18 @@ nk_str_insert_text_runes(struct nk_str *str, int pos, const nk_rune *runes, int 
     }
     return len;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] str <fill in>
+ * \param[in] pos <fill in>
+ * \param[in] runes <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_str_insert_str_runes(struct nk_str *str, int pos, const nk_rune *runes)
 {
@@ -8995,6 +10178,17 @@ nk_str_insert_str_runes(struct nk_str *str, int pos, const nk_rune *runes)
     }
     return i;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] s <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_str_remove_chars(struct nk_str *s, int len)
 {
@@ -9005,6 +10199,17 @@ nk_str_remove_chars(struct nk_str *s, int len)
     s->buffer.allocated -= (nk_size)len;
     s->len = nk_utf_len((char *)s->buffer.memory.ptr, (int)s->buffer.allocated);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] str <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_str_remove_runes(struct nk_str *str, int len)
 {
@@ -9026,6 +10231,18 @@ nk_str_remove_runes(struct nk_str *str, int len)
     end = (const char*)str->buffer.memory.ptr + str->buffer.allocated;
     nk_str_remove_chars(str, (int)(end-begin)+1);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] s <fill in>
+ * \param[in] pos <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_str_delete_chars(struct nk_str *s, int pos, int len)
 {
@@ -9043,6 +10260,18 @@ nk_str_delete_chars(struct nk_str *s, int pos, int len)
     } else nk_str_remove_chars(s, len);
     s->len = nk_utf_len((char *)s->buffer.memory.ptr, (int)s->buffer.allocated);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] s <fill in>
+ * \param[in] pos <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_str_delete_runes(struct nk_str *s, int pos, int len)
 {
@@ -9067,6 +10296,17 @@ nk_str_delete_runes(struct nk_str *s, int pos, int len)
     if (!end) return;
     nk_str_delete_chars(s, (int)(begin - temp), (int)(end - begin));
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] s <fill in>
+ * \param[in] pos <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API char*
 nk_str_at_char(struct nk_str *s, int pos)
 {
@@ -9074,6 +10314,19 @@ nk_str_at_char(struct nk_str *s, int pos)
     if (!s || pos > (int)s->buffer.allocated) return 0;
     return nk_ptr_add(char, s->buffer.memory.ptr, pos);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] str <fill in>
+ * \param[in] pos <fill in>
+ * \param[in] unicode <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API char*
 nk_str_at_rune(struct nk_str *str, int pos, nk_rune *unicode, int *len)
 {
@@ -9110,6 +10363,17 @@ nk_str_at_rune(struct nk_str *str, int pos, nk_rune *unicode, int *len)
     if (i != pos) return 0;
     return text + src_len;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] s <fill in>
+ * \param[in] pos <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API const char*
 nk_str_at_char_const(const struct nk_str *s, int pos)
 {
@@ -9117,6 +10381,19 @@ nk_str_at_char_const(const struct nk_str *s, int pos)
     if (!s || pos > (int)s->buffer.allocated) return 0;
     return nk_ptr_add(char, s->buffer.memory.ptr, pos);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] str <fill in>
+ * \param[in] pos <fill in>
+ * \param[in] unicode <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API const char*
 nk_str_at_const(const struct nk_str *str, int pos, nk_rune *unicode, int *len)
 {
@@ -9153,6 +10430,17 @@ nk_str_at_const(const struct nk_str *str, int pos, nk_rune *unicode, int *len)
     if (i != pos) return 0;
     return text + src_len;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] str <fill in>
+ * \param[in] pos <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_rune
 nk_str_rune_at(const struct nk_str *str, int pos)
 {
@@ -9161,6 +10449,16 @@ nk_str_rune_at(const struct nk_str *str, int pos)
     nk_str_at_const(str, pos, &unicode, &len);
     return unicode;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] s <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API char*
 nk_str_get(struct nk_str *s)
 {
@@ -9168,6 +10466,16 @@ nk_str_get(struct nk_str *s)
     if (!s || !s->len || !s->buffer.allocated) return 0;
     return (char*)s->buffer.memory.ptr;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] s <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API const char*
 nk_str_get_const(const struct nk_str *s)
 {
@@ -9175,6 +10483,16 @@ nk_str_get_const(const struct nk_str *s)
     if (!s || !s->len || !s->buffer.allocated) return 0;
     return (const char*)s->buffer.memory.ptr;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] s <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_str_len(const struct nk_str *s)
 {
@@ -9182,6 +10500,16 @@ nk_str_len(const struct nk_str *s)
     if (!s || !s->len || !s->buffer.allocated) return 0;
     return s->len;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] s <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_str_len_char(const struct nk_str *s)
 {
@@ -9189,6 +10517,16 @@ nk_str_len_char(const struct nk_str *s)
     if (!s || !s->len || !s->buffer.allocated) return 0;
     return (int)s->buffer.allocated;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] str <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_str_clear(struct nk_str *str)
 {
@@ -9196,6 +10534,16 @@ nk_str_clear(struct nk_str *str)
     nk_buffer_clear(&str->buffer);
     str->len = 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] str <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_str_free(struct nk_str *str)
 {
@@ -9212,6 +10560,16 @@ nk_str_free(struct nk_str *str)
  *                          DRAW
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] cb <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_command_buffer_init(struct nk_command_buffer *cb,
     struct nk_buffer *b, enum nk_command_clipping clip)
@@ -9225,6 +10583,16 @@ nk_command_buffer_init(struct nk_command_buffer *cb,
     cb->end = b->allocated;
     cb->last = b->allocated;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_command_buffer_reset(struct nk_command_buffer *b)
 {
@@ -9238,6 +10606,16 @@ nk_command_buffer_reset(struct nk_command_buffer *b)
     b->userdata.ptr = 0;
 #endif
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void*
 nk_command_buffer_push(struct nk_command_buffer* b,
     enum nk_command_type t, nk_size size)
@@ -9271,6 +10649,17 @@ nk_command_buffer_push(struct nk_command_buffer* b,
     b->end = cmd->next;
     return cmd;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] r <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_push_scissor(struct nk_command_buffer *b, struct nk_rect r)
 {
@@ -9291,6 +10680,18 @@ nk_push_scissor(struct nk_command_buffer *b, struct nk_rect r)
     cmd->w = (unsigned short)NK_MAX(0, r.w);
     cmd->h = (unsigned short)NK_MAX(0, r.h);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] x0 <fill in>
+ * \param[in] y0 <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_stroke_line(struct nk_command_buffer *b, float x0, float y0,
     float x1, float y1, float line_thickness, struct nk_color c)
@@ -9308,6 +10709,18 @@ nk_stroke_line(struct nk_command_buffer *b, float x0, float y0,
     cmd->end.y = (short)y1;
     cmd->color = c;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] ax <fill in>
+ * \param[in] ay <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_stroke_curve(struct nk_command_buffer *b, float ax, float ay,
     float ctrl0x, float ctrl0y, float ctrl1x, float ctrl1y,
@@ -9331,6 +10744,17 @@ nk_stroke_curve(struct nk_command_buffer *b, float ax, float ay,
     cmd->end.y = (short)by;
     cmd->color = col;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] rect <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_stroke_rect(struct nk_command_buffer *b, struct nk_rect rect,
     float rounding, float line_thickness, struct nk_color c)
@@ -9354,6 +10778,17 @@ nk_stroke_rect(struct nk_command_buffer *b, struct nk_rect rect,
     cmd->h = (unsigned short)NK_MAX(0, rect.h);
     cmd->color = c;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] rect <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_fill_rect(struct nk_command_buffer *b, struct nk_rect rect,
     float rounding, struct nk_color c)
@@ -9377,6 +10812,17 @@ nk_fill_rect(struct nk_command_buffer *b, struct nk_rect rect,
     cmd->h = (unsigned short)NK_MAX(0, rect.h);
     cmd->color = c;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] rect <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_fill_rect_multi_color(struct nk_command_buffer *b, struct nk_rect rect,
     struct nk_color left, struct nk_color top, struct nk_color right,
@@ -9403,6 +10849,17 @@ nk_fill_rect_multi_color(struct nk_command_buffer *b, struct nk_rect rect,
     cmd->right = right;
     cmd->bottom = bottom;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] r <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_stroke_circle(struct nk_command_buffer *b, struct nk_rect r,
     float line_thickness, struct nk_color c)
@@ -9425,6 +10882,18 @@ nk_stroke_circle(struct nk_command_buffer *b, struct nk_rect r,
     cmd->h = (unsigned short)NK_MAX(r.h, 0);
     cmd->color = c;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] r <fill in>
+ * \param[in] c <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_fill_circle(struct nk_command_buffer *b, struct nk_rect r, struct nk_color c)
 {
@@ -9446,6 +10915,19 @@ nk_fill_circle(struct nk_command_buffer *b, struct nk_rect r, struct nk_color c)
     cmd->h = (unsigned short)NK_MAX(r.h, 0);
     cmd->color = c;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] cx <fill in>
+ * \param[in] cy <fill in>
+ * \param[in] radius <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_stroke_arc(struct nk_command_buffer *b, float cx, float cy, float radius,
     float a_min, float a_max, float line_thickness, struct nk_color c)
@@ -9463,6 +10945,19 @@ nk_stroke_arc(struct nk_command_buffer *b, float cx, float cy, float radius,
     cmd->a[1] = a_max;
     cmd->color = c;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] cx <fill in>
+ * \param[in] cy <fill in>
+ * \param[in] radius <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_fill_arc(struct nk_command_buffer *b, float cx, float cy, float radius,
     float a_min, float a_max, struct nk_color c)
@@ -9480,6 +10975,19 @@ nk_fill_arc(struct nk_command_buffer *b, float cx, float cy, float radius,
     cmd->a[1] = a_max;
     cmd->color = c;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] x0 <fill in>
+ * \param[in] y0 <fill in>
+ * \param[in] x1 <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_stroke_triangle(struct nk_command_buffer *b, float x0, float y0, float x1,
     float y1, float x2, float y2, float line_thickness, struct nk_color c)
@@ -9507,6 +11015,19 @@ nk_stroke_triangle(struct nk_command_buffer *b, float x0, float y0, float x1,
     cmd->c.y = (short)y2;
     cmd->color = c;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] x0 <fill in>
+ * \param[in] y0 <fill in>
+ * \param[in] x1 <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_fill_triangle(struct nk_command_buffer *b, float x0, float y0, float x1,
     float y1, float x2, float y2, struct nk_color c)
@@ -9534,6 +11055,18 @@ nk_fill_triangle(struct nk_command_buffer *b, float x0, float y0, float x1,
     cmd->c.y = (short)y2;
     cmd->color = c;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] points <fill in>
+ * \param[in] point_count <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_stroke_polygon(struct nk_command_buffer *b, const float *points, int point_count,
     float line_thickness, struct nk_color col)
@@ -9555,6 +11088,18 @@ nk_stroke_polygon(struct nk_command_buffer *b, const float *points, int point_co
         cmd->points[i].y = (short)points[i*2+1];
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] points <fill in>
+ * \param[in] point_count <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_fill_polygon(struct nk_command_buffer *b, const float *points, int point_count,
     struct nk_color col)
@@ -9576,6 +11121,18 @@ nk_fill_polygon(struct nk_command_buffer *b, const float *points, int point_coun
         cmd->points[i].y = (short)points[i*2+1];
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] points <fill in>
+ * \param[in] point_count <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_stroke_polyline(struct nk_command_buffer *b, const float *points, int point_count,
     float line_thickness, struct nk_color col)
@@ -9597,6 +11154,17 @@ nk_stroke_polyline(struct nk_command_buffer *b, const float *points, int point_c
         cmd->points[i].y = (short)points[i*2+1];
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] r <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_draw_image(struct nk_command_buffer *b, struct nk_rect r,
     const struct nk_image *img, struct nk_color col)
@@ -9620,6 +11188,17 @@ nk_draw_image(struct nk_command_buffer *b, struct nk_rect r,
     cmd->img = *img;
     cmd->col = col;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] r <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_draw_nine_slice(struct nk_command_buffer *b, struct nk_rect r,
     const struct nk_nine_slice *slc, struct nk_color col)
@@ -9697,6 +11276,17 @@ nk_draw_nine_slice(struct nk_command_buffer *b, struct nk_rect r,
 
 #undef IMG_RGN
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] r <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_push_custom(struct nk_command_buffer *b, struct nk_rect r,
     nk_command_custom_callback cb, nk_handle usr)
@@ -9720,6 +11310,17 @@ nk_push_custom(struct nk_command_buffer *b, struct nk_rect r,
     cmd->callback_data = usr;
     cmd->callback = cb;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] r <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_draw_text(struct nk_command_buffer *b, struct nk_rect r,
     const char *string, int length, const struct nk_user_font *font,
@@ -9771,6 +11372,16 @@ nk_draw_text(struct nk_command_buffer *b, struct nk_rect r,
  *
  * ===============================================================*/
 #ifdef NK_INCLUDE_VERTEX_BUFFER_OUTPUT
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] list <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_draw_list_init(struct nk_draw_list *list)
 {
@@ -9784,6 +11395,17 @@ nk_draw_list_init(struct nk_draw_list *list)
         list->circle_vtx[i].y = (float)NK_SIN(a);
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] canvas <fill in>
+ * \param[in] config <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_draw_list_setup(struct nk_draw_list *canvas, const struct nk_convert_config *config,
     struct nk_buffer *cmds, struct nk_buffer *vertices, struct nk_buffer *elements,
@@ -9812,6 +11434,17 @@ nk_draw_list_setup(struct nk_draw_list *canvas, const struct nk_convert_config *
     canvas->cmd_count = 0;
     canvas->path_count = 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] canvas <fill in>
+ * \param[in] buffer <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API const struct nk_draw_command*
 nk__draw_list_begin(const struct nk_draw_list *canvas, const struct nk_buffer *buffer)
 {
@@ -9828,6 +11461,17 @@ nk__draw_list_begin(const struct nk_draw_list *canvas, const struct nk_buffer *b
     cmd = nk_ptr_add(const struct nk_draw_command, memory, offset);
     return cmd;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] canvas <fill in>
+ * \param[in] buffer <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API const struct nk_draw_command*
 nk__draw_list_end(const struct nk_draw_list *canvas, const struct nk_buffer *buffer)
 {
@@ -9848,6 +11492,16 @@ nk__draw_list_end(const struct nk_draw_list *canvas, const struct nk_buffer *buf
     end -= (canvas->cmd_count-1);
     return end;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] cmd <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API const struct nk_draw_command*
 nk__draw_list_next(const struct nk_draw_command *cmd,
     const struct nk_buffer *buffer, const struct nk_draw_list *canvas)
@@ -9862,6 +11516,17 @@ nk__draw_list_next(const struct nk_draw_command *cmd,
     if (cmd <= end) return 0;
     return (cmd-1);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] list <fill in>
+ * \param[in] count <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN struct nk_vec2*
 nk_draw_list_alloc_path(struct nk_draw_list *list, int count)
 {
@@ -9880,6 +11545,16 @@ nk_draw_list_alloc_path(struct nk_draw_list *list, int count)
     list->path_count += (unsigned int)count;
     return points;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] list <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN struct nk_vec2
 nk_draw_list_path_last(struct nk_draw_list *list)
 {
@@ -9891,6 +11566,17 @@ nk_draw_list_path_last(struct nk_draw_list *list)
     point += (list->path_count-1);
     return *point;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] list <fill in>
+ * \param[in] clip <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN struct nk_draw_command*
 nk_draw_list_push_command(struct nk_draw_list *list, struct nk_rect clip,
     nk_handle texture)
@@ -9922,6 +11608,16 @@ nk_draw_list_push_command(struct nk_draw_list *list, struct nk_rect clip,
     list->clip_rect = clip;
     return cmd;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] list <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN struct nk_draw_command*
 nk_draw_list_command_last(struct nk_draw_list *list)
 {
@@ -9935,6 +11631,17 @@ nk_draw_list_command_last(struct nk_draw_list *list)
     cmd = nk_ptr_add(struct nk_draw_command, memory, size - list->cmd_offset);
     return (cmd - (list->cmd_count-1));
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] list <fill in>
+ * \param[in] rect <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_draw_list_add_clip(struct nk_draw_list *list, struct nk_rect rect)
 {
@@ -9949,6 +11656,17 @@ nk_draw_list_add_clip(struct nk_draw_list *list, struct nk_rect rect)
         nk_draw_list_push_command(list, rect, prev->texture);
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] list <fill in>
+ * \param[in] texture <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_draw_list_push_image(struct nk_draw_list *list, nk_handle texture)
 {
@@ -9973,12 +11691,34 @@ nk_draw_list_push_image(struct nk_draw_list *list, nk_handle texture)
     }
 }
 #ifdef NK_INCLUDE_COMMAND_USERDATA
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] list <fill in>
+ * \param[in] userdata <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_draw_list_push_userdata(struct nk_draw_list *list, nk_handle userdata)
 {
     list->userdata = userdata;
 }
 #endif
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] list <fill in>
+ * \param[in] count <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void*
 nk_draw_list_alloc_vertices(struct nk_draw_list *list, nk_size count)
 {
@@ -10003,6 +11743,17 @@ nk_draw_list_alloc_vertices(struct nk_draw_list *list, nk_size count)
         "To many vertices for 16-bit vertex indices. Please read comment above on how to solve this problem"));
     return vtx;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] list <fill in>
+ * \param[in] count <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN nk_draw_index*
 nk_draw_list_alloc_elements(struct nk_draw_list *list, nk_size count)
 {
@@ -10021,6 +11772,15 @@ nk_draw_list_alloc_elements(struct nk_draw_list *list, nk_size count)
     cmd->elem_count += (unsigned int)count;
     return ids;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ *
+ * \returns <fill in>
+ */
 NK_INTERN int
 nk_draw_vertex_layout_element_is_end_of_layout(
     const struct nk_draw_vertex_layout_element *element)
@@ -10028,6 +11788,17 @@ nk_draw_vertex_layout_element_is_end_of_layout(
     return (element->attribute == NK_VERTEX_ATTRIBUTE_COUNT ||
             element->format == NK_FORMAT_COUNT);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] attr <fill in>
+ * \param[in] vals <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_draw_vertex_color(void *attr, const float *vals,
     enum nk_draw_vertex_layout_format format)
@@ -10103,6 +11874,18 @@ nk_draw_vertex_color(void *attr, const float *vals,
         NK_MEMCPY(attr, &color, sizeof(color));
     } break; }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] dst <fill in>
+ * \param[in] values <fill in>
+ * \param[in] value_count <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_draw_vertex_element(void *dst, const float *values, int value_count,
     enum nk_draw_vertex_layout_format format)
@@ -10157,6 +11940,17 @@ nk_draw_vertex_element(void *dst, const float *values, int value_count,
         }
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] dst <fill in>
+ * \param[in] config <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void*
 nk_draw_vertex(void *dst, const struct nk_convert_config *config,
     struct nk_vec2 pos, struct nk_vec2 uv, struct nk_colorf color)
@@ -10176,6 +11970,17 @@ nk_draw_vertex(void *dst, const struct nk_convert_config *config,
     }
     return result;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] list <fill in>
+ * \param[in] points <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_draw_list_stroke_poly_line(struct nk_draw_list *list, const struct nk_vec2 *points,
     const unsigned int points_count, struct nk_color color, enum nk_draw_list_stroke closed,
@@ -10416,6 +12221,16 @@ nk_draw_list_stroke_poly_line(struct nk_draw_list *list, const struct nk_vec2 *p
         }
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] list <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_draw_list_fill_poly_convex(struct nk_draw_list *list,
     const struct nk_vec2 *points, const unsigned int points_count,
@@ -10540,6 +12355,16 @@ nk_draw_list_fill_poly_convex(struct nk_draw_list *list,
         }
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] list <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_draw_list_path_clear(struct nk_draw_list *list)
 {
@@ -10549,6 +12374,17 @@ nk_draw_list_path_clear(struct nk_draw_list *list)
     list->path_count = 0;
     list->path_offset = 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] list <fill in>
+ * \param[in] pos <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_draw_list_path_line_to(struct nk_draw_list *list, struct nk_vec2 pos)
 {
@@ -10567,6 +12403,17 @@ nk_draw_list_path_line_to(struct nk_draw_list *list, struct nk_vec2 pos)
     if (!points) return;
     points[0] = pos;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] list <fill in>
+ * \param[in] center <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_draw_list_path_arc_to_fast(struct nk_draw_list *list, struct nk_vec2 center,
     float radius, int a_min, int a_max)
@@ -10583,6 +12430,17 @@ nk_draw_list_path_arc_to_fast(struct nk_draw_list *list, struct nk_vec2 center,
         }
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] list <fill in>
+ * \param[in] center <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_draw_list_path_arc_to(struct nk_draw_list *list, struct nk_vec2 center,
     float radius, float a_min, float a_max, unsigned int segments)
@@ -10628,6 +12486,17 @@ nk_draw_list_path_arc_to(struct nk_draw_list *list, struct nk_vec2 center,
         cy = new_cy;
     }}
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] list <fill in>
+ * \param[in] a <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_draw_list_path_rect_to(struct nk_draw_list *list, struct nk_vec2 a,
     struct nk_vec2 b, float rounding)
@@ -10651,6 +12520,17 @@ nk_draw_list_path_rect_to(struct nk_draw_list *list, struct nk_vec2 a,
         nk_draw_list_path_arc_to_fast(list, nk_vec2(a.x + r, b.y - r), r, 3, 6);
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] list <fill in>
+ * \param[in] p2 <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_draw_list_path_curve_to(struct nk_draw_list *list, struct nk_vec2 p2,
     struct nk_vec2 p3, struct nk_vec2 p4, unsigned int num_segments)
@@ -10678,6 +12558,17 @@ nk_draw_list_path_curve_to(struct nk_draw_list *list, struct nk_vec2 p2,
         nk_draw_list_path_line_to(list, nk_vec2(x,y));
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] list <fill in>
+ * \param[in] color <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_draw_list_path_fill(struct nk_draw_list *list, struct nk_color color)
 {
@@ -10688,6 +12579,17 @@ nk_draw_list_path_fill(struct nk_draw_list *list, struct nk_color color)
     nk_draw_list_fill_poly_convex(list, points, list->path_count, color, list->config.shape_AA);
     nk_draw_list_path_clear(list);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] list <fill in>
+ * \param[in] color <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_draw_list_path_stroke(struct nk_draw_list *list, struct nk_color color,
     enum nk_draw_list_stroke closed, float thickness)
@@ -10700,6 +12602,17 @@ nk_draw_list_path_stroke(struct nk_draw_list *list, struct nk_color color,
         closed, thickness, list->config.line_AA);
     nk_draw_list_path_clear(list);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] list <fill in>
+ * \param[in] a <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_draw_list_stroke_line(struct nk_draw_list *list, struct nk_vec2 a,
     struct nk_vec2 b, struct nk_color col, float thickness)
@@ -10715,6 +12628,17 @@ nk_draw_list_stroke_line(struct nk_draw_list *list, struct nk_vec2 a,
     }
     nk_draw_list_path_stroke(list,  col, NK_STROKE_OPEN, thickness);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] list <fill in>
+ * \param[in] rect <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_draw_list_fill_rect(struct nk_draw_list *list, struct nk_rect rect,
     struct nk_color col, float rounding)
@@ -10730,6 +12654,17 @@ nk_draw_list_fill_rect(struct nk_draw_list *list, struct nk_rect rect,
             nk_vec2(rect.x + rect.w, rect.y + rect.h), rounding);
     } nk_draw_list_path_fill(list,  col);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] list <fill in>
+ * \param[in] rect <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_draw_list_stroke_rect(struct nk_draw_list *list, struct nk_rect rect,
     struct nk_color col, float rounding, float thickness)
@@ -10744,6 +12679,17 @@ nk_draw_list_stroke_rect(struct nk_draw_list *list, struct nk_rect rect,
             nk_vec2(rect.x + rect.w, rect.y + rect.h), rounding);
     } nk_draw_list_path_stroke(list,  col, NK_STROKE_CLOSED, thickness);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] list <fill in>
+ * \param[in] rect <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_draw_list_fill_rect_multi_color(struct nk_draw_list *list, struct nk_rect rect,
     struct nk_color left, struct nk_color top, struct nk_color right,
@@ -10778,6 +12724,17 @@ nk_draw_list_fill_rect_multi_color(struct nk_draw_list *list, struct nk_rect rec
     vtx = nk_draw_vertex(vtx, &list->config, nk_vec2(rect.x + rect.w, rect.y + rect.h), list->config.tex_null.uv, col_right);
     vtx = nk_draw_vertex(vtx, &list->config, nk_vec2(rect.x, rect.y + rect.h), list->config.tex_null.uv, col_bottom);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] list <fill in>
+ * \param[in] a <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_draw_list_fill_triangle(struct nk_draw_list *list, struct nk_vec2 a,
     struct nk_vec2 b, struct nk_vec2 c, struct nk_color col)
@@ -10789,6 +12746,17 @@ nk_draw_list_fill_triangle(struct nk_draw_list *list, struct nk_vec2 a,
     nk_draw_list_path_line_to(list, c);
     nk_draw_list_path_fill(list, col);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] list <fill in>
+ * \param[in] a <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_draw_list_stroke_triangle(struct nk_draw_list *list, struct nk_vec2 a,
     struct nk_vec2 b, struct nk_vec2 c, struct nk_color col, float thickness)
@@ -10800,6 +12768,17 @@ nk_draw_list_stroke_triangle(struct nk_draw_list *list, struct nk_vec2 a,
     nk_draw_list_path_line_to(list, c);
     nk_draw_list_path_stroke(list, col, NK_STROKE_CLOSED, thickness);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] list <fill in>
+ * \param[in] center <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_draw_list_fill_circle(struct nk_draw_list *list, struct nk_vec2 center,
     float radius, struct nk_color col, unsigned int segs)
@@ -10811,6 +12790,17 @@ nk_draw_list_fill_circle(struct nk_draw_list *list, struct nk_vec2 center,
     nk_draw_list_path_arc_to(list, center, radius, 0.0f, a_max, segs);
     nk_draw_list_path_fill(list, col);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] list <fill in>
+ * \param[in] center <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_draw_list_stroke_circle(struct nk_draw_list *list, struct nk_vec2 center,
     float radius, struct nk_color col, unsigned int segs, float thickness)
@@ -10822,6 +12812,17 @@ nk_draw_list_stroke_circle(struct nk_draw_list *list, struct nk_vec2 center,
     nk_draw_list_path_arc_to(list, center, radius, 0.0f, a_max, segs);
     nk_draw_list_path_stroke(list, col, NK_STROKE_CLOSED, thickness);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] list <fill in>
+ * \param[in] p0 <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_draw_list_stroke_curve(struct nk_draw_list *list, struct nk_vec2 p0,
     struct nk_vec2 cp0, struct nk_vec2 cp1, struct nk_vec2 p1,
@@ -10833,6 +12834,17 @@ nk_draw_list_stroke_curve(struct nk_draw_list *list, struct nk_vec2 p0,
     nk_draw_list_path_curve_to(list, cp0, cp1, p1, segments);
     nk_draw_list_path_stroke(list, col, NK_STROKE_OPEN, thickness);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] list <fill in>
+ * \param[in] a <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_draw_list_push_rect_uv(struct nk_draw_list *list, struct nk_vec2 a,
     struct nk_vec2 c, struct nk_vec2 uva, struct nk_vec2 uvc,
@@ -10870,6 +12882,17 @@ nk_draw_list_push_rect_uv(struct nk_draw_list *list, struct nk_vec2 a,
     vtx = nk_draw_vertex(vtx, &list->config, c, uvc, col);
     vtx = nk_draw_vertex(vtx, &list->config, d, uvd, col);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] list <fill in>
+ * \param[in] texture <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_draw_list_add_image(struct nk_draw_list *list, struct nk_image texture,
     struct nk_rect rect, struct nk_color color)
@@ -10891,6 +12914,17 @@ nk_draw_list_add_image(struct nk_draw_list *list, struct nk_image texture,
             nk_vec2(rect.x + rect.w, rect.y + rect.h),
             nk_vec2(0.0f, 0.0f), nk_vec2(1.0f, 1.0f),color);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] list <fill in>
+ * \param[in] font <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_draw_list_add_text(struct nk_draw_list *list, const struct nk_user_font *font,
     struct nk_rect rect, const char *text, int len, float font_height,
@@ -10941,6 +12975,17 @@ nk_draw_list_add_text(struct nk_draw_list *list, const struct nk_user_font *font
         unicode = next;
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] cmds <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_flags
 nk_convert(struct nk_context *ctx, struct nk_buffer *cmds,
     struct nk_buffer *vertices, struct nk_buffer *elements,
@@ -11083,17 +13128,48 @@ nk_convert(struct nk_context *ctx, struct nk_buffer *cmds,
     res |= (elements->needed > elements->allocated) ? NK_CONVERT_ELEMENT_BUFFER_FULL: 0;
     return res;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API const struct nk_draw_command*
 nk__draw_begin(const struct nk_context *ctx,
     const struct nk_buffer *buffer)
 {
     return nk__draw_list_begin(&ctx->draw_list, buffer);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] buffer <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API const struct nk_draw_command*
 nk__draw_end(const struct nk_context *ctx, const struct nk_buffer *buffer)
 {
     return nk__draw_list_end(&ctx->draw_list, buffer);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] cmd <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API const struct nk_draw_command*
 nk__draw_next(const struct nk_draw_command *cmd,
     const struct nk_buffer *buffer, const struct nk_context *ctx)
@@ -16854,6 +18930,16 @@ NK_GLOBAL const nk_size nk_char_align = NK_ALIGNOF(stbtt_packedchar);
 NK_GLOBAL const nk_size nk_build_align = NK_ALIGNOF(struct nk_font_bake_data);
 NK_GLOBAL const nk_size nk_baker_align = NK_ALIGNOF(struct nk_font_baker);
 
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] range <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN int
 nk_range_count(const nk_rune *range)
 {
@@ -16863,6 +18949,17 @@ nk_range_count(const nk_rune *range)
     while (*(iter++) != 0);
     return (iter == range) ? 0 : (int)((iter - range)/2);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] range <fill in>
+ * \param[in] count <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN int
 nk_range_glyph_count(const nk_rune *range, int count)
 {
@@ -16878,12 +18975,32 @@ nk_range_glyph_count(const nk_rune *range, int count)
     }
     return total_glyphs;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] void <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API const nk_rune*
 nk_font_default_glyph_ranges(void)
 {
     NK_STORAGE const nk_rune ranges[] = {0x0020, 0x00FF, 0};
     return ranges;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] void <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API const nk_rune*
 nk_font_chinese_glyph_ranges(void)
 {
@@ -16897,6 +19014,16 @@ nk_font_chinese_glyph_ranges(void)
     };
     return ranges;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] void <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API const nk_rune*
 nk_font_cyrillic_glyph_ranges(void)
 {
@@ -16909,6 +19036,16 @@ nk_font_cyrillic_glyph_ranges(void)
     };
     return ranges;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] void <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API const nk_rune*
 nk_font_korean_glyph_ranges(void)
 {
@@ -16920,6 +19057,17 @@ nk_font_korean_glyph_ranges(void)
     };
     return ranges;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] temp <fill in>
+ * \param[in] glyph_count <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_font_baker_memory(nk_size *temp, int *glyph_count,
     struct nk_font_config *config_list, int count)
@@ -16952,6 +19100,19 @@ nk_font_baker_memory(nk_size *temp, int *glyph_count,
     *temp += nk_rect_align + nk_range_align + nk_char_align;
     *temp += nk_build_align + nk_baker_align;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] memory <fill in>
+ * \param[in] glyph_count <fill in>
+ * \param[in] count <fill in>
+ * \param[in] alloc <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN struct nk_font_baker*
 nk_font_baker(void *memory, int glyph_count, int count, const struct nk_allocator *alloc)
 {
@@ -16966,6 +19127,16 @@ nk_font_baker(void *memory, int glyph_count, int count, const struct nk_allocato
     baker->alloc = *alloc;
     return baker;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] baker <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN int
 nk_font_bake_pack(struct nk_font_baker *baker,
     nk_size *image_memory, int *width, int *height, struct nk_recti *custom,
@@ -17084,6 +19255,19 @@ nk_font_bake_pack(struct nk_font_baker *baker,
     *image_memory = (nk_size)(*width) * (nk_size)(*height);
     return nk_true;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] baker <fill in>
+ * \param[in] image_memory <fill in>
+ * \param[in] width <fill in>
+ * \param[in] height <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_font_bake(struct nk_font_baker *baker, void *image_memory, int width, int height,
     struct nk_font_glyph *glyphs, int glyphs_count,
@@ -17197,6 +19381,18 @@ nk_font_bake(struct nk_font_baker *baker, void *image_memory, int width, int hei
         } while ((it = it->n) != config_iter);
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] img_memory <fill in>
+ * \param[in] img_width <fill in>
+ * \param[in] img_height <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_font_bake_custom_data(void *img_memory, int img_width, int img_height,
     struct nk_recti img_dst, const char *texture_data_mask, int tex_width,
@@ -17225,6 +19421,18 @@ nk_font_bake_custom_data(void *img_memory, int img_width, int img_height,
         }
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] out_memory <fill in>
+ * \param[in] img_width <fill in>
+ * \param[in] img_height <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_font_bake_convert(void *out_memory, int img_width, int img_height,
     const void *in_memory)
@@ -17250,6 +19458,19 @@ nk_font_bake_convert(void *out_memory, int img_width, int img_height,
  *                          FONT
  *
  * --------------------------------------------------------------*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] handle <fill in>
+ * \param[in] height <fill in>
+ * \param[in] text <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN float
 nk_font_text_width(nk_handle handle, float height, const char *text, int len)
 {
@@ -17283,6 +19504,17 @@ nk_font_text_width(nk_handle handle, float height, const char *text, int len)
     return text_width;
 }
 #ifdef NK_INCLUDE_VERTEX_BUFFER_OUTPUT
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] handle <fill in>
+ * \param[in] height <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_font_query_font_glyph(nk_handle handle, float height,
     struct nk_user_font_glyph *glyph, nk_rune codepoint, nk_rune next_codepoint)
@@ -17310,6 +19542,17 @@ nk_font_query_font_glyph(nk_handle handle, float height,
     glyph->uv[1] = nk_vec2(g->u1, g->v1);
 }
 #endif
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] font <fill in>
+ * \param[in] unicode <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API const struct nk_font_glyph*
 nk_font_find_glyph(const struct nk_font *font, nk_rune unicode)
 {
@@ -17338,6 +19581,17 @@ nk_font_find_glyph(const struct nk_font *font, nk_rune unicode)
     } while ((iter = iter->n) != font->config);
     return glyph;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] font <fill in>
+ * \param[in] pixel_height <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_font_init(struct nk_font *font, float pixel_height,
     nk_rune fallback_codepoint, struct nk_font_glyph *glyphs,
@@ -17522,11 +19776,32 @@ NK_GLOBAL unsigned char *nk__barrier3;
 NK_GLOBAL unsigned char *nk__barrier4;
 NK_GLOBAL unsigned char *nk__dout;
 
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] input <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN unsigned int
 nk_decompress_length(unsigned char *input)
 {
     return (unsigned int)((input[8] << 24) + (input[9] << 16) + (input[10] << 8) + input[11]);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] data <fill in>
+ * \param[in] length <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk__match(unsigned char *data, unsigned int length)
 {
@@ -17536,6 +19811,17 @@ nk__match(unsigned char *data, unsigned int length)
     if (data < nk__barrier4) { nk__dout = nk__barrier+1; return; }
     while (length--) *nk__dout++ = *data++;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] data <fill in>
+ * \param[in] length <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk__lit(unsigned char *data, unsigned int length)
 {
@@ -17545,6 +19831,16 @@ nk__lit(unsigned char *data, unsigned int length)
     NK_MEMCPY(nk__dout, data, length);
     nk__dout += length;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] i <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN unsigned char*
 nk_decompress_token(unsigned char *i)
 {
@@ -17566,6 +19862,18 @@ nk_decompress_token(unsigned char *i)
     }
     return i;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] adler32 <fill in>
+ * \param[in] buffer <fill in>
+ * \param[in] buflen <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN unsigned int
 nk_adler32(unsigned int adler32, unsigned char *buffer, unsigned int buflen)
 {
@@ -17596,6 +19904,18 @@ nk_adler32(unsigned int adler32, unsigned char *buffer, unsigned int buflen)
     }
     return (unsigned int)(s2 << 16) + (unsigned int)s1;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] output <fill in>
+ * \param[in] i <fill in>
+ * \param[in] length <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN unsigned int
 nk_decompress(unsigned char *output, unsigned char *i, unsigned int length)
 {
@@ -17630,11 +19950,32 @@ nk_decompress(unsigned char *output, unsigned char *i, unsigned int length)
             return 0;
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] c <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN unsigned int
 nk_decode_85_byte(char c)
 {
     return (unsigned int)((c >= '\\') ? c-36 : c-35);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] dst <fill in>
+ * \param[in] src <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_decode_85(unsigned char* dst, const unsigned char* src)
 {
@@ -17663,6 +20004,16 @@ nk_decode_85(unsigned char* dst, const unsigned char* src)
  *                          FONT ATLAS
  *
  * --------------------------------------------------------------*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] pixel_height <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_font_config
 nk_font_config(float pixel_height)
 {
@@ -17685,6 +20036,16 @@ nk_font_config(float pixel_height)
     return cfg;
 }
 #ifdef NK_INCLUDE_DEFAULT_ALLOCATOR
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] atlas <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_font_atlas_init_default(struct nk_font_atlas *atlas)
 {
@@ -17699,6 +20060,17 @@ nk_font_atlas_init_default(struct nk_font_atlas *atlas)
     atlas->permanent.free = nk_mfree;
 }
 #endif
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] atlas <fill in>
+ * \param[in] alloc <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_font_atlas_init(struct nk_font_atlas *atlas, const struct nk_allocator *alloc)
 {
@@ -17709,6 +20081,16 @@ nk_font_atlas_init(struct nk_font_atlas *atlas, const struct nk_allocator *alloc
     atlas->permanent = *alloc;
     atlas->temporary = *alloc;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] atlas <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_font_atlas_init_custom(struct nk_font_atlas *atlas,
     const struct nk_allocator *permanent, const struct nk_allocator *temporary)
@@ -17721,6 +20103,16 @@ nk_font_atlas_init_custom(struct nk_font_atlas *atlas,
     atlas->permanent = *permanent;
     atlas->temporary = *temporary;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] atlas <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_font_atlas_begin(struct nk_font_atlas *atlas)
 {
@@ -17738,6 +20130,17 @@ nk_font_atlas_begin(struct nk_font_atlas *atlas)
         atlas->pixel = 0;
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] atlas <fill in>
+ * \param[in] config <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_font*
 nk_font_atlas_add(struct nk_font_atlas *atlas, const struct nk_font_config *config)
 {
@@ -17825,6 +20228,17 @@ nk_font_atlas_add(struct nk_font_atlas *atlas, const struct nk_font_config *conf
     atlas->font_num++;
     return font;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] atlas <fill in>
+ * \param[in] memory <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_font*
 nk_font_atlas_add_from_memory(struct nk_font_atlas *atlas, void *memory,
     nk_size size, float height, const struct nk_font_config *config)
@@ -17850,6 +20264,17 @@ nk_font_atlas_add_from_memory(struct nk_font_atlas *atlas, void *memory,
     return nk_font_atlas_add(atlas, &cfg);
 }
 #ifdef NK_INCLUDE_STANDARD_IO
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] atlas <fill in>
+ * \param[in] file_path <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_font*
 nk_font_atlas_add_from_file(struct nk_font_atlas *atlas, const char *file_path,
     float height, const struct nk_font_config *config)
@@ -17876,6 +20301,16 @@ nk_font_atlas_add_from_file(struct nk_font_atlas *atlas, const char *file_path,
     return nk_font_atlas_add(atlas, &cfg);
 }
 #endif
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] atlas <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_font*
 nk_font_atlas_add_compressed(struct nk_font_atlas *atlas,
     void *compressed_data, nk_size compressed_size, float height,
@@ -17911,6 +20346,16 @@ nk_font_atlas_add_compressed(struct nk_font_atlas *atlas,
     cfg.ttf_data_owned_by_atlas = 1;
     return nk_font_atlas_add(atlas, &cfg);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] atlas <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_font*
 nk_font_atlas_add_compressed_base85(struct nk_font_atlas *atlas,
     const char *data_base85, float height, const struct nk_font_config *config)
@@ -17942,6 +20387,16 @@ nk_font_atlas_add_compressed_base85(struct nk_font_atlas *atlas,
 }
 
 #ifdef NK_INCLUDE_DEFAULT_FONT
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] atlas <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_font*
 nk_font_atlas_add_default(struct nk_font_atlas *atlas,
     float pixel_height, const struct nk_font_config *config)
@@ -17955,6 +20410,18 @@ nk_font_atlas_add_default(struct nk_font_atlas *atlas,
         nk_proggy_clean_ttf_compressed_data_base85, pixel_height, config);
 }
 #endif
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] atlas <fill in>
+ * \param[in] width <fill in>
+ * \param[in] height <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API const void*
 nk_font_atlas_bake(struct nk_font_atlas *atlas, int *width, int *height,
     enum nk_font_atlas_format fmt)
@@ -18080,6 +20547,17 @@ failed:
     }
     return 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] atlas <fill in>
+ * \param[in] texture <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_font_atlas_end(struct nk_font_atlas *atlas, nk_handle texture,
     struct nk_draw_null_texture *tex_null)
@@ -18115,6 +20593,16 @@ nk_font_atlas_end(struct nk_font_atlas *atlas, nk_handle texture,
     atlas->custom.w = 0;
     atlas->custom.h = 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] atlas <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_font_atlas_cleanup(struct nk_font_atlas *atlas)
 {
@@ -18137,6 +20625,16 @@ nk_font_atlas_cleanup(struct nk_font_atlas *atlas)
         }
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] atlas <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_font_atlas_clear(struct nk_font_atlas *atlas)
 {
@@ -18186,6 +20684,16 @@ nk_font_atlas_clear(struct nk_font_atlas *atlas)
  *                          INPUT
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_input_begin(struct nk_context *ctx)
 {
@@ -18206,6 +20714,16 @@ nk_input_begin(struct nk_context *ctx)
     for (i = 0; i < NK_KEY_MAX; i++)
         in->keyboard.keys[i].clicked = 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_input_end(struct nk_context *ctx)
 {
@@ -18221,6 +20739,18 @@ nk_input_end(struct nk_context *ctx)
         in->mouse.grab = 0;
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] x <fill in>
+ * \param[in] y <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_input_motion(struct nk_context *ctx, int x, int y)
 {
@@ -18233,6 +20763,18 @@ nk_input_motion(struct nk_context *ctx, int x, int y)
     in->mouse.delta.x = in->mouse.pos.x - in->mouse.prev.x;
     in->mouse.delta.y = in->mouse.pos.y - in->mouse.prev.y;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] key <fill in>
+ * \param[in] down <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_input_key(struct nk_context *ctx, enum nk_keys key, nk_bool down)
 {
@@ -18248,6 +20790,20 @@ nk_input_key(struct nk_context *ctx, enum nk_keys key, nk_bool down)
 #endif
     in->keyboard.keys[key].down = down;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] id <fill in>
+ * \param[in] x <fill in>
+ * \param[in] y <fill in>
+ * \param[in] down <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_input_button(struct nk_context *ctx, enum nk_buttons id, int x, int y, nk_bool down)
 {
@@ -18275,6 +20831,17 @@ nk_input_button(struct nk_context *ctx, enum nk_buttons id, int x, int y, nk_boo
     }
 #endif
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] val <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_input_scroll(struct nk_context *ctx, struct nk_vec2 val)
 {
@@ -18283,6 +20850,17 @@ nk_input_scroll(struct nk_context *ctx, struct nk_vec2 val)
     ctx->input.mouse.scroll_delta.x += val.x;
     ctx->input.mouse.scroll_delta.y += val.y;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] glyph <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_input_glyph(struct nk_context *ctx, const nk_glyph glyph)
 {
@@ -18301,6 +20879,17 @@ nk_input_glyph(struct nk_context *ctx, const nk_glyph glyph)
         in->keyboard.text_len += len;
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] c <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_input_char(struct nk_context *ctx, char c)
 {
@@ -18310,6 +20899,17 @@ nk_input_char(struct nk_context *ctx, char c)
     glyph[0] = c;
     nk_input_glyph(ctx, glyph);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] unicode <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_input_unicode(struct nk_context *ctx, nk_rune unicode)
 {
@@ -18319,6 +20919,17 @@ nk_input_unicode(struct nk_context *ctx, nk_rune unicode)
     nk_utf_encode(unicode, rune, NK_UTF_SIZE);
     nk_input_glyph(ctx, rune);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] i <fill in>
+ * \param[in] id <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_input_has_mouse_click(const struct nk_input *i, enum nk_buttons id)
 {
@@ -18327,6 +20938,17 @@ nk_input_has_mouse_click(const struct nk_input *i, enum nk_buttons id)
     btn = &i->mouse.buttons[id];
     return (btn->clicked && btn->down == nk_false) ? nk_true : nk_false;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] i <fill in>
+ * \param[in] id <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_input_has_mouse_click_in_rect(const struct nk_input *i, enum nk_buttons id,
     struct nk_rect b)
@@ -18338,6 +20960,17 @@ nk_input_has_mouse_click_in_rect(const struct nk_input *i, enum nk_buttons id,
         return nk_false;
     return nk_true;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] i <fill in>
+ * \param[in] id <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_input_has_mouse_click_in_button_rect(const struct nk_input *i, enum nk_buttons id,
     struct nk_rect b)
@@ -18354,6 +20987,17 @@ nk_input_has_mouse_click_in_button_rect(const struct nk_input *i, enum nk_button
         return nk_false;
     return nk_true;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] i <fill in>
+ * \param[in] id <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_input_has_mouse_click_down_in_rect(const struct nk_input *i, enum nk_buttons id,
     struct nk_rect b, nk_bool down)
@@ -18363,6 +21007,17 @@ nk_input_has_mouse_click_down_in_rect(const struct nk_input *i, enum nk_buttons 
     btn = &i->mouse.buttons[id];
     return nk_input_has_mouse_click_in_rect(i, id, b) && (btn->down == down);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] i <fill in>
+ * \param[in] id <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_input_is_mouse_click_in_rect(const struct nk_input *i, enum nk_buttons id,
     struct nk_rect b)
@@ -18373,6 +21028,17 @@ nk_input_is_mouse_click_in_rect(const struct nk_input *i, enum nk_buttons id,
     return (nk_input_has_mouse_click_down_in_rect(i, id, b, nk_false) &&
             btn->clicked) ? nk_true : nk_false;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] i <fill in>
+ * \param[in] id <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_input_is_mouse_click_down_in_rect(const struct nk_input *i, enum nk_buttons id,
     struct nk_rect b, nk_bool down)
@@ -18383,6 +21049,17 @@ nk_input_is_mouse_click_down_in_rect(const struct nk_input *i, enum nk_buttons i
     return (nk_input_has_mouse_click_down_in_rect(i, id, b, down) &&
             btn->clicked) ? nk_true : nk_false;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] in <fill in>
+ * \param[in] b <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_input_any_mouse_click_in_rect(const struct nk_input *in, struct nk_rect b)
 {
@@ -18391,18 +21068,52 @@ nk_input_any_mouse_click_in_rect(const struct nk_input *in, struct nk_rect b)
         down = down || nk_input_is_mouse_click_in_rect(in, (enum nk_buttons)i, b);
     return down;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] i <fill in>
+ * \param[in] rect <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_input_is_mouse_hovering_rect(const struct nk_input *i, struct nk_rect rect)
 {
     if (!i) return nk_false;
     return NK_INBOX(i->mouse.pos.x, i->mouse.pos.y, rect.x, rect.y, rect.w, rect.h);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] i <fill in>
+ * \param[in] rect <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_input_is_mouse_prev_hovering_rect(const struct nk_input *i, struct nk_rect rect)
 {
     if (!i) return nk_false;
     return NK_INBOX(i->mouse.prev.x, i->mouse.prev.y, rect.x, rect.y, rect.w, rect.h);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] i <fill in>
+ * \param[in] id <fill in>
+ * \param[in] rect <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_input_mouse_clicked(const struct nk_input *i, enum nk_buttons id, struct nk_rect rect)
 {
@@ -18410,12 +21121,34 @@ nk_input_mouse_clicked(const struct nk_input *i, enum nk_buttons id, struct nk_r
     if (!nk_input_is_mouse_hovering_rect(i, rect)) return nk_false;
     return nk_input_is_mouse_click_in_rect(i, id, rect);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] i <fill in>
+ * \param[in] id <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_input_is_mouse_down(const struct nk_input *i, enum nk_buttons id)
 {
     if (!i) return nk_false;
     return i->mouse.buttons[id].down;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] i <fill in>
+ * \param[in] id <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_input_is_mouse_pressed(const struct nk_input *i, enum nk_buttons id)
 {
@@ -18426,12 +21159,34 @@ nk_input_is_mouse_pressed(const struct nk_input *i, enum nk_buttons id)
         return nk_true;
     return nk_false;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] i <fill in>
+ * \param[in] id <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_input_is_mouse_released(const struct nk_input *i, enum nk_buttons id)
 {
     if (!i) return nk_false;
     return (!i->mouse.buttons[id].down && i->mouse.buttons[id].clicked);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] i <fill in>
+ * \param[in] key <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_input_is_key_pressed(const struct nk_input *i, enum nk_keys key)
 {
@@ -18442,6 +21197,17 @@ nk_input_is_key_pressed(const struct nk_input *i, enum nk_keys key)
         return nk_true;
     return nk_false;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] i <fill in>
+ * \param[in] key <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_input_is_key_released(const struct nk_input *i, enum nk_keys key)
 {
@@ -18452,6 +21218,17 @@ nk_input_is_key_released(const struct nk_input *i, enum nk_keys key)
         return nk_true;
     return nk_false;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] i <fill in>
+ * \param[in] key <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_input_is_key_down(const struct nk_input *i, enum nk_keys key)
 {
@@ -18471,6 +21248,18 @@ nk_input_is_key_down(const struct nk_input *i, enum nk_keys key)
  *                              STYLE
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] ctx <fill in>
+ * \param[in] 0 <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void nk_style_default(struct nk_context *ctx){nk_style_from_table(ctx, 0);}
 #define NK_COLOR_MAP(NK_COLOR)\
     NK_COLOR(NK_COLOR_TEXT,                     175,175,175,255) \
@@ -18518,11 +21307,31 @@ NK_GLOBAL const char *nk_color_names[NK_COLOR_COUNT] = {
 #undef NK_COLOR
 };
 
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] c <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API const char*
 nk_style_get_color_by_name(enum nk_style_colors c)
 {
     return nk_color_names[c];
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] col <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_style_item
 nk_style_item_color(struct nk_color col)
 {
@@ -18531,6 +21340,16 @@ nk_style_item_color(struct nk_color col)
     i.data.color = col;
     return i;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] img <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_style_item
 nk_style_item_image(struct nk_image img)
 {
@@ -18539,6 +21358,16 @@ nk_style_item_image(struct nk_image img)
     i.data.image = img;
     return i;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] slice <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_style_item
 nk_style_item_nine_slice(struct nk_nine_slice slice)
 {
@@ -18547,6 +21376,16 @@ nk_style_item_nine_slice(struct nk_nine_slice slice)
     i.data.slice = slice;
     return i;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] void <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_style_item
 nk_style_item_hide(void)
 {
@@ -18555,6 +21394,17 @@ nk_style_item_hide(void)
     i.data.color = nk_rgba(0,0,0,0);
     return i;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] table <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_style_from_table(struct nk_context *ctx, const struct nk_color *table)
 {
@@ -19186,6 +22036,17 @@ nk_style_from_table(struct nk_context *ctx, const struct nk_color *table)
     win->menu_padding = nk_vec2(4,4);
     win->tooltip_padding = nk_vec2(4,4);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] font <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_style_set_font(struct nk_context *ctx, const struct nk_user_font *font)
 {
@@ -19199,6 +22060,17 @@ nk_style_set_font(struct nk_context *ctx, const struct nk_user_font *font)
     if (ctx->current)
         nk_layout_reset_min_row_height(ctx);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] font <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_style_push_font(struct nk_context *ctx, const struct nk_user_font *font)
 {
@@ -19219,6 +22091,16 @@ nk_style_push_font(struct nk_context *ctx, const struct nk_user_font *font)
     ctx->style.font = font;
     return 1;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_style_pop_font(struct nk_context *ctx)
 {
@@ -19268,6 +22150,18 @@ nk_style_pop_##type(struct nk_context *ctx)\
     element = &type_stack->elements[--type_stack->head];\
     *element->address = element->old_value;\
     return 1;\
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] nk <fill in>
+ * \param[in] style_item <fill in>
+ * \param[in] style_items <fill in>
+ *
+ * \returns <fill in>
+ */
 }
 NK_API nk_bool NK_STYLE_PUSH_IMPLEMENATION(struct nk, style_item, style_items)
 NK_API nk_bool NK_STYLE_PUSH_IMPLEMENATION(nk,float, floats)
@@ -19294,16 +22188,47 @@ nk_style_set_cursor(struct nk_context *ctx, enum nk_style_cursor c)
     }
     return 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_style_show_cursor(struct nk_context *ctx)
 {
     ctx->style.cursor_visible = nk_true;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_style_hide_cursor(struct nk_context *ctx)
 {
     ctx->style.cursor_visible = nk_false;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] cursor <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_style_load_cursor(struct nk_context *ctx, enum nk_style_cursor cursor,
     const struct nk_cursor *c)
@@ -19314,6 +22239,17 @@ nk_style_load_cursor(struct nk_context *ctx, enum nk_style_cursor cursor,
     style = &ctx->style;
     style->cursors[cursor] = c;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] cursors <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_style_load_all_cursors(struct nk_context *ctx, const struct nk_cursor *cursors)
 {
@@ -19335,6 +22271,17 @@ nk_style_load_all_cursors(struct nk_context *ctx, const struct nk_cursor *cursor
  *                          CONTEXT
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] font <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_setup(struct nk_context *ctx, const struct nk_user_font *font)
 {
@@ -19349,6 +22296,17 @@ nk_setup(struct nk_context *ctx, const struct nk_user_font *font)
 #endif
 }
 #ifdef NK_INCLUDE_DEFAULT_ALLOCATOR
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] font <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_init_default(struct nk_context *ctx, const struct nk_user_font *font)
 {
@@ -19359,6 +22317,18 @@ nk_init_default(struct nk_context *ctx, const struct nk_user_font *font)
     return nk_init(ctx, &alloc, font);
 }
 #endif
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] memory <fill in>
+ * \param[in] size <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_init_fixed(struct nk_context *ctx, void *memory, nk_size size,
     const struct nk_user_font *font)
@@ -19370,6 +22340,17 @@ nk_init_fixed(struct nk_context *ctx, void *memory, nk_size size,
     ctx->use_pool = nk_false;
     return 1;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] cmds <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_init_custom(struct nk_context *ctx, struct nk_buffer *cmds,
     struct nk_buffer *pool, const struct nk_user_font *font)
@@ -19391,6 +22372,17 @@ nk_init_custom(struct nk_context *ctx, struct nk_buffer *cmds,
     ctx->use_pool = nk_true;
     return 1;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] alloc <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_init(struct nk_context *ctx, const struct nk_allocator *alloc,
     const struct nk_user_font *font)
@@ -19404,6 +22396,17 @@ nk_init(struct nk_context *ctx, const struct nk_allocator *alloc,
     return 1;
 }
 #ifdef NK_INCLUDE_COMMAND_USERDATA
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] handle <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_set_user_data(struct nk_context *ctx, nk_handle handle)
 {
@@ -19413,6 +22416,16 @@ nk_set_user_data(struct nk_context *ctx, nk_handle handle)
         ctx->current->buffer.userdata = handle;
 }
 #endif
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_free(struct nk_context *ctx)
 {
@@ -19435,6 +22448,16 @@ nk_free(struct nk_context *ctx)
     ctx->freelist = 0;
     ctx->count = 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_clear(struct nk_context *ctx)
 {
@@ -19501,6 +22524,17 @@ nk_clear(struct nk_context *ctx)
     }
     ctx->seq++;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] buffer <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_start_buffer(struct nk_context *ctx, struct nk_command_buffer *buffer)
 {
@@ -19512,6 +22546,17 @@ nk_start_buffer(struct nk_context *ctx, struct nk_command_buffer *buffer)
     buffer->last = buffer->begin;
     buffer->clip = nk_null_rect;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] win <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_start(struct nk_context *ctx, struct nk_window *win)
 {
@@ -19519,6 +22564,17 @@ nk_start(struct nk_context *ctx, struct nk_window *win)
     NK_ASSERT(win);
     nk_start_buffer(ctx, &win->buffer);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] win <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_start_popup(struct nk_context *ctx, struct nk_window *win)
 {
@@ -19535,6 +22591,17 @@ nk_start_popup(struct nk_context *ctx, struct nk_window *win)
     buf->last = buf->begin;
     buf->active = nk_true;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] win <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_finish_popup(struct nk_context *ctx, struct nk_window *win)
 {
@@ -19547,6 +22614,17 @@ nk_finish_popup(struct nk_context *ctx, struct nk_window *win)
     buf->last = win->buffer.last;
     buf->end = win->buffer.end;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] buffer <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_finish_buffer(struct nk_context *ctx, struct nk_command_buffer *buffer)
 {
@@ -19555,6 +22633,17 @@ nk_finish_buffer(struct nk_context *ctx, struct nk_command_buffer *buffer)
     if (!ctx || !buffer) return;
     buffer->end = ctx->memory.allocated;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] win <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_finish(struct nk_context *ctx, struct nk_window *win)
 {
@@ -19573,6 +22662,16 @@ nk_finish(struct nk_context *ctx, struct nk_window *win)
     parent_last = nk_ptr_add(struct nk_command, memory, buf->parent);
     parent_last->next = buf->end;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_build(struct nk_context *ctx)
 {
@@ -19635,6 +22734,16 @@ nk_build(struct nk_context *ctx)
         else cmd->next = ctx->memory.allocated;
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx
+ *
+ * \returns <fill in>
+ */
 NK_API const struct nk_command*
 nk__begin(struct nk_context *ctx)
 {
@@ -19657,6 +22766,17 @@ nk__begin(struct nk_context *ctx)
     return nk_ptr_add_const(struct nk_command, buffer, iter->buffer.begin);
 }
 
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] cmd <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API const struct nk_command*
 nk__next(struct nk_context *ctx, const struct nk_command *cmd)
 {
@@ -19680,6 +22800,17 @@ nk__next(struct nk_context *ctx, const struct nk_command *cmd)
  *                              POOL
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] pool <fill in>
+ * \param[in] alloc <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_pool_init(struct nk_pool *pool, const struct nk_allocator *alloc,
     unsigned int capacity)
@@ -19691,6 +22822,16 @@ nk_pool_init(struct nk_pool *pool, const struct nk_allocator *alloc,
     pool->type = NK_BUFFER_DYNAMIC;
     pool->pages = 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] pool <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_pool_free(struct nk_pool *pool)
 {
@@ -19704,6 +22845,18 @@ nk_pool_free(struct nk_pool *pool)
         iter = next;
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] pool <fill in>
+ * \param[in] memory <fill in>
+ * \param[in] size <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_pool_init_fixed(struct nk_pool *pool, void *memory, nk_size size)
 {
@@ -19716,6 +22869,16 @@ nk_pool_init_fixed(struct nk_pool *pool, void *memory, nk_size size)
     pool->type = NK_BUFFER_FIXED;
     pool->size = size;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] pool <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB struct nk_page_element*
 nk_pool_alloc(struct nk_pool *pool)
 {
@@ -19747,6 +22910,16 @@ nk_pool_alloc(struct nk_pool *pool)
  *                          PAGE ELEMENT
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB struct nk_page_element*
 nk_create_page_element(struct nk_context *ctx)
 {
@@ -19773,6 +22946,16 @@ nk_create_page_element(struct nk_context *ctx)
     elem->prev = 0;
     return elem;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_link_page_element_into_freelist(struct nk_context *ctx,
     struct nk_page_element *elem)
@@ -19785,6 +22968,17 @@ nk_link_page_element_into_freelist(struct nk_context *ctx,
         ctx->freelist = elem;
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] elem <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_free_page_element(struct nk_context *ctx, struct nk_page_element *elem)
 {
@@ -19810,6 +23004,16 @@ nk_free_page_element(struct nk_context *ctx, struct nk_page_element *elem)
  *                              TABLE
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB struct nk_table*
 nk_create_table(struct nk_context *ctx)
 {
@@ -19819,6 +23023,17 @@ nk_create_table(struct nk_context *ctx)
     nk_zero_struct(*elem);
     return &elem->data.tbl;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] tbl <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_free_table(struct nk_context *ctx, struct nk_table *tbl)
 {
@@ -19826,6 +23041,17 @@ nk_free_table(struct nk_context *ctx, struct nk_table *tbl)
     struct nk_page_element *pe = NK_CONTAINER_OF(pd, struct nk_page_element, data);
     nk_free_page_element(ctx, pe);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] win <fill in>
+ * \param[in] tbl <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_push_table(struct nk_window *win, struct nk_table *tbl)
 {
@@ -19844,6 +23070,17 @@ nk_push_table(struct nk_window *win, struct nk_table *tbl)
     win->tables = tbl;
     win->table_count++;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] win <fill in>
+ * \param[in] tbl <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_remove_table(struct nk_window *win, struct nk_table *tbl)
 {
@@ -19856,6 +23093,17 @@ nk_remove_table(struct nk_window *win, struct nk_table *tbl)
     tbl->next = 0;
     tbl->prev = 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] win <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB nk_uint*
 nk_add_value(struct nk_context *ctx, struct nk_window *win,
             nk_hash name, nk_uint value)
@@ -19874,6 +23122,17 @@ nk_add_value(struct nk_context *ctx, struct nk_window *win,
     win->tables->values[win->tables->size] = value;
     return &win->tables->values[win->tables->size++];
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] win <fill in>
+ * \param[in] name <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB nk_uint*
 nk_find_value(const struct nk_window *win, nk_hash name)
 {
@@ -19900,6 +23159,16 @@ nk_find_value(const struct nk_window *win, nk_hash name)
  *                              PANEL
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void*
 nk_create_panel(struct nk_context *ctx)
 {
@@ -19909,6 +23178,17 @@ nk_create_panel(struct nk_context *ctx)
     nk_zero_struct(*elem);
     return &elem->data.pan;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] pan <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_free_panel(struct nk_context *ctx, struct nk_panel *pan)
 {
@@ -19916,6 +23196,17 @@ nk_free_panel(struct nk_context *ctx, struct nk_panel *pan)
     struct nk_page_element *pe = NK_CONTAINER_OF(pd, struct nk_page_element, data);
     nk_free_page_element(ctx, pe);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] flags <fill in>
+ * \param[in] title <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB nk_bool
 nk_panel_has_header(nk_flags flags, const char *title)
 {
@@ -19925,6 +23216,17 @@ nk_panel_has_header(nk_flags flags, const char *title)
     active = active && !(flags & NK_WINDOW_HIDDEN) && title;
     return active;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] style <fill in>
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB struct nk_vec2
 nk_panel_get_padding(const struct nk_style *style, enum nk_panel_type type)
 {
@@ -19938,6 +23240,17 @@ nk_panel_get_padding(const struct nk_style *style, enum nk_panel_type type)
     case NK_PANEL_MENU: return style->window.menu_padding;
     case NK_PANEL_TOOLTIP: return style->window.menu_padding;}
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] style <fill in>
+ * \param[in] flags <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB float
 nk_panel_get_border(const struct nk_style *style, nk_flags flags,
     enum nk_panel_type type)
@@ -19954,6 +23267,17 @@ nk_panel_get_border(const struct nk_style *style, nk_flags flags,
         case NK_PANEL_TOOLTIP: return style->window.menu_border;
     }} else return 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] style <fill in>
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB struct nk_color
 nk_panel_get_border_color(const struct nk_style *style, enum nk_panel_type type)
 {
@@ -19967,16 +23291,48 @@ nk_panel_get_border_color(const struct nk_style *style, enum nk_panel_type type)
     case NK_PANEL_MENU: return style->window.menu_border_color;
     case NK_PANEL_TOOLTIP: return style->window.menu_border_color;}
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB nk_bool
 nk_panel_is_sub(enum nk_panel_type type)
 {
     return ((int)type & (int)NK_PANEL_SET_SUB)?1:0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB nk_bool
 nk_panel_is_nonblock(enum nk_panel_type type)
 {
     return ((int)type & (int)NK_PANEL_SET_NONBLOCK)?1:0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] title <fill in>
+ * \param[in] panel_type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB nk_bool
 nk_panel_begin(struct nk_context *ctx, const char *title, enum nk_panel_type panel_type)
 {
@@ -20217,6 +23573,16 @@ nk_panel_begin(struct nk_context *ctx, const char *title, enum nk_panel_type pan
     layout->clip = clip;}
     return !(layout->flags & NK_WINDOW_HIDDEN) && !(layout->flags & NK_WINDOW_MINIMIZED);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_panel_end(struct nk_context *ctx)
 {
@@ -20522,6 +23888,16 @@ nk_panel_end(struct nk_context *ctx)
  *                              WINDOW
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void*
 nk_create_window(struct nk_context *ctx)
 {
@@ -20531,6 +23907,17 @@ nk_create_window(struct nk_context *ctx)
     elem->data.win.seq = ctx->seq;
     return &elem->data.win;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] win <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_free_window(struct nk_context *ctx, struct nk_window *win)
 {
@@ -20558,6 +23945,18 @@ nk_free_window(struct nk_context *ctx, struct nk_window *win)
     struct nk_page_element *pe = NK_CONTAINER_OF(pd, struct nk_page_element, data);
     nk_free_page_element(ctx, pe);}
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] hash <fill in>
+ * \param[in] name <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB struct nk_window*
 nk_find_window(const struct nk_context *ctx, nk_hash hash, const char *name)
 {
@@ -20574,6 +23973,17 @@ nk_find_window(const struct nk_context *ctx, nk_hash hash, const char *name)
     }
     return 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] win <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_insert_window(struct nk_context *ctx, struct nk_window *win,
     enum nk_window_insert_location loc)
@@ -20619,6 +24029,17 @@ nk_insert_window(struct nk_context *ctx, struct nk_window *win,
     }
     ctx->count++;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] win <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_remove_window(struct nk_context *ctx, struct nk_window *win)
 {
@@ -20648,12 +24069,35 @@ nk_remove_window(struct nk_context *ctx, struct nk_window *win)
     win->prev = 0;
     ctx->count--;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] title <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_begin(struct nk_context *ctx, const char *title,
     struct nk_rect bounds, nk_flags flags)
 {
     return nk_begin_titled(ctx, title, title, bounds, flags);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] name <fill in>
+ * \param[in] title <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_begin_titled(struct nk_context *ctx, const char *name, const char *title,
     struct nk_rect bounds, nk_flags flags)
@@ -20809,6 +24253,16 @@ nk_begin_titled(struct nk_context *ctx, const char *name, const char *title,
     win->layout->offset_y = &win->scrollbar.y;
     return ret;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_end(struct nk_context *ctx)
 {
@@ -20827,6 +24281,16 @@ nk_end(struct nk_context *ctx)
     nk_free_panel(ctx, ctx->current->layout);
     ctx->current = 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_rect
 nk_window_get_bounds(const struct nk_context *ctx)
 {
@@ -20835,6 +24299,16 @@ nk_window_get_bounds(const struct nk_context *ctx)
     if (!ctx || !ctx->current) return nk_rect(0,0,0,0);
     return ctx->current->bounds;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_vec2
 nk_window_get_position(const struct nk_context *ctx)
 {
@@ -20843,6 +24317,16 @@ nk_window_get_position(const struct nk_context *ctx)
     if (!ctx || !ctx->current) return nk_vec2(0,0);
     return nk_vec2(ctx->current->bounds.x, ctx->current->bounds.y);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_vec2
 nk_window_get_size(const struct nk_context *ctx)
 {
@@ -20851,6 +24335,16 @@ nk_window_get_size(const struct nk_context *ctx)
     if (!ctx || !ctx->current) return nk_vec2(0,0);
     return nk_vec2(ctx->current->bounds.w, ctx->current->bounds.h);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API float
 nk_window_get_width(const struct nk_context *ctx)
 {
@@ -20859,6 +24353,16 @@ nk_window_get_width(const struct nk_context *ctx)
     if (!ctx || !ctx->current) return 0;
     return ctx->current->bounds.w;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API float
 nk_window_get_height(const struct nk_context *ctx)
 {
@@ -20867,6 +24371,16 @@ nk_window_get_height(const struct nk_context *ctx)
     if (!ctx || !ctx->current) return 0;
     return ctx->current->bounds.h;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_rect
 nk_window_get_content_region(const struct nk_context *ctx)
 {
@@ -20875,6 +24389,16 @@ nk_window_get_content_region(const struct nk_context *ctx)
     if (!ctx || !ctx->current) return nk_rect(0,0,0,0);
     return ctx->current->layout->clip;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_vec2
 nk_window_get_content_region_min(const struct nk_context *ctx)
 {
@@ -20884,6 +24408,16 @@ nk_window_get_content_region_min(const struct nk_context *ctx)
     if (!ctx || !ctx->current) return nk_vec2(0,0);
     return nk_vec2(ctx->current->layout->clip.x, ctx->current->layout->clip.y);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_vec2
 nk_window_get_content_region_max(const struct nk_context *ctx)
 {
@@ -20894,6 +24428,16 @@ nk_window_get_content_region_max(const struct nk_context *ctx)
     return nk_vec2(ctx->current->layout->clip.x + ctx->current->layout->clip.w,
         ctx->current->layout->clip.y + ctx->current->layout->clip.h);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_vec2
 nk_window_get_content_region_size(const struct nk_context *ctx)
 {
@@ -20903,6 +24447,16 @@ nk_window_get_content_region_size(const struct nk_context *ctx)
     if (!ctx || !ctx->current) return nk_vec2(0,0);
     return nk_vec2(ctx->current->layout->clip.w, ctx->current->layout->clip.h);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_command_buffer*
 nk_window_get_canvas(const struct nk_context *ctx)
 {
@@ -20912,6 +24466,16 @@ nk_window_get_canvas(const struct nk_context *ctx)
     if (!ctx || !ctx->current) return 0;
     return &ctx->current->buffer;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_panel*
 nk_window_get_panel(const struct nk_context *ctx)
 {
@@ -20920,6 +24484,18 @@ nk_window_get_panel(const struct nk_context *ctx)
     if (!ctx || !ctx->current) return 0;
     return ctx->current->layout;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] offset_x <fill in>
+ * \param[in] offset_y <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_window_get_scroll(const struct nk_context *ctx, nk_uint *offset_x, nk_uint *offset_y)
 {
@@ -20934,6 +24510,16 @@ nk_window_get_scroll(const struct nk_context *ctx, nk_uint *offset_x, nk_uint *o
     if (offset_y)
       *offset_y = win->scrollbar.y;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_window_has_focus(const struct nk_context *ctx)
 {
@@ -20943,6 +24529,16 @@ nk_window_has_focus(const struct nk_context *ctx)
     if (!ctx || !ctx->current) return 0;
     return ctx->current == ctx->active;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_window_is_hovered(const struct nk_context *ctx)
 {
@@ -20958,6 +24554,16 @@ nk_window_is_hovered(const struct nk_context *ctx)
         return nk_input_is_mouse_hovering_rect(&ctx->input, actual_bounds);
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_window_is_any_hovered(const struct nk_context *ctx)
 {
@@ -20985,6 +24591,16 @@ nk_window_is_any_hovered(const struct nk_context *ctx)
     }
     return 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_item_is_any_active(const struct nk_context *ctx)
 {
@@ -20992,6 +24608,17 @@ nk_item_is_any_active(const struct nk_context *ctx)
     int any_active = (ctx->last_widget_state & NK_WIDGET_STATE_MODIFIED);
     return any_hovered || any_active;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] name <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_window_is_collapsed(const struct nk_context *ctx, const char *name)
 {
@@ -21007,6 +24634,17 @@ nk_window_is_collapsed(const struct nk_context *ctx, const char *name)
     if (!win) return 0;
     return win->flags & NK_WINDOW_MINIMIZED;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] name <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_window_is_closed(const struct nk_context *ctx, const char *name)
 {
@@ -21022,6 +24660,17 @@ nk_window_is_closed(const struct nk_context *ctx, const char *name)
     if (!win) return 1;
     return (win->flags & NK_WINDOW_CLOSED);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] name <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_window_is_hidden(const struct nk_context *ctx, const char *name)
 {
@@ -21037,6 +24686,17 @@ nk_window_is_hidden(const struct nk_context *ctx, const char *name)
     if (!win) return 1;
     return (win->flags & NK_WINDOW_HIDDEN);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] name <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_window_is_active(const struct nk_context *ctx, const char *name)
 {
@@ -21052,6 +24712,17 @@ nk_window_is_active(const struct nk_context *ctx, const char *name)
     if (!win) return 0;
     return win == ctx->active;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] name <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_window*
 nk_window_find(const struct nk_context *ctx, const char *name)
 {
@@ -21061,6 +24732,17 @@ nk_window_find(const struct nk_context *ctx, const char *name)
     title_hash = nk_murmur_hash(name, (int)title_len, NK_WINDOW_TITLE);
     return nk_find_window(ctx, title_hash, name);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] name <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_window_close(struct nk_context *ctx, const char *name)
 {
@@ -21074,6 +24756,16 @@ nk_window_close(struct nk_context *ctx, const char *name)
     win->flags |= NK_WINDOW_HIDDEN;
     win->flags |= NK_WINDOW_CLOSED;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_window_set_bounds(struct nk_context *ctx,
     const char *name, struct nk_rect bounds)
@@ -21085,6 +24777,16 @@ nk_window_set_bounds(struct nk_context *ctx,
     if (!win) return;
     win->bounds = bounds;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_window_set_position(struct nk_context *ctx,
     const char *name, struct nk_vec2 pos)
@@ -21094,6 +24796,16 @@ nk_window_set_position(struct nk_context *ctx,
     win->bounds.x = pos.x;
     win->bounds.y = pos.y;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_window_set_size(struct nk_context *ctx,
     const char *name, struct nk_vec2 size)
@@ -21103,6 +24815,17 @@ nk_window_set_size(struct nk_context *ctx,
     win->bounds.w = size.x;
     win->bounds.h = size.y;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] offset_x <fill in>
+ * \param[in] offset_y <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_window_set_scroll(struct nk_context *ctx, nk_uint offset_x, nk_uint offset_y)
 {
@@ -21115,6 +24838,17 @@ nk_window_set_scroll(struct nk_context *ctx, nk_uint offset_x, nk_uint offset_y)
     win->scrollbar.x = offset_x;
     win->scrollbar.y = offset_y;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] name <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_window_collapse(struct nk_context *ctx, const char *name,
                     enum nk_collapse_states c)
@@ -21133,6 +24867,17 @@ nk_window_collapse(struct nk_context *ctx, const char *name,
         win->flags |= NK_WINDOW_MINIMIZED;
     else win->flags &= ~(nk_flags)NK_WINDOW_MINIMIZED;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] name <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_window_collapse_if(struct nk_context *ctx, const char *name,
     enum nk_collapse_states c, int cond)
@@ -21141,6 +24886,18 @@ nk_window_collapse_if(struct nk_context *ctx, const char *name,
     if (!ctx || !cond) return;
     nk_window_collapse(ctx, name, c);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] name <fill in>
+ * \param[in] s <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_window_show(struct nk_context *ctx, const char *name, enum nk_show_states s)
 {
@@ -21158,6 +24915,17 @@ nk_window_show(struct nk_context *ctx, const char *name, enum nk_show_states s)
         win->flags |= NK_WINDOW_HIDDEN;
     } else win->flags &= ~(nk_flags)NK_WINDOW_HIDDEN;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] name <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_window_show_if(struct nk_context *ctx, const char *name,
     enum nk_show_states s, int cond)
@@ -21167,6 +24935,17 @@ nk_window_show_if(struct nk_context *ctx, const char *name,
     nk_window_show(ctx, name, s);
 }
 
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] name <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_window_set_focus(struct nk_context *ctx, const char *name)
 {
@@ -21185,6 +24964,18 @@ nk_window_set_focus(struct nk_context *ctx, const char *name)
     }
     ctx->active = win;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] color <fill in>
+ * \param[in] rounding <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_rule_horizontal(struct nk_context *ctx, struct nk_color color, nk_bool rounding)
 {
@@ -21203,6 +24994,17 @@ nk_rule_horizontal(struct nk_context *ctx, struct nk_color color, nk_bool roundi
  *                              POPUP
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_popup_begin(struct nk_context *ctx, enum nk_popup_type type,
     const char *title, nk_flags flags, struct nk_rect rect)
@@ -21299,6 +25101,16 @@ nk_popup_begin(struct nk_context *ctx, enum nk_popup_type type,
         return 0;
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB nk_bool
 nk_nonblock_begin(struct nk_context *ctx,
     nk_flags flags, struct nk_rect body, struct nk_rect header,
@@ -21382,6 +25194,16 @@ nk_nonblock_begin(struct nk_context *ctx,
     }}
     return is_active;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_popup_close(struct nk_context *ctx)
 {
@@ -21394,6 +25216,16 @@ nk_popup_close(struct nk_context *ctx)
     NK_ASSERT((int)popup->layout->type & (int)NK_PANEL_SET_POPUP);
     popup->flags |= NK_WINDOW_HIDDEN;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_popup_end(struct nk_context *ctx)
 {
@@ -21426,6 +25258,18 @@ nk_popup_end(struct nk_context *ctx)
     ctx->current = win;
     nk_push_scissor(&win->buffer, win->layout->clip);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] offset_x <fill in>
+ * \param[in] offset_y <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_popup_get_scroll(const struct nk_context *ctx, nk_uint *offset_x, nk_uint *offset_y)
 {
@@ -21443,6 +25287,18 @@ nk_popup_get_scroll(const struct nk_context *ctx, nk_uint *offset_x, nk_uint *of
     if (offset_y)
       *offset_y = popup->scrollbar.y;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] offset_x <fill in>
+ * \param[in] offset_y <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_popup_set_scroll(struct nk_context *ctx, nk_uint offset_x, nk_uint offset_y)
 {
@@ -21467,6 +25323,18 @@ nk_popup_set_scroll(struct nk_context *ctx, nk_uint offset_x, nk_uint offset_y)
  *                          CONTEXTUAL
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] flags <fill in>
+ * \param[in] size <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_contextual_begin(struct nk_context *ctx, nk_flags flags, struct nk_vec2 size,
     struct nk_rect trigger_bounds)
@@ -21531,6 +25399,18 @@ nk_contextual_begin(struct nk_context *ctx, nk_flags flags, struct nk_vec2 size,
     }
     return ret;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] text <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_contextual_item_text(struct nk_context *ctx, const char *text, int len,
     nk_flags alignment)
@@ -21561,11 +25441,34 @@ nk_contextual_item_text(struct nk_context *ctx, const char *text, int len,
     }
     return nk_false;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] label <fill in>
+ * \param[in] align <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_contextual_item_label(struct nk_context *ctx, const char *label, nk_flags align)
 {
     return nk_contextual_item_text(ctx, label, nk_strlen(label), align);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] img <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_contextual_item_image_text(struct nk_context *ctx, struct nk_image img,
     const char *text, int len, nk_flags align)
@@ -21596,12 +25499,34 @@ nk_contextual_item_image_text(struct nk_context *ctx, struct nk_image img,
     }
     return nk_false;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] img <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_contextual_item_image_label(struct nk_context *ctx, struct nk_image img,
     const char *label, nk_flags align)
 {
     return nk_contextual_item_image_text(ctx, img, label, nk_strlen(label), align);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] symbol <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_contextual_item_symbol_text(struct nk_context *ctx, enum nk_symbol_type symbol,
     const char *text, int len, nk_flags align)
@@ -21632,12 +25557,33 @@ nk_contextual_item_symbol_text(struct nk_context *ctx, enum nk_symbol_type symbo
     }
     return nk_false;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] symbol <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_contextual_item_symbol_label(struct nk_context *ctx, enum nk_symbol_type symbol,
     const char *text, nk_flags align)
 {
     return nk_contextual_item_symbol_text(ctx, symbol, text, nk_strlen(text), align);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_contextual_close(struct nk_context *ctx)
 {
@@ -21647,6 +25593,16 @@ nk_contextual_close(struct nk_context *ctx)
     if (!ctx || !ctx->current || !ctx->current->layout) return;
     nk_popup_close(ctx);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_contextual_end(struct nk_context *ctx)
 {
@@ -21694,6 +25650,16 @@ nk_contextual_end(struct nk_context *ctx)
  *                              MENU
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_menubar_begin(struct nk_context *ctx)
 {
@@ -21731,6 +25697,16 @@ nk_menubar_begin(struct nk_context *ctx)
     layout->menu.offset.y = *layout->offset_y;
     *layout->offset_y = 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_menubar_end(struct nk_context *ctx)
 {
@@ -21764,6 +25740,17 @@ nk_menubar_end(struct nk_context *ctx)
     layout->clip.h = layout->bounds.h;
     nk_push_scissor(out, layout->clip);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] win <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN int
 nk_menu_begin(struct nk_context *ctx, struct nk_window *win,
     const char *id, int is_clicked, struct nk_rect header, struct nk_vec2 size)
@@ -21797,6 +25784,18 @@ nk_menu_begin(struct nk_context *ctx, struct nk_window *win,
     win->popup.name = hash;
     return 1;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] title <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_menu_begin_text(struct nk_context *ctx, const char *title, int len,
     nk_flags align, struct nk_vec2 size)
@@ -21821,12 +25820,34 @@ nk_menu_begin_text(struct nk_context *ctx, const char *title, int len,
         title, len, align, NK_BUTTON_DEFAULT, &ctx->style.menu_button, in, ctx->style.font))
         is_clicked = nk_true;
     return nk_menu_begin(ctx, win, title, is_clicked, header, size);
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 }
 NK_API nk_bool nk_menu_begin_label(struct nk_context *ctx,
     const char *text, nk_flags align, struct nk_vec2 size)
 {
     return nk_menu_begin_text(ctx, text, nk_strlen(text), align, size);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] id <fill in>
+ * \param[in] img <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_menu_begin_image(struct nk_context *ctx, const char *id, struct nk_image img,
     struct nk_vec2 size)
@@ -21852,6 +25873,17 @@ nk_menu_begin_image(struct nk_context *ctx, const char *id, struct nk_image img,
         is_clicked = nk_true;
     return nk_menu_begin(ctx, win, id, is_clicked, header, size);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] id <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_menu_begin_symbol(struct nk_context *ctx, const char *id,
     enum nk_symbol_type sym, struct nk_vec2 size)
@@ -21877,6 +25909,18 @@ nk_menu_begin_symbol(struct nk_context *ctx, const char *id,
         is_clicked = nk_true;
     return nk_menu_begin(ctx, win, id, is_clicked, header, size);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] title <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_menu_begin_image_text(struct nk_context *ctx, const char *title, int len,
     nk_flags align, struct nk_image img, struct nk_vec2 size)
@@ -21903,12 +25947,34 @@ nk_menu_begin_image_text(struct nk_context *ctx, const char *title, int len,
         is_clicked = nk_true;
     return nk_menu_begin(ctx, win, title, is_clicked, header, size);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_menu_begin_image_label(struct nk_context *ctx,
     const char *title, nk_flags align, struct nk_image img, struct nk_vec2 size)
 {
     return nk_menu_begin_image_text(ctx, title, nk_strlen(title), align, img, size);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] title <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_menu_begin_symbol_text(struct nk_context *ctx, const char *title, int len,
     nk_flags align, enum nk_symbol_type sym, struct nk_vec2 size)
@@ -21935,48 +26001,147 @@ nk_menu_begin_symbol_text(struct nk_context *ctx, const char *title, int len,
         ctx->style.font, in)) is_clicked = nk_true;
     return nk_menu_begin(ctx, win, title, is_clicked, header, size);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_menu_begin_symbol_label(struct nk_context *ctx,
     const char *title, nk_flags align, enum nk_symbol_type sym, struct nk_vec2 size )
 {
     return nk_menu_begin_symbol_text(ctx, title, nk_strlen(title), align,sym,size);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] title <fill in>
+ * \param[in] len <fill in>
+ * \param[in] align <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_menu_item_text(struct nk_context *ctx, const char *title, int len, nk_flags align)
 {
     return nk_contextual_item_text(ctx, title, len, align);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] label <fill in>
+ * \param[in] align <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_menu_item_label(struct nk_context *ctx, const char *label, nk_flags align)
 {
     return nk_contextual_item_label(ctx, label, align);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] img <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_menu_item_image_label(struct nk_context *ctx, struct nk_image img,
     const char *label, nk_flags align)
 {
     return nk_contextual_item_image_label(ctx, img, label, align);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] img <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_menu_item_image_text(struct nk_context *ctx, struct nk_image img,
     const char *text, int len, nk_flags align)
 {
     return nk_contextual_item_image_text(ctx, img, text, len, align);
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] sym <fill in>
+ *
+ * \returns <fill in>
+ */
 }
 NK_API nk_bool nk_menu_item_symbol_text(struct nk_context *ctx, enum nk_symbol_type sym,
     const char *text, int len, nk_flags align)
 {
     return nk_contextual_item_symbol_text(ctx, sym, text, len, align);
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] sym <fill in>
+ *
+ * \returns <fill in>
+ */
 }
 NK_API nk_bool nk_menu_item_symbol_label(struct nk_context *ctx, enum nk_symbol_type sym,
     const char *label, nk_flags align)
 {
     return nk_contextual_item_symbol_label(ctx, sym, label, align);
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 }
 NK_API void nk_menu_close(struct nk_context *ctx)
 {
     nk_contextual_close(ctx);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_menu_end(struct nk_context *ctx)
 {
@@ -21992,6 +26157,17 @@ nk_menu_end(struct nk_context *ctx)
  *                          LAYOUT
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] height <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_layout_set_min_row_height(struct nk_context *ctx, float height)
 {
@@ -22008,6 +26184,16 @@ nk_layout_set_min_row_height(struct nk_context *ctx, float height)
     layout = win->layout;
     layout->row.min_height = height;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_layout_reset_min_row_height(struct nk_context *ctx)
 {
@@ -22026,6 +26212,17 @@ nk_layout_reset_min_row_height(struct nk_context *ctx)
     layout->row.min_height += ctx->style.text.padding.y*2;
     layout->row.min_height += ctx->style.window.min_row_height_padding*2;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] style <fill in>
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB float
 nk_layout_row_calculate_usable_space(const struct nk_style *style, enum nk_panel_type type,
     float total_space, int columns)
@@ -22044,6 +26241,17 @@ nk_layout_row_calculate_usable_space(const struct nk_style *style, enum nk_panel
     panel_space  = total_space - panel_spacing;
     return panel_space;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] win <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_panel_layout(const struct nk_context *ctx, struct nk_window *win,
     float height, int cols)
@@ -22096,6 +26304,17 @@ nk_panel_layout(const struct nk_context *ctx, struct nk_window *win,
         nk_fill_rect(out, background, 0, color);
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] fmt <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_row_layout(struct nk_context *ctx, enum nk_layout_format fmt,
     float height, int cols, int width)
@@ -22119,6 +26338,17 @@ nk_row_layout(struct nk_context *ctx, enum nk_layout_format fmt,
     win->layout->row.item_offset = 0;
     win->layout->row.item_width = (float)width;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] pixel_width <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API float
 nk_layout_ratio_from_pixel(const struct nk_context *ctx, float pixel_width)
 {
@@ -22129,16 +26359,52 @@ nk_layout_ratio_from_pixel(const struct nk_context *ctx, float pixel_width)
     win = ctx->current;
     return NK_CLAMP(0.0f, pixel_width/win->bounds.x, 1.0f);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] height <fill in>
+ * \param[in] cols <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_layout_row_dynamic(struct nk_context *ctx, float height, int cols)
 {
     nk_row_layout(ctx, NK_DYNAMIC, height, cols, 0);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] height <fill in>
+ * \param[in] item_width <fill in>
+ * \param[in] cols <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_layout_row_static(struct nk_context *ctx, float height, int item_width, int cols)
 {
     nk_row_layout(ctx, NK_STATIC, height, cols, item_width);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] fmt <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_layout_row_begin(struct nk_context *ctx, enum nk_layout_format fmt,
     float row_height, int cols)
@@ -22165,6 +26431,17 @@ nk_layout_row_begin(struct nk_context *ctx, enum nk_layout_format fmt,
     layout->row.item_offset = 0;
     layout->row.columns = cols;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] ratio_or_width <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_layout_row_push(struct nk_context *ctx, float ratio_or_width)
 {
@@ -22191,6 +26468,16 @@ nk_layout_row_push(struct nk_context *ctx, float ratio_or_width)
         else layout->row.item_width = 1.0f - layout->row.filled;
     } else layout->row.item_width = ratio_or_width;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_layout_row_end(struct nk_context *ctx)
 {
@@ -22211,6 +26498,17 @@ nk_layout_row_end(struct nk_context *ctx)
     layout->row.item_width = 0;
     layout->row.item_offset = 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] fmt <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_layout_row(struct nk_context *ctx, enum nk_layout_format fmt,
     float height, int cols, const float *ratio)
@@ -22250,6 +26548,17 @@ nk_layout_row(struct nk_context *ctx, enum nk_layout_format fmt,
     layout->row.item_offset = 0;
     layout->row.filled = 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] height <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_layout_row_template_begin(struct nk_context *ctx, float height)
 {
@@ -22277,6 +26586,16 @@ nk_layout_row_template_begin(struct nk_context *ctx, float height)
     layout->row.item.w = 0;
     layout->row.item.h = 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_layout_row_template_push_dynamic(struct nk_context *ctx)
 {
@@ -22297,6 +26616,17 @@ nk_layout_row_template_push_dynamic(struct nk_context *ctx)
     if (layout->row.columns >= NK_MAX_LAYOUT_ROW_TEMPLATE_COLUMNS) return;
     layout->row.templates[layout->row.columns++] = -1.0f;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] min_width <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_layout_row_template_push_variable(struct nk_context *ctx, float min_width)
 {
@@ -22317,6 +26647,17 @@ nk_layout_row_template_push_variable(struct nk_context *ctx, float min_width)
     if (layout->row.columns >= NK_MAX_LAYOUT_ROW_TEMPLATE_COLUMNS) return;
     layout->row.templates[layout->row.columns++] = -min_width;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] width <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_layout_row_template_push_static(struct nk_context *ctx, float width)
 {
@@ -22337,6 +26678,16 @@ nk_layout_row_template_push_static(struct nk_context *ctx, float width)
     if (layout->row.columns >= NK_MAX_LAYOUT_ROW_TEMPLATE_COLUMNS) return;
     layout->row.templates[layout->row.columns++] = width;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_layout_row_template_end(struct nk_context *ctx)
 {
@@ -22388,6 +26739,17 @@ nk_layout_row_template_end(struct nk_context *ctx)
         }
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] fmt <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_layout_space_begin(struct nk_context *ctx, enum nk_layout_format fmt,
     float height, int widget_count)
@@ -22413,6 +26775,16 @@ nk_layout_space_begin(struct nk_context *ctx, enum nk_layout_format fmt,
     layout->row.item_width = 0;
     layout->row.item_offset = 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_layout_space_end(struct nk_context *ctx)
 {
@@ -22432,6 +26804,17 @@ nk_layout_space_end(struct nk_context *ctx)
     layout->row.item_offset = 0;
     nk_zero(&layout->row.item, sizeof(layout->row.item));
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] rect <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_layout_space_push(struct nk_context *ctx, struct nk_rect rect)
 {
@@ -22448,6 +26831,16 @@ nk_layout_space_push(struct nk_context *ctx, struct nk_rect rect)
     layout = win->layout;
     layout->row.item = rect;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_rect
 nk_layout_space_bounds(const struct nk_context *ctx)
 {
@@ -22467,6 +26860,16 @@ nk_layout_space_bounds(const struct nk_context *ctx)
     ret.h = layout->row.height;
     return ret;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_rect
 nk_layout_widget_bounds(const struct nk_context *ctx)
 {
@@ -22486,6 +26889,17 @@ nk_layout_widget_bounds(const struct nk_context *ctx)
     ret.h = layout->row.height;
     return ret;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] ret <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_vec2
 nk_layout_space_to_screen(const struct nk_context *ctx, struct nk_vec2 ret)
 {
@@ -22502,6 +26916,17 @@ nk_layout_space_to_screen(const struct nk_context *ctx, struct nk_vec2 ret)
     ret.y += layout->at_y - (float)*layout->offset_y;
     return ret;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] ret <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_vec2
 nk_layout_space_to_local(const struct nk_context *ctx, struct nk_vec2 ret)
 {
@@ -22518,6 +26943,17 @@ nk_layout_space_to_local(const struct nk_context *ctx, struct nk_vec2 ret)
     ret.y += -layout->at_y + (float)*layout->offset_y;
     return ret;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] ret <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_rect
 nk_layout_space_rect_to_screen(const struct nk_context *ctx, struct nk_rect ret)
 {
@@ -22534,6 +26970,17 @@ nk_layout_space_rect_to_screen(const struct nk_context *ctx, struct nk_rect ret)
     ret.y += layout->at_y - (float)*layout->offset_y;
     return ret;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] ret <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_rect
 nk_layout_space_rect_to_local(const struct nk_context *ctx, struct nk_rect ret)
 {
@@ -22550,6 +26997,17 @@ nk_layout_space_rect_to_local(const struct nk_context *ctx, struct nk_rect ret)
     ret.y += -layout->at_y + (float)*layout->offset_y;
     return ret;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] win <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_panel_alloc_row(const struct nk_context *ctx, struct nk_window *win)
 {
@@ -22558,6 +27016,17 @@ nk_panel_alloc_row(const struct nk_context *ctx, struct nk_window *win)
     const float row_height = layout->row.height - spacing.y;
     nk_panel_layout(ctx, win, row_height, layout->row.columns);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] bounds <fill in>
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_layout_widget_space(struct nk_rect *bounds, const struct nk_context *ctx,
     struct nk_window *win, int modify)
@@ -22693,6 +27162,17 @@ nk_layout_widget_space(struct nk_rect *bounds, const struct nk_context *ctx,
         layout->max_x = bounds->x + bounds->w;
     bounds->x -= (float)*layout->offset_x;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] bounds <fill in>
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_panel_alloc_space(struct nk_rect *bounds, const struct nk_context *ctx)
 {
@@ -22715,6 +27195,17 @@ nk_panel_alloc_space(struct nk_rect *bounds, const struct nk_context *ctx)
     nk_layout_widget_space(bounds, ctx, win, nk_true);
     layout->row.index++;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] bounds <fill in>
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_layout_peek(struct nk_rect *bounds, const struct nk_context *ctx)
 {
@@ -22746,6 +27237,15 @@ nk_layout_peek(struct nk_rect *bounds, const struct nk_context *ctx)
     layout->at_y = y;
     layout->row.index = index;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_spacer(struct nk_context *ctx )
 {
@@ -22761,6 +27261,17 @@ nk_spacer(struct nk_context *ctx )
  *                              TREE
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN int
 nk_tree_state_base(struct nk_context *ctx, enum nk_tree_type type,
     struct nk_image *img, const char *title, enum nk_collapse_states *state)
@@ -22874,6 +27385,17 @@ nk_tree_state_base(struct nk_context *ctx, enum nk_tree_type type,
         return nk_true;
     } else return nk_false;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN int
 nk_tree_base(struct nk_context *ctx, enum nk_tree_type type,
     struct nk_image *img, const char *title, enum nk_collapse_states initial_state,
@@ -22896,18 +27418,50 @@ nk_tree_base(struct nk_context *ctx, enum nk_tree_type type,
     }
     return nk_tree_state_base(ctx, type, img, title, (enum nk_collapse_states*)state);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_tree_state_push(struct nk_context *ctx, enum nk_tree_type type,
     const char *title, enum nk_collapse_states *state)
 {
     return nk_tree_state_base(ctx, type, 0, title, state);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_tree_state_image_push(struct nk_context *ctx, enum nk_tree_type type,
     struct nk_image img, const char *title, enum nk_collapse_states *state)
 {
     return nk_tree_state_base(ctx, type, &img, title, state);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_tree_state_pop(struct nk_context *ctx)
 {
@@ -22927,6 +27481,17 @@ nk_tree_state_pop(struct nk_context *ctx)
     NK_ASSERT(layout->row.tree_depth);
     layout->row.tree_depth--;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_tree_push_hashed(struct nk_context *ctx, enum nk_tree_type type,
     const char *title, enum nk_collapse_states initial_state,
@@ -22934,6 +27499,17 @@ nk_tree_push_hashed(struct nk_context *ctx, enum nk_tree_type type,
 {
     return nk_tree_base(ctx, type, 0, title, initial_state, hash, len, line);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_tree_image_push_hashed(struct nk_context *ctx, enum nk_tree_type type,
     struct nk_image img, const char *title, enum nk_collapse_states initial_state,
@@ -22941,11 +27517,32 @@ nk_tree_image_push_hashed(struct nk_context *ctx, enum nk_tree_type type,
 {
     return nk_tree_base(ctx, type, &img, title, initial_state, hash, len, seed);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_tree_pop(struct nk_context *ctx)
 {
     nk_tree_state_pop(ctx);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN int
 nk_tree_element_image_push_hashed_base(struct nk_context *ctx, enum nk_tree_type type,
     struct nk_image *img, const char *title, int title_len,
@@ -23062,6 +27659,17 @@ nk_tree_element_image_push_hashed_base(struct nk_context *ctx, enum nk_tree_type
         return nk_true;
     } else return nk_false;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN int
 nk_tree_element_base(struct nk_context *ctx, enum nk_tree_type type,
     struct nk_image *img, const char *title, enum nk_collapse_states initial_state,
@@ -23084,6 +27692,17 @@ nk_tree_element_base(struct nk_context *ctx, enum nk_tree_type type,
     } return nk_tree_element_image_push_hashed_base(ctx, type, img, title,
         nk_strlen(title), (enum nk_collapse_states*)state, selected);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_tree_element_push_hashed(struct nk_context *ctx, enum nk_tree_type type,
     const char *title, enum nk_collapse_states initial_state,
@@ -23091,6 +27710,17 @@ nk_tree_element_push_hashed(struct nk_context *ctx, enum nk_tree_type type,
 {
     return nk_tree_element_base(ctx, type, 0, title, initial_state, selected, hash, len, seed);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_tree_element_image_push_hashed(struct nk_context *ctx, enum nk_tree_type type,
     struct nk_image img, const char *title, enum nk_collapse_states initial_state,
@@ -23098,6 +27728,16 @@ nk_tree_element_image_push_hashed(struct nk_context *ctx, enum nk_tree_type type
 {
     return nk_tree_element_base(ctx, type, &img, title, initial_state, selected, hash, len, seed);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_tree_element_pop(struct nk_context *ctx)
 {
@@ -23113,6 +27753,16 @@ nk_tree_element_pop(struct nk_context *ctx)
  *                          GROUP
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_group_scrolled_offset_begin(struct nk_context *ctx,
     nk_uint *x_offset, nk_uint *y_offset, const char *title, nk_flags flags)
@@ -23162,6 +27812,16 @@ nk_group_scrolled_offset_begin(struct nk_context *ctx,
     }
     return 1;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_group_scrolled_end(struct nk_context *ctx)
 {
@@ -23224,12 +27884,33 @@ nk_group_scrolled_end(struct nk_context *ctx)
     g->bounds = pan.bounds;
     return;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_group_scrolled_begin(struct nk_context *ctx,
     struct nk_scroll *scroll, const char *title, nk_flags flags)
 {
     return nk_group_scrolled_offset_begin(ctx, &scroll->x, &scroll->y, title, flags);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] id <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_group_begin_titled(struct nk_context *ctx, const char *id,
     const char *title, nk_flags flags)
@@ -23263,16 +27944,50 @@ nk_group_begin_titled(struct nk_context *ctx, const char *id,
     } else y_offset = nk_find_value(win, id_hash+1);
     return nk_group_scrolled_offset_begin(ctx, x_offset, y_offset, title, flags);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] title <fill in>
+ * \param[in] flags <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_group_begin(struct nk_context *ctx, const char *title, nk_flags flags)
 {
     return nk_group_begin_titled(ctx, title, title, flags);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_group_end(struct nk_context *ctx)
 {
     nk_group_scrolled_end(ctx);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] id <fill in>
+ * \param[in] x_offset <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_group_get_scroll(struct nk_context *ctx, const char *id, nk_uint *x_offset, nk_uint *y_offset)
 {
@@ -23308,6 +28023,19 @@ nk_group_get_scroll(struct nk_context *ctx, const char *id, nk_uint *x_offset, n
     if (y_offset)
       *y_offset = *y_offset_ptr;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] id <fill in>
+ * \param[in] x_offset <fill in>
+ * \param[in] y_offset <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_group_set_scroll(struct nk_context *ctx, const char *id, nk_uint x_offset, nk_uint y_offset)
 {
@@ -23350,6 +28078,17 @@ nk_group_set_scroll(struct nk_context *ctx, const char *id, nk_uint x_offset, nk
  *                          LIST VIEW
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] view <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_list_view_begin(struct nk_context *ctx, struct nk_list_view *view,
     const char *title, nk_flags flags, int row_height, int row_count)
@@ -23404,6 +28143,16 @@ nk_list_view_begin(struct nk_context *ctx, struct nk_list_view *view,
     view->ctx = ctx;
     return result;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] view <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_list_view_end(struct nk_list_view *view)
 {
@@ -23433,6 +28182,16 @@ nk_list_view_end(struct nk_list_view *view)
  *                              WIDGET
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_rect
 nk_widget_bounds(const struct nk_context *ctx)
 {
@@ -23444,6 +28203,16 @@ nk_widget_bounds(const struct nk_context *ctx)
     nk_layout_peek(&bounds, ctx);
     return bounds;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_vec2
 nk_widget_position(const struct nk_context *ctx)
 {
@@ -23456,6 +28225,16 @@ nk_widget_position(const struct nk_context *ctx)
     nk_layout_peek(&bounds, ctx);
     return nk_vec2(bounds.x, bounds.y);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_vec2
 nk_widget_size(const struct nk_context *ctx)
 {
@@ -23468,6 +28247,16 @@ nk_widget_size(const struct nk_context *ctx)
     nk_layout_peek(&bounds, ctx);
     return nk_vec2(bounds.w, bounds.h);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API float
 nk_widget_width(const struct nk_context *ctx)
 {
@@ -23480,6 +28269,16 @@ nk_widget_width(const struct nk_context *ctx)
     nk_layout_peek(&bounds, ctx);
     return bounds.w;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API float
 nk_widget_height(const struct nk_context *ctx)
 {
@@ -23492,6 +28291,16 @@ nk_widget_height(const struct nk_context *ctx)
     nk_layout_peek(&bounds, ctx);
     return bounds.h;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_widget_is_hovered(const struct nk_context *ctx)
 {
@@ -23514,6 +28323,17 @@ nk_widget_is_hovered(const struct nk_context *ctx)
         return 0;
     return nk_input_is_mouse_hovering_rect(&ctx->input, bounds);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] btn <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_widget_is_mouse_clicked(const struct nk_context *ctx, enum nk_buttons btn)
 {
@@ -23536,6 +28356,18 @@ nk_widget_is_mouse_clicked(const struct nk_context *ctx, enum nk_buttons btn)
         return 0;
     return nk_input_mouse_clicked(&ctx->input, btn, bounds);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] btn <fill in>
+ * \param[in] down <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_widget_has_mouse_click_down(const struct nk_context *ctx, enum nk_buttons btn, nk_bool down)
 {
@@ -23558,6 +28390,17 @@ nk_widget_has_mouse_click_down(const struct nk_context *ctx, enum nk_buttons btn
         return 0;
     return nk_input_has_mouse_click_down_in_rect(&ctx->input, btn, bounds, down);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] bounds <fill in>
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API enum nk_widget_layout_states
 nk_widget(struct nk_rect *bounds, const struct nk_context *ctx)
 {
@@ -23608,6 +28451,17 @@ nk_widget(struct nk_rect *bounds, const struct nk_context *ctx)
         return NK_WIDGET_ROM;
     return NK_WIDGET_VALID;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] bounds <fill in>
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API enum nk_widget_layout_states
 nk_widget_fitting(struct nk_rect *bounds, const struct nk_context *ctx,
     struct nk_vec2 item_padding)
@@ -23625,6 +28479,17 @@ nk_widget_fitting(struct nk_rect *bounds, const struct nk_context *ctx,
     state = nk_widget(bounds, ctx);
     return state;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] cols <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_spacing(struct nk_context *ctx, int cols)
 {
@@ -23656,6 +28521,16 @@ nk_spacing(struct nk_context *ctx, int cols)
             nk_panel_alloc_space(&none, ctx);
     } layout->row.index = index;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_widget_disable_begin(struct nk_context* ctx)
 {
@@ -23719,6 +28594,16 @@ nk_widget_disable_begin(struct nk_context* ctx)
     style->tab.tab_minimize_button.color_factor_background = style->tab.tab_minimize_button.disabled_factor;
     style->text.color_factor = style->text.disabled_factor;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_widget_disable_end(struct nk_context* ctx)
 {
@@ -23791,6 +28676,17 @@ nk_widget_disable_end(struct nk_context* ctx)
  *                              TEXT
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] o <fill in>
+ * \param[in] b <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_widget_text(struct nk_command_buffer *o, struct nk_rect b,
     const char *string, int len, const struct nk_text *t,
@@ -23836,6 +28732,17 @@ nk_widget_text(struct nk_command_buffer *o, struct nk_rect b,
     }
     nk_draw_text(o, label, (const char*)string, len, f, t->background, t->text);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] o <fill in>
+ * \param[in] b <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_widget_text_wrap(struct nk_command_buffer *o, struct nk_rect b,
     const char *string, int len, const struct nk_text *t,
@@ -23875,6 +28782,18 @@ nk_widget_text_wrap(struct nk_command_buffer *o, struct nk_rect b,
         fitting = nk_text_clamp(f, &string[done], len - done, line.w, &glyphs, &width, seperator,NK_LEN(seperator));
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] str <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_text_colored(struct nk_context *ctx, const char *str, int len,
     nk_flags alignment, struct nk_color color)
@@ -23902,6 +28821,17 @@ nk_text_colored(struct nk_context *ctx, const char *str, int len,
     text.text = nk_rgb_factor(color, style->text.color_factor);
     nk_widget_text(&win->buffer, bounds, str, len, &text, alignment, style->font);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] str <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_text_wrap_colored(struct nk_context *ctx, const char *str,
     int len, struct nk_color color)
@@ -23930,6 +28860,17 @@ nk_text_wrap_colored(struct nk_context *ctx, const char *str,
     nk_widget_text_wrap(&win->buffer, bounds, str, len, &text, style->font);
 }
 #ifdef NK_INCLUDE_STANDARD_VARARGS
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] flags <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_labelf_colored(struct nk_context *ctx, nk_flags flags,
     struct nk_color color, const char *fmt, ...)
@@ -23939,6 +28880,17 @@ nk_labelf_colored(struct nk_context *ctx, nk_flags flags,
     nk_labelfv_colored(ctx, flags, color, fmt, args);
     va_end(args);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] color <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_labelf_colored_wrap(struct nk_context *ctx, struct nk_color color,
     const char *fmt, ...)
@@ -23948,6 +28900,18 @@ nk_labelf_colored_wrap(struct nk_context *ctx, struct nk_color color,
     nk_labelfv_colored_wrap(ctx, color, fmt, args);
     va_end(args);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] flags <fill in>
+ * \param[in] fmt <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_labelf(struct nk_context *ctx, nk_flags flags, const char *fmt, ...)
 {
@@ -23956,6 +28920,17 @@ nk_labelf(struct nk_context *ctx, nk_flags flags, const char *fmt, ...)
     nk_labelfv(ctx, flags, fmt, args);
     va_end(args);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] fmt <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_labelf_wrap(struct nk_context *ctx, const char *fmt,...)
 {
@@ -23964,6 +28939,17 @@ nk_labelf_wrap(struct nk_context *ctx, const char *fmt,...)
     nk_labelfv_wrap(ctx, fmt, args);
     va_end(args);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] flags <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_labelfv_colored(struct nk_context *ctx, nk_flags flags,
     struct nk_color color, const char *fmt, va_list args)
@@ -23973,6 +28959,17 @@ nk_labelfv_colored(struct nk_context *ctx, nk_flags flags,
     nk_label_colored(ctx, buf, flags, color);
 }
 
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] color <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_labelfv_colored_wrap(struct nk_context *ctx, struct nk_color color,
     const char *fmt, va_list args)
@@ -23982,6 +28979,19 @@ nk_labelfv_colored_wrap(struct nk_context *ctx, struct nk_color color,
     nk_label_colored_wrap(ctx, buf, color);
 }
 
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] flags <fill in>
+ * \param[in] fmt <fill in>
+ * \param[in] args <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_labelfv(struct nk_context *ctx, nk_flags flags, const char *fmt, va_list args)
 {
@@ -23990,6 +29000,18 @@ nk_labelfv(struct nk_context *ctx, nk_flags flags, const char *fmt, va_list args
     nk_label(ctx, buf, flags);
 }
 
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] fmt <fill in>
+ * \param[in] args <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_labelfv_wrap(struct nk_context *ctx, const char *fmt, va_list args)
 {
@@ -23998,32 +29020,104 @@ nk_labelfv_wrap(struct nk_context *ctx, const char *fmt, va_list args)
     nk_label_wrap(ctx, buf);
 }
 
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] prefix <fill in>
+ * \param[in] value <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_value_bool(struct nk_context *ctx, const char *prefix, int value)
 {
     nk_labelf(ctx, NK_TEXT_LEFT, "%s: %s", prefix, ((value) ? "true": "false"));
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] prefix <fill in>
+ * \param[in] value <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_value_int(struct nk_context *ctx, const char *prefix, int value)
 {
     nk_labelf(ctx, NK_TEXT_LEFT, "%s: %d", prefix, value);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] prefix <fill in>
+ * \param[in] value <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_value_uint(struct nk_context *ctx, const char *prefix, unsigned int value)
 {
     nk_labelf(ctx, NK_TEXT_LEFT, "%s: %u", prefix, value);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] prefix <fill in>
+ * \param[in] value <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_value_float(struct nk_context *ctx, const char *prefix, float value)
 {
     double double_value = (double)value;
     nk_labelf(ctx, NK_TEXT_LEFT, "%s: %.3f", prefix, double_value);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] p <fill in>
+ * \param[in] c <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_value_color_byte(struct nk_context *ctx, const char *p, struct nk_color c)
 {
     nk_labelf(ctx, NK_TEXT_LEFT, "%s: (%d, %d, %d, %d)", p, c.r, c.g, c.b, c.a);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] p <fill in>
+ * \param[in] color <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_value_color_float(struct nk_context *ctx, const char *p, struct nk_color color)
 {
@@ -24031,6 +29125,18 @@ nk_value_color_float(struct nk_context *ctx, const char *p, struct nk_color colo
     nk_labelf(ctx, NK_TEXT_LEFT, "%s: (%.2f, %.2f, %.2f, %.2f)",
         p, c[0], c[1], c[2], c[3]);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] prefix <fill in>
+ * \param[in] color <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_value_color_hex(struct nk_context *ctx, const char *prefix, struct nk_color color)
 {
@@ -24039,6 +29145,19 @@ nk_value_color_hex(struct nk_context *ctx, const char *prefix, struct nk_color c
     nk_labelf(ctx, NK_TEXT_LEFT, "%s: %s", prefix, hex);
 }
 #endif
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] str <fill in>
+ * \param[in] len <fill in>
+ * \param[in] alignment <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_text(struct nk_context *ctx, const char *str, int len, nk_flags alignment)
 {
@@ -24046,6 +29165,18 @@ nk_text(struct nk_context *ctx, const char *str, int len, nk_flags alignment)
     if (!ctx) return;
     nk_text_colored(ctx, str, len, alignment, ctx->style.text.color);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] str <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_text_wrap(struct nk_context *ctx, const char *str, int len)
 {
@@ -24053,22 +29184,69 @@ nk_text_wrap(struct nk_context *ctx, const char *str, int len)
     if (!ctx) return;
     nk_text_wrap_colored(ctx, str, len, ctx->style.text.color);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] str <fill in>
+ * \param[in] alignment <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_label(struct nk_context *ctx, const char *str, nk_flags alignment)
 {
     nk_text(ctx, str, nk_strlen(str), alignment);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] str <fill in>
+ * \param[in] align <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_label_colored(struct nk_context *ctx, const char *str, nk_flags align,
     struct nk_color color)
 {
     nk_text_colored(ctx, str, nk_strlen(str), align, color);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] str <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_label_wrap(struct nk_context *ctx, const char *str)
 {
     nk_text_wrap(ctx, str, nk_strlen(str));
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] str <fill in>
+ * \param[in] color <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_label_colored_wrap(struct nk_context *ctx, const char *str, struct nk_color color)
 {
@@ -24084,6 +29262,16 @@ nk_label_colored_wrap(struct nk_context *ctx, const char *str, struct nk_color c
  *                          IMAGE
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ptr <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_handle
 nk_handle_ptr(void *ptr)
 {
@@ -24091,6 +29279,16 @@ nk_handle_ptr(void *ptr)
     handle.ptr = ptr;
     return handle;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] id <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_handle
 nk_handle_id(int id)
 {
@@ -24099,6 +29297,19 @@ nk_handle_id(int id)
     handle.id = id;
     return handle;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ptr <fill in>
+ * \param[in] w <fill in>
+ * \param[in] h <fill in>
+ * \param[in] r <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_image
 nk_subimage_ptr(void *ptr, nk_ushort w, nk_ushort h, struct nk_rect r)
 {
@@ -24112,6 +29323,19 @@ nk_subimage_ptr(void *ptr, nk_ushort w, nk_ushort h, struct nk_rect r)
     s.region[3] = (nk_ushort)r.h;
     return s;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] id <fill in>
+ * \param[in] w <fill in>
+ * \param[in] h <fill in>
+ * \param[in] r <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_image
 nk_subimage_id(int id, nk_ushort w, nk_ushort h, struct nk_rect r)
 {
@@ -24125,6 +29349,19 @@ nk_subimage_id(int id, nk_ushort w, nk_ushort h, struct nk_rect r)
     s.region[3] = (nk_ushort)r.h;
     return s;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] handle <fill in>
+ * \param[in] w <fill in>
+ * \param[in] h <fill in>
+ * \param[in] r <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_image
 nk_subimage_handle(nk_handle handle, nk_ushort w, nk_ushort h, struct nk_rect r)
 {
@@ -24138,6 +29375,16 @@ nk_subimage_handle(nk_handle handle, nk_ushort w, nk_ushort h, struct nk_rect r)
     s.region[3] = (nk_ushort)r.h;
     return s;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] handle <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_image
 nk_image_handle(nk_handle handle)
 {
@@ -24151,6 +29398,16 @@ nk_image_handle(nk_handle handle)
     s.region[3] = 0;
     return s;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ptr <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_image
 nk_image_ptr(void *ptr)
 {
@@ -24165,6 +29422,16 @@ nk_image_ptr(void *ptr)
     s.region[3] = 0;
     return s;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] id <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_image
 nk_image_id(int id)
 {
@@ -24178,12 +29445,33 @@ nk_image_id(int id)
     s.region[3] = 0;
     return s;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] img <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_image_is_subimage(const struct nk_image* img)
 {
     NK_ASSERT(img);
     return !(img->w == 0 && img->h == 0);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] img <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_image(struct nk_context *ctx, struct nk_image img)
 {
@@ -24199,6 +29487,18 @@ nk_image(struct nk_context *ctx, struct nk_image img)
     if (!nk_widget(&bounds, ctx)) return;
     nk_draw_image(&win->buffer, bounds, &img, nk_white);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] img <fill in>
+ * \param[in] col <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_image_color(struct nk_context *ctx, struct nk_image img, struct nk_color col)
 {
@@ -24224,6 +29524,20 @@ nk_image_color(struct nk_context *ctx, struct nk_image img, struct nk_color col)
  *                          9-SLICE
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ptr <fill in>
+ * \param[in] w <fill in>
+ * \param[in] h <fill in>
+ * \param[in] rgn <fill in>
+ * \param[in] l <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_nine_slice
 nk_sub9slice_ptr(void *ptr, nk_ushort w, nk_ushort h, struct nk_rect rgn, nk_ushort l, nk_ushort t, nk_ushort r, nk_ushort b)
 {
@@ -24239,6 +29553,21 @@ nk_sub9slice_ptr(void *ptr, nk_ushort w, nk_ushort h, struct nk_rect rgn, nk_ush
     s.l = l; s.t = t; s.r = r; s.b = b;
     return s;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] id <fill in>
+ * \param[in] w <fill in>
+ * \param[in] h <fill in>
+ * \param[in] rgn <fill in>
+ * \param[in] l <fill in>
+ * \param[in] t <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_nine_slice
 nk_sub9slice_id(int id, nk_ushort w, nk_ushort h, struct nk_rect rgn, nk_ushort l, nk_ushort t, nk_ushort r, nk_ushort b)
 {
@@ -24254,6 +29583,20 @@ nk_sub9slice_id(int id, nk_ushort w, nk_ushort h, struct nk_rect rgn, nk_ushort 
     s.l = l; s.t = t; s.r = r; s.b = b;
     return s;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] handle <fill in>
+ * \param[in] w <fill in>
+ * \param[in] h <fill in>
+ * \param[in] rgn <fill in>
+ * \param[in] l <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_nine_slice
 nk_sub9slice_handle(nk_handle handle, nk_ushort w, nk_ushort h, struct nk_rect rgn, nk_ushort l, nk_ushort t, nk_ushort r, nk_ushort b)
 {
@@ -24269,6 +29612,20 @@ nk_sub9slice_handle(nk_handle handle, nk_ushort w, nk_ushort h, struct nk_rect r
     s.l = l; s.t = t; s.r = r; s.b = b;
     return s;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] handle <fill in>
+ * \param[in] l <fill in>
+ * \param[in] t <fill in>
+ * \param[in] r <fill in>
+ * \param[in] b <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_nine_slice
 nk_nine_slice_handle(nk_handle handle, nk_ushort l, nk_ushort t, nk_ushort r, nk_ushort b)
 {
@@ -24284,6 +29641,20 @@ nk_nine_slice_handle(nk_handle handle, nk_ushort l, nk_ushort t, nk_ushort r, nk
     s.l = l; s.t = t; s.r = r; s.b = b;
     return s;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ptr <fill in>
+ * \param[in] l <fill in>
+ * \param[in] t <fill in>
+ * \param[in] r <fill in>
+ * \param[in] b <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_nine_slice
 nk_nine_slice_ptr(void *ptr, nk_ushort l, nk_ushort t, nk_ushort r, nk_ushort b)
 {
@@ -24300,6 +29671,20 @@ nk_nine_slice_ptr(void *ptr, nk_ushort l, nk_ushort t, nk_ushort r, nk_ushort b)
     s.l = l; s.t = t; s.r = r; s.b = b;
     return s;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] id <fill in>
+ * \param[in] l <fill in>
+ * \param[in] t <fill in>
+ * \param[in] r <fill in>
+ * \param[in] b <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_nine_slice
 nk_nine_slice_id(int id, nk_ushort l, nk_ushort t, nk_ushort r, nk_ushort b)
 {
@@ -24315,6 +29700,16 @@ nk_nine_slice_id(int id, nk_ushort l, nk_ushort t, nk_ushort r, nk_ushort b)
     s.l = l; s.t = t; s.r = r; s.b = b;
     return s;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] slice <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_nine_slice_is_sub9slice(const struct nk_nine_slice* slice)
 {
@@ -25566,6 +30961,17 @@ NK_API nk_bool nk_button_image_label_styled(struct nk_context *ctx,
  *                              TOGGLE
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] in <fill in>
+ * \param[in] select <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB nk_bool
 nk_toggle_behavior(const struct nk_input *in, struct nk_rect select,
     nk_flags *state, nk_bool active)
@@ -25581,6 +30987,16 @@ nk_toggle_behavior(const struct nk_input *in, struct nk_rect select,
         *state |= NK_WIDGET_STATE_LEFT;
     return active;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] out <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_draw_checkbox(struct nk_command_buffer *out,
     nk_flags state, const struct nk_style_toggle *style, nk_bool active,
@@ -25624,6 +31040,16 @@ nk_draw_checkbox(struct nk_command_buffer *out,
         else nk_fill_rect(out, *cursors, 0, cursor->data.color);
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] out <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_draw_option(struct nk_command_buffer *out,
     nk_flags state, const struct nk_style_toggle *style, nk_bool active,
@@ -25667,6 +31093,16 @@ nk_draw_option(struct nk_command_buffer *out,
         else nk_fill_circle(out, *cursors, cursor->data.color);
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB nk_bool
 nk_do_toggle(nk_flags *state,
     struct nk_command_buffer *out, struct nk_rect r,
@@ -25757,6 +31193,19 @@ nk_do_toggle(nk_flags *state,
  *                          CHECKBOX
  *
  * --------------------------------------------------------------*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] text <fill in>
+ * \param[in] len <fill in>
+ * \param[in] active <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_check_text(struct nk_context *ctx, const char *text, int len, nk_bool active)
 {
@@ -25785,6 +31234,19 @@ nk_check_text(struct nk_context *ctx, const char *text, int len, nk_bool active)
         text, len, NK_TOGGLE_CHECK, &style->checkbox, in, style->font, NK_WIDGET_LEFT, NK_TEXT_LEFT);
     return active;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] text <fill in>
+ * \param[in] len <fill in>
+ * \param[in] active <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_check_text_align(struct nk_context *ctx, const char *text, int len, nk_bool active, nk_flags widget_alignment, nk_flags text_alignment)
 {
@@ -25813,6 +31275,18 @@ nk_check_text_align(struct nk_context *ctx, const char *text, int len, nk_bool a
         text, len, NK_TOGGLE_CHECK, &style->checkbox, in, style->font, widget_alignment, text_alignment);
     return active;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] text <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API unsigned int
 nk_check_flags_text(struct nk_context *ctx, const char *text, int len,
     unsigned int flags, unsigned int value)
@@ -25827,6 +31301,19 @@ nk_check_flags_text(struct nk_context *ctx, const char *text, int len,
     else flags &= ~value;
     return flags;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] text <fill in>
+ * \param[in] len <fill in>
+ * \param[in] active <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_checkbox_text(struct nk_context *ctx, const char *text, int len, nk_bool *active)
 {
@@ -25839,6 +31326,19 @@ nk_checkbox_text(struct nk_context *ctx, const char *text, int len, nk_bool *act
     *active = nk_check_text(ctx, text, len, *active);
     return old_val != *active;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] text <fill in>
+ * \param[in] len <fill in>
+ * \param[in] active <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_checkbox_text_align(struct nk_context *ctx, const char *text, int len, nk_bool *active, nk_flags widget_alignment, nk_flags text_alignment)
 {
@@ -25851,6 +31351,18 @@ nk_checkbox_text_align(struct nk_context *ctx, const char *text, int len, nk_boo
     *active = nk_check_text_align(ctx, text, len, *active, widget_alignment, text_alignment);
     return old_val != *active;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] text <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_checkbox_flags_text(struct nk_context *ctx, const char *text, int len,
     unsigned int *flags, unsigned int value)
@@ -25868,23 +31380,80 @@ nk_checkbox_flags_text(struct nk_context *ctx, const char *text, int len,
         return 1;
     }
     return 0;
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] label <fill in>
+ * \param[in] active <fill in>
+ *
+ * \returns <fill in>
+ */
 }
 NK_API nk_bool nk_check_label(struct nk_context *ctx, const char *label, nk_bool active)
 {
     return nk_check_text(ctx, label, nk_strlen(label), active);
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] label <fill in>
+ *
+ * \returns <fill in>
+ */
 }
 NK_API unsigned int nk_check_flags_label(struct nk_context *ctx, const char *label,
     unsigned int flags, unsigned int value)
 {
     return nk_check_flags_text(ctx, label, nk_strlen(label), flags, value);
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] label <fill in>
+ * \param[in] active <fill in>
+ *
+ * \returns <fill in>
+ */
 }
 NK_API nk_bool nk_checkbox_label(struct nk_context *ctx, const char *label, nk_bool *active)
 {
     return nk_checkbox_text(ctx, label, nk_strlen(label), active);
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] label <fill in>
+ *
+ * \returns <fill in>
+ */
 }
 NK_API nk_bool nk_checkbox_label_align(struct nk_context *ctx, const char *label, nk_bool *active, nk_flags widget_alignment, nk_flags text_alignment)
 {
     return nk_checkbox_text_align(ctx, label, nk_strlen(label), active, widget_alignment, text_alignment);
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] label <fill in>
+ *
+ * \returns <fill in>
+ */
 }
 NK_API nk_bool nk_checkbox_flags_label(struct nk_context *ctx, const char *label,
     unsigned int *flags, unsigned int value)
@@ -25896,6 +31465,19 @@ NK_API nk_bool nk_checkbox_flags_label(struct nk_context *ctx, const char *label
  *                          OPTION
  *
  * --------------------------------------------------------------*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] text <fill in>
+ * \param[in] len <fill in>
+ * \param[in] is_active <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_option_text(struct nk_context *ctx, const char *text, int len, nk_bool is_active)
 {
@@ -25924,6 +31506,19 @@ nk_option_text(struct nk_context *ctx, const char *text, int len, nk_bool is_act
         text, len, NK_TOGGLE_OPTION, &style->option, in, style->font, NK_WIDGET_LEFT, NK_TEXT_LEFT);
     return is_active;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] text <fill in>
+ * \param[in] len <fill in>
+ * \param[in] is_active <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_option_text_align(struct nk_context *ctx, const char *text, int len, nk_bool is_active, nk_flags widget_alignment, nk_flags text_alignment)
 {
@@ -25952,6 +31547,19 @@ nk_option_text_align(struct nk_context *ctx, const char *text, int len, nk_bool 
         text, len, NK_TOGGLE_OPTION, &style->option, in, style->font, widget_alignment, text_alignment);
     return is_active;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] text <fill in>
+ * \param[in] len <fill in>
+ * \param[in] active <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_radio_text(struct nk_context *ctx, const char *text, int len, nk_bool *active)
 {
@@ -25964,6 +31572,19 @@ nk_radio_text(struct nk_context *ctx, const char *text, int len, nk_bool *active
     *active = nk_option_text(ctx, text, len, old_value);
     return old_value != *active;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] text <fill in>
+ * \param[in] len <fill in>
+ * \param[in] active <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_radio_text_align(struct nk_context *ctx, const char *text, int len, nk_bool *active, nk_flags widget_alignment, nk_flags text_alignment)
 {
@@ -25976,21 +31597,69 @@ nk_radio_text_align(struct nk_context *ctx, const char *text, int len, nk_bool *
     *active = nk_option_text_align(ctx, text, len, old_value, widget_alignment, text_alignment);
     return old_value != *active;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] label <fill in>
+ * \param[in] active <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_option_label(struct nk_context *ctx, const char *label, nk_bool active)
 {
     return nk_option_text(ctx, label, nk_strlen(label), active);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] label <fill in>
+ * \param[in] active <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_option_label_align(struct nk_context *ctx, const char *label, nk_bool active, nk_flags widget_alignment, nk_flags text_alignment)
 {
     return nk_option_text_align(ctx, label, nk_strlen(label), active, widget_alignment, text_alignment);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] label <fill in>
+ * \param[in] active <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_radio_label(struct nk_context *ctx, const char *label, nk_bool *active)
 {
     return nk_radio_text(ctx, label, nk_strlen(label), active);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] label <fill in>
+ * \param[in] active <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_radio_label_align(struct nk_context *ctx, const char *label, nk_bool *active, nk_flags widget_alignment, nk_flags text_alignment)
 {
@@ -26006,6 +31675,16 @@ nk_radio_label_align(struct nk_context *ctx, const char *label, nk_bool *active,
  *                              SELECTABLE
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] out <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_draw_selectable(struct nk_command_buffer *out,
     nk_flags state, const struct nk_style_selectable *style, nk_bool active,
@@ -26065,6 +31744,17 @@ nk_draw_selectable(struct nk_command_buffer *out,
     }
     nk_widget_text(out, *bounds, string, len, &text, align, font);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ * \param[in] out <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB nk_bool
 nk_do_selectable(nk_flags *state, struct nk_command_buffer *out,
     struct nk_rect bounds, const char *str, int len, nk_flags align, nk_bool *value,
@@ -26101,6 +31791,17 @@ nk_do_selectable(nk_flags *state, struct nk_command_buffer *out,
     if (style->draw_end) style->draw_end(out, style->userdata);
     return old_value != *value;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ * \param[in] out <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB nk_bool
 nk_do_selectable_image(nk_flags *state, struct nk_command_buffer *out,
     struct nk_rect bounds, const char *str, int len, nk_flags align, nk_bool *value,
@@ -26148,6 +31849,17 @@ nk_do_selectable_image(nk_flags *state, struct nk_command_buffer *out,
     if (style->draw_end) style->draw_end(out, style->userdata);
     return old_value != *value;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ * \param[in] out <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB nk_bool
 nk_do_selectable_symbol(nk_flags *state, struct nk_command_buffer *out,
     struct nk_rect bounds, const char *str, int len, nk_flags align, nk_bool *value,
@@ -26196,6 +31908,18 @@ nk_do_selectable_symbol(nk_flags *state, struct nk_command_buffer *out,
     return old_value != *value;
 }
 
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] str <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_selectable_text(struct nk_context *ctx, const char *str, int len,
     nk_flags align, nk_bool *value)
@@ -26225,6 +31949,17 @@ nk_selectable_text(struct nk_context *ctx, const char *str, int len,
     return nk_do_selectable(&ctx->last_widget_state, &win->buffer, bounds,
                 str, len, align, value, &style->selectable, in, style->font);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] img <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_selectable_image_text(struct nk_context *ctx, struct nk_image img,
     const char *str, int len, nk_flags align, nk_bool *value)
@@ -26254,6 +31989,17 @@ nk_selectable_image_text(struct nk_context *ctx, struct nk_image img,
     return nk_do_selectable_image(&ctx->last_widget_state, &win->buffer, bounds,
                 str, len, align, value, &img, &style->selectable, in, style->font);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] sym <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_selectable_symbol_text(struct nk_context *ctx, enum nk_symbol_type sym,
     const char *str, int len, nk_flags align, nk_bool *value)
@@ -26283,46 +32029,148 @@ nk_selectable_symbol_text(struct nk_context *ctx, enum nk_symbol_type sym,
     return nk_do_selectable_symbol(&ctx->last_widget_state, &win->buffer, bounds,
                 str, len, align, value, sym, &style->selectable, in, style->font);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] sym <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_selectable_symbol_label(struct nk_context *ctx, enum nk_symbol_type sym,
     const char *title, nk_flags align, nk_bool *value)
 {
     return nk_selectable_symbol_text(ctx, sym, title, nk_strlen(title), align, value);
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] str <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 }
 NK_API nk_bool nk_select_text(struct nk_context *ctx, const char *str, int len,
     nk_flags align, nk_bool value)
 {
     nk_selectable_text(ctx, str, len, align, &value);return value;
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] str <fill in>
+ * \param[in] align <fill in>
+ *
+ * \returns <fill in>
+ */
 }
 NK_API nk_bool nk_selectable_label(struct nk_context *ctx, const char *str, nk_flags align, nk_bool *value)
 {
     return nk_selectable_text(ctx, str, nk_strlen(str), align, value);
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] img <fill in>
+ *
+ * \returns <fill in>
+ */
 }
 NK_API nk_bool nk_selectable_image_label(struct nk_context *ctx,struct nk_image img,
     const char *str, nk_flags align, nk_bool *value)
 {
     return nk_selectable_image_text(ctx, img, str, nk_strlen(str), align, value);
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] str <fill in>
+ * \param[in] align <fill in>
+ *
+ * \returns <fill in>
+ */
 }
 NK_API nk_bool nk_select_label(struct nk_context *ctx, const char *str, nk_flags align, nk_bool value)
 {
     nk_selectable_text(ctx, str, nk_strlen(str), align, &value);return value;
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] img <fill in>
+ *
+ * \returns <fill in>
+ */
 }
 NK_API nk_bool nk_select_image_label(struct nk_context *ctx, struct nk_image img,
     const char *str, nk_flags align, nk_bool value)
 {
     nk_selectable_image_text(ctx, img, str, nk_strlen(str), align, &value);return value;
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] img <fill in>
+ *
+ * \returns <fill in>
+ */
 }
 NK_API nk_bool nk_select_image_text(struct nk_context *ctx, struct nk_image img,
     const char *str, int len, nk_flags align, nk_bool value)
 {
     nk_selectable_image_text(ctx, img, str, len, align, &value);return value;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] sym <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_select_symbol_text(struct nk_context *ctx, enum nk_symbol_type sym,
     const char *title, int title_len, nk_flags align, nk_bool value)
 {
     nk_selectable_symbol_text(ctx, sym, title, title_len, align, &value);return value;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] sym <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_select_symbol_label(struct nk_context *ctx, enum nk_symbol_type sym,
     const char *title, nk_flags align, nk_bool value)
@@ -26339,6 +32187,17 @@ nk_select_symbol_label(struct nk_context *ctx, enum nk_symbol_type sym,
  *                              SLIDER
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ * \param[in] logical_cursor <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB float
 nk_slider_behavior(nk_flags *state, struct nk_rect *logical_cursor,
     struct nk_rect *visual_cursor, struct nk_input *in,
@@ -26381,6 +32240,17 @@ nk_slider_behavior(nk_flags *state, struct nk_rect *logical_cursor,
         *state |= NK_WIDGET_STATE_LEFT;
     return slider_value;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] out <fill in>
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_draw_slider(struct nk_command_buffer *out, nk_flags state,
     const struct nk_style_slider *style, const struct nk_rect *bounds,
@@ -26448,6 +32318,16 @@ nk_draw_slider(struct nk_command_buffer *out, nk_flags state,
     else
         nk_fill_circle(out, *visual_cursor, nk_rgb_factor(cursor->data.color, style->color_factor));
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB float
 nk_do_slider(nk_flags *state,
     struct nk_command_buffer *out, struct nk_rect bounds,
@@ -26537,6 +32417,19 @@ nk_do_slider(nk_flags *state,
     if (style->draw_end) style->draw_end(out, style->userdata);
     return slider_value;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] min_value <fill in>
+ * \param[in] value <fill in>
+ * \param[in] max_value <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_slider_float(struct nk_context *ctx, float min_value, float *value, float max_value,
     float value_step)
@@ -26571,11 +32464,39 @@ nk_slider_float(struct nk_context *ctx, float min_value, float *value, float max
                 old_value, max_value, value_step, &style->slider, in, style->font);
     return (old_value > *value || old_value < *value);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] min <fill in>
+ * \param[in] val <fill in>
+ * \param[in] max <fill in>
+ * \param[in] step <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API float
 nk_slide_float(struct nk_context *ctx, float min, float val, float max, float step)
 {
     nk_slider_float(ctx, min, &val, max, step); return val;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] min <fill in>
+ * \param[in] val <fill in>
+ * \param[in] max <fill in>
+ * \param[in] step <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_slide_int(struct nk_context *ctx, int min, int val, int max, int step)
 {
@@ -26583,6 +32504,20 @@ nk_slide_int(struct nk_context *ctx, int min, int val, int max, int step)
     nk_slider_float(ctx, (float)min, &value, (float)max, (float)step);
     return (int)value;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] min <fill in>
+ * \param[in] val <fill in>
+ * \param[in] max <fill in>
+ * \param[in] step <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_slider_int(struct nk_context *ctx, int min, int *val, int max, int step)
 {
@@ -26602,6 +32537,17 @@ nk_slider_int(struct nk_context *ctx, int min, int *val, int max, int step)
  *                               KNOB
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ * \param[in] in <fill in>
+ *
+ * \returns <fill in>
+ */
 
 NK_LIB float
 nk_knob_behavior(nk_flags *state, struct nk_input *in,
@@ -26666,6 +32612,17 @@ nk_knob_behavior(nk_flags *state, struct nk_input *in,
         *state |= NK_WIDGET_STATE_LEFT;
 
     return knob_value;
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] out <fill in>
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 }
 NK_LIB void
 nk_draw_knob(struct nk_command_buffer *out, nk_flags state,
@@ -26752,6 +32709,16 @@ nk_draw_knob(struct nk_command_buffer *out, nk_flags state,
     /* draw cursor */
     nk_stroke_line(out, cursor_start.x, cursor_start.y, cursor_end.x, cursor_end.y, 2, nk_rgb_factor(cursor, style->color_factor));
     }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 }
 NK_LIB float
 nk_do_knob(nk_flags *state,
@@ -26797,6 +32764,19 @@ nk_do_knob(nk_flags *state,
     nk_draw_knob(out, *state, style, &bounds, knob_min, knob_value, knob_max, zero_direction, dead_zone_percent);
     if (style->draw_end) style->draw_end(out, style->userdata);
     return knob_value;
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] min_value <fill in>
+ * \param[in] value <fill in>
+ * \param[in] max_value <fill in>
+ *
+ * \returns <fill in>
+ */
 }
 NK_API nk_bool
 nk_knob_float(struct nk_context *ctx, float min_value, float *value, float max_value,
@@ -26833,6 +32813,20 @@ nk_knob_float(struct nk_context *ctx, float min_value, float *value, float max_v
                 old_value, max_value, value_step, zero_direction, dead_zone_degrees / 360.0f, &style->knob, in);
 
     return (old_value > *value || old_value < *value);
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] min <fill in>
+ * \param[in] val <fill in>
+ * \param[in] max <fill in>
+ * \param[in] step <fill in>
+ *
+ * \returns <fill in>
+ */
 }
 NK_API nk_bool
 nk_knob_int(struct nk_context *ctx, int min, int *val, int max, int step,
@@ -26853,6 +32847,17 @@ nk_knob_int(struct nk_context *ctx, int min, int *val, int max, int step,
  *                          PROGRESS
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ * \param[in] in <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB nk_size
 nk_progress_behavior(nk_flags *state, struct nk_input *in,
     struct nk_rect r, struct nk_rect cursor, nk_size max, nk_size value, nk_bool modifiable)
@@ -26883,6 +32888,17 @@ nk_progress_behavior(nk_flags *state, struct nk_input *in,
         *state |= NK_WIDGET_STATE_LEFT;
     return value;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] out <fill in>
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_draw_progress(struct nk_command_buffer *out, nk_flags state,
     const struct nk_style_progress *style, const struct nk_rect *bounds,
@@ -26934,6 +32950,16 @@ nk_draw_progress(struct nk_command_buffer *out, nk_flags state,
             break;
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB nk_size
 nk_do_progress(nk_flags *state,
     struct nk_command_buffer *out, struct nk_rect bounds,
@@ -26965,6 +32991,19 @@ nk_do_progress(nk_flags *state,
     if (style->draw_end) style->draw_end(out, style->userdata);
     return prog_value;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] cur <fill in>
+ * \param[in] max <fill in>
+ * \param[in] is_modifyable <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_progress(struct nk_context *ctx, nk_size *cur, nk_size max, nk_bool is_modifyable)
 {
@@ -26996,6 +33035,19 @@ nk_progress(struct nk_context *ctx, nk_size *cur, nk_size max, nk_bool is_modify
             *cur, max, is_modifyable, &style->progress, in);
     return (*cur != old_value);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] cur <fill in>
+ * \param[in] max <fill in>
+ * \param[in] modifyable <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_size
 nk_prog(struct nk_context *ctx, nk_size cur, nk_size max, nk_bool modifyable)
 {
@@ -27012,6 +33064,17 @@ nk_prog(struct nk_context *ctx, nk_size cur, nk_size max, nk_bool modifyable)
  *                              SCROLLBAR
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ * \param[in] in <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB float
 nk_scrollbar_behavior(nk_flags *state, struct nk_input *in,
     int has_scrolling, const struct nk_rect *scroll,
@@ -27088,6 +33151,17 @@ nk_scrollbar_behavior(nk_flags *state, struct nk_input *in,
         *state |= NK_WIDGET_STATE_LEFT;
     return scroll_offset;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] out <fill in>
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_draw_scrollbar(struct nk_command_buffer *out, nk_flags state,
     const struct nk_style_scrollbar *style, const struct nk_rect *bounds,
@@ -27136,6 +33210,16 @@ nk_draw_scrollbar(struct nk_command_buffer *out, nk_flags state,
             break;
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB float
 nk_do_scrollbarv(nk_flags *state,
     struct nk_command_buffer *out, struct nk_rect scroll, int has_scrolling,
@@ -27225,6 +33309,16 @@ nk_do_scrollbarv(nk_flags *state,
     if (style->draw_end) style->draw_end(out, style->userdata);
     return scroll_offset;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB float
 nk_do_scrollbarh(nk_flags *state,
     struct nk_command_buffer *out, struct nk_rect scroll, int has_scrolling,
@@ -27347,6 +33441,18 @@ NK_INTERN void nk_textedit_makeundo_insert(struct nk_text_edit*, int, int);
 NK_INTERN void nk_textedit_makeundo_replace(struct nk_text_edit*, int, int, int);
 #define NK_TEXT_HAS_SELECTION(s)   ((s)->select_start != (s)->select_end)
 
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] edit <fill in>
+ * \param[in] line_start <fill in>
+ * \param[in] char_id <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN float
 nk_textedit_get_width(const struct nk_text_edit *edit, int line_start, int char_id,
     const struct nk_user_font *font)
@@ -27356,6 +33462,17 @@ nk_textedit_get_width(const struct nk_text_edit *edit, int line_start, int char_
     const char *str = nk_str_at_const(&edit->string, line_start + char_id, &unicode, &len);
     return font->width(font->userdata, font->height, str, len);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] r <fill in>
+ * \param[in] edit <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_textedit_layout_row(struct nk_text_edit_row *r, struct nk_text_edit *edit,
     int line_start_id, float row_height, const struct nk_user_font *font)
@@ -27377,6 +33494,18 @@ nk_textedit_layout_row(struct nk_text_edit_row *r, struct nk_text_edit *edit,
     r->ymax = size.y;
     r->num_chars = glyphs;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] edit <fill in>
+ * \param[in] x <fill in>
+ * \param[in] y <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN int
 nk_textedit_locate_coord(struct nk_text_edit *edit, float x, float y,
     const struct nk_user_font *font, float row_height)
@@ -27437,6 +33566,18 @@ nk_textedit_locate_coord(struct nk_text_edit *edit, float x, float y,
         return i+r.num_chars-1;
     else return i+r.num_chars;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ * \param[in] x <fill in>
+ * \param[in] y <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_textedit_click(struct nk_text_edit *state, float x, float y,
     const struct nk_user_font *font, float row_height)
@@ -27448,6 +33589,18 @@ nk_textedit_click(struct nk_text_edit *state, float x, float y,
     state->select_end = state->cursor;
     state->has_preferred_x = 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ * \param[in] x <fill in>
+ * \param[in] y <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_textedit_drag(struct nk_text_edit *state, float x, float y,
     const struct nk_user_font *font, float row_height)
@@ -27459,6 +33612,17 @@ nk_textedit_drag(struct nk_text_edit *state, float x, float y,
         state->select_start = state->cursor;
     state->cursor = state->select_end = p;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] find <fill in>
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_textedit_find_charpos(struct nk_text_find *find, struct nk_text_edit *state,
     int n, int single_line, const struct nk_user_font *font, float row_height)
@@ -27516,6 +33680,16 @@ nk_textedit_find_charpos(struct nk_text_find *find, struct nk_text_edit *state,
     for (i=0; first+i < n; ++i)
         find->x += nk_textedit_get_width(state, first, i, font);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_textedit_clamp(struct nk_text_edit *state)
 {
@@ -27530,6 +33704,18 @@ nk_textedit_clamp(struct nk_text_edit *state)
     }
     if (state->cursor > n) state->cursor = n;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ * \param[in] where <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_textedit_delete(struct nk_text_edit *state, int where, int len)
 {
@@ -27538,6 +33724,16 @@ nk_textedit_delete(struct nk_text_edit *state, int where, int len)
     nk_str_delete_runes(&state->string, where, len);
     state->has_preferred_x = 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_textedit_delete_selection(struct nk_text_edit *state)
 {
@@ -27556,6 +33752,16 @@ nk_textedit_delete_selection(struct nk_text_edit *state)
         state->has_preferred_x = 0;
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_textedit_sortselection(struct nk_text_edit *state)
 {
@@ -27566,6 +33772,16 @@ nk_textedit_sortselection(struct nk_text_edit *state)
         state->select_start = temp;
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_textedit_move_to_first(struct nk_text_edit *state)
 {
@@ -27577,6 +33793,16 @@ nk_textedit_move_to_first(struct nk_text_edit *state)
         state->has_preferred_x = 0;
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_textedit_move_to_last(struct nk_text_edit *state)
 {
@@ -27589,6 +33815,17 @@ nk_textedit_move_to_last(struct nk_text_edit *state)
         state->has_preferred_x = 0;
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ * \param[in] idx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN int
 nk_is_word_boundary( struct nk_text_edit *state, int idx)
 {
@@ -27600,6 +33837,16 @@ nk_is_word_boundary( struct nk_text_edit *state, int idx)
             c == '(' || c == ')' || c == '{' || c == '}' || c == '[' || c == ']' ||
             c == '|');
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN int
 nk_textedit_move_to_word_previous(struct nk_text_edit *state)
 {
@@ -27612,6 +33859,16 @@ nk_textedit_move_to_word_previous(struct nk_text_edit *state)
 
    return c;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN int
 nk_textedit_move_to_word_next(struct nk_text_edit *state)
 {
@@ -27625,6 +33882,16 @@ nk_textedit_move_to_word_next(struct nk_text_edit *state)
 
    return c;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_textedit_prep_selection_at_cursor(struct nk_text_edit *state)
 {
@@ -27633,6 +33900,16 @@ nk_textedit_prep_selection_at_cursor(struct nk_text_edit *state)
         state->select_start = state->select_end = state->cursor;
     else state->cursor = state->select_end;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_textedit_cut(struct nk_text_edit *state)
 {
@@ -27646,6 +33923,18 @@ nk_textedit_cut(struct nk_text_edit *state)
     }
    return 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ * \param[in] ctext <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_textedit_paste(struct nk_text_edit *state, char const *ctext, int len)
 {
@@ -27671,6 +33960,18 @@ nk_textedit_paste(struct nk_text_edit *state, char const *ctext, int len)
         --state->undo.undo_point;
     return 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ * \param[in] text <fill in>
+ * \param[in] total_len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_textedit_text(struct nk_text_edit *state, const char *text, int total_len)
 {
@@ -27720,6 +34021,18 @@ nk_textedit_text(struct nk_text_edit *state, const char *text, int total_len)
         glyph_len = nk_utf_decode(text + text_len, &unicode, total_len-text_len);
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ * \param[in] key <fill in>
+ * \param[in] shift_mod <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_textedit_key(struct nk_text_edit *state, enum nk_keys key, int shift_mod,
     const struct nk_user_font *font, float row_height)
@@ -28030,12 +34343,32 @@ retry:
         }} break;
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_textedit_flush_redo(struct nk_text_undo_state *state)
 {
     state->redo_point = NK_TEXTEDIT_UNDOSTATECOUNT;
     state->redo_char_point = NK_TEXTEDIT_UNDOCHARCOUNT;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_textedit_discard_undo(struct nk_text_undo_state *state)
 {
@@ -28059,6 +34392,16 @@ nk_textedit_discard_undo(struct nk_text_undo_state *state)
             (nk_size)((nk_size)state->undo_point * sizeof(state->undo_rec[0])));
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_textedit_discard_redo(struct nk_text_undo_state *state)
 {
@@ -28090,6 +34433,17 @@ nk_textedit_discard_redo(struct nk_text_undo_state *state)
             state->undo_rec + state->redo_point, num * sizeof(state->undo_rec[0]));
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ * \param[in] numchars <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN struct nk_text_undo_record*
 nk_textedit_create_undo_record(struct nk_text_undo_state *state, int numchars)
 {
@@ -28115,6 +34469,17 @@ nk_textedit_create_undo_record(struct nk_text_undo_state *state, int numchars)
         nk_textedit_discard_undo(state);
     return &state->undo_rec[state->undo_point++];
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ * \param[in] pos <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN nk_rune*
 nk_textedit_createundo(struct nk_text_undo_state *state, int pos,
     int insert_len, int delete_len)
@@ -28136,6 +34501,16 @@ nk_textedit_createundo(struct nk_text_undo_state *state, int pos,
         return &state->undo_char[r->char_storage];
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_textedit_undo(struct nk_text_edit *state)
 {
@@ -28203,6 +34578,16 @@ nk_textedit_undo(struct nk_text_edit *state)
     s->undo_point--;
     s->redo_point--;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_textedit_redo(struct nk_text_edit *state)
 {
@@ -28252,11 +34637,35 @@ nk_textedit_redo(struct nk_text_edit *state)
     s->undo_point++;
     s->redo_point++;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ * \param[in] where <fill in>
+ * \param[in] length <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_textedit_makeundo_insert(struct nk_text_edit *state, int where, int length)
 {
     nk_textedit_createundo(&state->undo, where, 0, length);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ * \param[in] where <fill in>
+ * \param[in] length <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_textedit_makeundo_delete(struct nk_text_edit *state, int where, int length)
 {
@@ -28267,6 +34676,17 @@ nk_textedit_makeundo_delete(struct nk_text_edit *state, int where, int length)
             p[i] = nk_str_rune_at(&state->string, where+i);
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ * \param[in] where <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_textedit_makeundo_replace(struct nk_text_edit *state, int where,
     int old_length, int new_length)
@@ -28278,6 +34698,17 @@ nk_textedit_makeundo_replace(struct nk_text_edit *state, int where,
             p[i] = nk_str_rune_at(&state->string, where+i);
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_textedit_clear_state(struct nk_text_edit *state, enum nk_text_edit_type type,
     nk_plugin_filter filter)
@@ -28298,6 +34729,18 @@ nk_textedit_clear_state(struct nk_text_edit *state, enum nk_text_edit_type type,
    state->filter = filter;
    state->scrollbar = nk_vec2(0,0);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ * \param[in] memory <fill in>
+ * \param[in] size <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_textedit_init_fixed(struct nk_text_edit *state, void *memory, nk_size size)
 {
@@ -28308,6 +34751,18 @@ nk_textedit_init_fixed(struct nk_text_edit *state, void *memory, nk_size size)
     nk_textedit_clear_state(state, NK_TEXT_EDIT_SINGLE_LINE, 0);
     nk_str_init_fixed(&state->string, memory, size);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ * \param[in] alloc <fill in>
+ * \param[in] size <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_textedit_init(struct nk_text_edit *state, const struct nk_allocator *alloc, nk_size size)
 {
@@ -28319,6 +34774,16 @@ nk_textedit_init(struct nk_text_edit *state, const struct nk_allocator *alloc, n
     nk_str_init(&state->string, alloc, size);
 }
 #ifdef NK_INCLUDE_DEFAULT_ALLOCATOR
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_textedit_init_default(struct nk_text_edit *state)
 {
@@ -28329,6 +34794,16 @@ nk_textedit_init_default(struct nk_text_edit *state)
     nk_str_init_default(&state->string);
 }
 #endif
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_textedit_select_all(struct nk_text_edit *state)
 {
@@ -28336,6 +34811,16 @@ nk_textedit_select_all(struct nk_text_edit *state)
     state->select_start = 0;
     state->select_end = state->string.len;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_textedit_free(struct nk_text_edit *state)
 {
@@ -28353,6 +34838,17 @@ nk_textedit_free(struct nk_text_edit *state)
  *                          FILTER
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] box <fill in>
+ * \param[in] unicode <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_filter_default(const struct nk_text_edit *box, nk_rune unicode)
 {
@@ -28360,6 +34856,17 @@ nk_filter_default(const struct nk_text_edit *box, nk_rune unicode)
     NK_UNUSED(box);
     return nk_true;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] box <fill in>
+ * \param[in] unicode <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_filter_ascii(const struct nk_text_edit *box, nk_rune unicode)
 {
@@ -28367,6 +34874,17 @@ nk_filter_ascii(const struct nk_text_edit *box, nk_rune unicode)
     if (unicode > 128) return nk_false;
     else return nk_true;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] box <fill in>
+ * \param[in] unicode <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_filter_float(const struct nk_text_edit *box, nk_rune unicode)
 {
@@ -28375,6 +34893,17 @@ nk_filter_float(const struct nk_text_edit *box, nk_rune unicode)
         return nk_false;
     else return nk_true;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] box <fill in>
+ * \param[in] unicode <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_filter_decimal(const struct nk_text_edit *box, nk_rune unicode)
 {
@@ -28383,6 +34912,17 @@ nk_filter_decimal(const struct nk_text_edit *box, nk_rune unicode)
         return nk_false;
     else return nk_true;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] box <fill in>
+ * \param[in] unicode <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_filter_hex(const struct nk_text_edit *box, nk_rune unicode)
 {
@@ -28393,6 +34933,17 @@ nk_filter_hex(const struct nk_text_edit *box, nk_rune unicode)
         return nk_false;
     else return nk_true;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] box <fill in>
+ * \param[in] unicode <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_filter_oct(const struct nk_text_edit *box, nk_rune unicode)
 {
@@ -28401,6 +34952,17 @@ nk_filter_oct(const struct nk_text_edit *box, nk_rune unicode)
         return nk_false;
     else return nk_true;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] box <fill in>
+ * \param[in] unicode <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_filter_binary(const struct nk_text_edit *box, nk_rune unicode)
 {
@@ -28415,6 +34977,16 @@ nk_filter_binary(const struct nk_text_edit *box, nk_rune unicode)
  *                          EDIT
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] out <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_edit_draw_text(struct nk_command_buffer *out,
     const struct nk_style_edit *style, float pos_x, float pos_y,
@@ -28498,6 +35070,17 @@ nk_edit_draw_text(struct nk_command_buffer *out,
             &txt, NK_TEXT_LEFT, font);
     }}
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ * \param[in] out <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB nk_flags
 nk_do_edit(nk_flags *state, struct nk_command_buffer *out,
     struct nk_rect bounds, nk_flags flags, nk_plugin_filter filter,
@@ -29017,6 +35600,17 @@ nk_do_edit(nk_flags *state, struct nk_command_buffer *out,
     nk_push_scissor(out, old_clip);}
     return ret;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] flags <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_edit_focus(struct nk_context *ctx, nk_flags flags)
 {
@@ -29034,6 +35628,16 @@ nk_edit_focus(struct nk_context *ctx, nk_flags flags)
     if (flags & NK_EDIT_ALWAYS_INSERT_MODE)
         win->edit.mode = NK_TEXT_EDIT_MODE_INSERT;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_edit_unfocus(struct nk_context *ctx)
 {
@@ -29046,6 +35650,17 @@ nk_edit_unfocus(struct nk_context *ctx)
     win->edit.active = nk_false;
     win->edit.name = 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] flags <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_flags
 nk_edit_string(struct nk_context *ctx, nk_flags flags,
     char *memory, int *len, int max, nk_plugin_filter filter)
@@ -29102,6 +35717,17 @@ nk_edit_string(struct nk_context *ctx, nk_flags flags,
         win->edit.scrollbar.y = (nk_uint)edit->scrollbar.y;
     } return state;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] flags <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_flags
 nk_edit_buffer(struct nk_context *ctx, nk_flags flags,
     struct nk_text_edit *edit, nk_plugin_filter filter)
@@ -29165,6 +35791,17 @@ nk_edit_buffer(struct nk_context *ctx, nk_flags flags,
         win->edit.active = nk_false;
     } return ret_flags;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] flags <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_flags
 nk_edit_string_zero_terminated(struct nk_context *ctx, nk_flags flags,
     char *buffer, int max, nk_plugin_filter filter)
@@ -29185,6 +35822,17 @@ nk_edit_string_zero_terminated(struct nk_context *ctx, nk_flags flags,
  *                              PROPERTY
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ * \param[in] in <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_drag_behavior(nk_flags *state, const struct nk_input *in,
     struct nk_rect drag, struct nk_property_variant *variant,
@@ -29224,6 +35872,17 @@ nk_drag_behavior(nk_flags *state, const struct nk_input *in,
     else if (nk_input_is_mouse_prev_hovering_rect(in, drag))
         *state |= NK_WIDGET_STATE_LEFT;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ws <fill in>
+ * \param[in] in <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_property_behavior(nk_flags *ws, const struct nk_input *in,
     struct nk_rect property,  struct nk_rect label, struct nk_rect edit,
@@ -29244,6 +35903,17 @@ nk_property_behavior(nk_flags *ws, const struct nk_input *in,
         if (!(*ws & NK_WIDGET_STATE_ACTIVED)) *state = NK_PROPERTY_DEFAULT;
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] out <fill in>
+ * \param[in] style <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_draw_property(struct nk_command_buffer *out, const struct nk_style_property *style,
     const struct nk_rect *bounds, const struct nk_rect *label, nk_flags state,
@@ -29289,6 +35959,16 @@ nk_draw_property(struct nk_command_buffer *out, const struct nk_style_property *
         nk_widget_text(out, *label, name, len, &text, NK_TEXT_CENTERED, font);
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ws <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_do_property(nk_flags *ws,
     struct nk_command_buffer *out, struct nk_rect property,
@@ -29467,6 +36147,19 @@ nk_do_property(nk_flags *ws,
         }
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] value <fill in>
+ * \param[in] min_value <fill in>
+ * \param[in] max_value <fill in>
+ * \param[in] step <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB struct nk_property_variant
 nk_property_variant_int(int value, int min_value, int max_value, int step)
 {
@@ -29478,6 +36171,19 @@ nk_property_variant_int(int value, int min_value, int max_value, int step)
     result.step.i = step;
     return result;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] value <fill in>
+ * \param[in] min_value <fill in>
+ * \param[in] max_value <fill in>
+ * \param[in] step <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB struct nk_property_variant
 nk_property_variant_float(float value, float min_value, float max_value, float step)
 {
@@ -29489,6 +36195,18 @@ nk_property_variant_float(float value, float min_value, float max_value, float s
     result.step.f = step;
     return result;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] value <fill in>
+ * \param[in] min_value <fill in>
+ * \param[in] max_value <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB struct nk_property_variant
 nk_property_variant_double(double value, double min_value, double max_value,
     double step)
@@ -29501,6 +36219,18 @@ nk_property_variant_double(double value, double min_value, double max_value,
     result.step.d = step;
     return result;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] name <fill in>
+ * \param[in] variant <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_property(struct nk_context *ctx, const char *name, struct nk_property_variant *variant,
     float inc_per_pixel, const enum nk_property_filter filter)
@@ -29601,6 +36331,17 @@ nk_property(struct nk_context *ctx, const char *name, struct nk_property_variant
         win->property.active = 0;
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] name <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_property_int(struct nk_context *ctx, const char *name,
     int min, int *val, int max, int step, float inc_per_pixel)
@@ -29615,6 +36356,17 @@ nk_property_int(struct nk_context *ctx, const char *name,
     nk_property(ctx, name, &variant, inc_per_pixel, NK_FILTER_INT);
     *val = variant.value.i;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] name <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_property_float(struct nk_context *ctx, const char *name,
     float min, float *val, float max, float step, float inc_per_pixel)
@@ -29629,6 +36381,17 @@ nk_property_float(struct nk_context *ctx, const char *name,
     nk_property(ctx, name, &variant, inc_per_pixel, NK_FILTER_FLOAT);
     *val = variant.value.f;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] name <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_property_double(struct nk_context *ctx, const char *name,
     double min, double *val, double max, double step, float inc_per_pixel)
@@ -29643,6 +36406,19 @@ nk_property_double(struct nk_context *ctx, const char *name,
     nk_property(ctx, name, &variant, inc_per_pixel, NK_FILTER_FLOAT);
     *val = variant.value.d;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] name <fill in>
+ * \param[in] min <fill in>
+ * \param[in] val <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_propertyi(struct nk_context *ctx, const char *name, int min, int val,
     int max, int step, float inc_per_pixel)
@@ -29657,6 +36433,18 @@ nk_propertyi(struct nk_context *ctx, const char *name, int min, int val,
     val = variant.value.i;
     return val;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] name <fill in>
+ * \param[in] min <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API float
 nk_propertyf(struct nk_context *ctx, const char *name, float min,
     float val, float max, float step, float inc_per_pixel)
@@ -29671,6 +36459,18 @@ nk_propertyf(struct nk_context *ctx, const char *name, float min,
     val = variant.value.f;
     return val;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] name <fill in>
+ * \param[in] min <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API double
 nk_propertyd(struct nk_context *ctx, const char *name, double min,
     double val, double max, double step, float inc_per_pixel)
@@ -29695,6 +36495,17 @@ nk_propertyd(struct nk_context *ctx, const char *name, double min,
  *                          CHART
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_chart_begin_colored(struct nk_context *ctx, enum nk_chart_type type,
     struct nk_color color, struct nk_color highlight,
@@ -29762,6 +36573,17 @@ nk_chart_begin_colored(struct nk_context *ctx, enum nk_chart_type type,
     }
     return 1;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_chart_begin(struct nk_context *ctx, const enum nk_chart_type type,
     int count, float min_value, float max_value)
@@ -29769,6 +36591,17 @@ nk_chart_begin(struct nk_context *ctx, const enum nk_chart_type type,
     return nk_chart_begin_colored(ctx, type, ctx->style.chart.color,
                 ctx->style.chart.selected_color, count, min_value, max_value);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_chart_add_slot_colored(struct nk_context *ctx, const enum nk_chart_type type,
     struct nk_color color, struct nk_color highlight,
@@ -29797,6 +36630,17 @@ nk_chart_add_slot_colored(struct nk_context *ctx, const enum nk_chart_type type,
     slot->range = slot->max - slot->min;
     slot->show_markers = style->show_markers;}
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_chart_add_slot(struct nk_context *ctx, const enum nk_chart_type type,
     int count, float min_value, float max_value)
@@ -29804,6 +36648,17 @@ nk_chart_add_slot(struct nk_context *ctx, const enum nk_chart_type type,
     nk_chart_add_slot_colored(ctx, type, ctx->style.chart.color,
         ctx->style.chart.selected_color, count, min_value, max_value);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] win <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN nk_flags
 nk_chart_push_line(struct nk_context *ctx, struct nk_window *win,
     struct nk_chart *g, float value, int slot)
@@ -29878,6 +36733,17 @@ nk_chart_push_line(struct nk_context *ctx, struct nk_window *win,
     g->slots[slot].index  += 1;
     return ret;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] win <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN nk_flags
 nk_chart_push_column(const struct nk_context *ctx, struct nk_window *win,
     struct nk_chart *chart, float value, int slot)
@@ -29924,6 +36790,18 @@ nk_chart_push_column(const struct nk_context *ctx, struct nk_window *win,
     chart->slots[slot].index += 1;
     return ret;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] value <fill in>
+ * \param[in] slot <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_flags
 nk_chart_push_slot(struct nk_context *ctx, float value, int slot)
 {
@@ -29950,11 +36828,32 @@ nk_chart_push_slot(struct nk_context *ctx, float value, int slot)
     }
     return flags;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] value <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_flags
 nk_chart_push(struct nk_context *ctx, float value)
 {
     return nk_chart_push_slot(ctx, value, 0);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_chart_end(struct nk_context *ctx)
 {
@@ -29971,6 +36870,18 @@ nk_chart_end(struct nk_context *ctx)
     NK_MEMSET(chart, 0, sizeof(*chart));
     return;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] type <fill in>
+ * \param[in] values <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_plot(struct nk_context *ctx, enum nk_chart_type type, const float *values,
     int count, int offset)
@@ -29996,6 +36907,18 @@ nk_plot(struct nk_context *ctx, enum nk_chart_type type, const float *values,
         nk_chart_end(ctx);
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] type <fill in>
+ * \param[in] userdata <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_plot_function(struct nk_context *ctx, enum nk_chart_type type, void *userdata,
     float(*value_getter)(void* user, int index), int count, int offset)
@@ -30031,6 +36954,16 @@ nk_plot_function(struct nk_context *ctx, enum nk_chart_type type, void *userdata
  *                          COLOR PICKER
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB nk_bool
 nk_color_picker_behavior(nk_flags *state,
     const struct nk_rect *bounds, const struct nk_rect *matrix,
@@ -30083,6 +37016,17 @@ nk_color_picker_behavior(nk_flags *state,
         *state |= NK_WIDGET_STATE_LEFT;
     return value_changed;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] o <fill in>
+ * \param[in] matrix <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_draw_color_picker(struct nk_command_buffer *o, const struct nk_rect *matrix,
     const struct nk_rect *hue_bar, const struct nk_rect *alpha_bar,
@@ -30142,6 +37086,16 @@ nk_draw_color_picker(struct nk_command_buffer *o, const struct nk_rect *matrix,
     nk_stroke_line(o, p.x, p.y + crosshair_size + 1, p.x, p.y+3, 1.0f, white);
     nk_stroke_line(o, p.x, p.y - crosshair_size, p.x, p.y-2, 1.0f, white);}
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB nk_bool
 nk_do_color_picker(nk_flags *state,
     struct nk_command_buffer *out, struct nk_colorf *col,
@@ -30188,6 +37142,17 @@ nk_do_color_picker(nk_flags *state,
     nk_draw_color_picker(out, &matrix, &hue_bar, (fmt == NK_RGBA) ? &alpha_bar:0, *col);
     return ret;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] color <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_color_pick(struct nk_context * ctx, struct nk_colorf *color,
     enum nk_color_format fmt)
@@ -30216,6 +37181,17 @@ nk_color_pick(struct nk_context * ctx, struct nk_colorf *color,
     return nk_do_color_picker(&ctx->last_widget_state, &win->buffer, color, fmt, bounds,
                 nk_vec2(0,0), in, config->font);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] color <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_colorf
 nk_color_picker(struct nk_context *ctx, struct nk_colorf color,
     enum nk_color_format fmt)
@@ -30233,6 +37209,17 @@ nk_color_picker(struct nk_context *ctx, struct nk_colorf color,
  *                          COMBO
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] win <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN nk_bool
 nk_combo_begin(struct nk_context *ctx, struct nk_window *win,
     struct nk_vec2 size, nk_bool is_clicked, struct nk_rect header)
@@ -30267,6 +37254,18 @@ nk_combo_begin(struct nk_context *ctx, struct nk_window *win,
     win->popup.name = hash;
     return 1;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] selected <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_combo_begin_text(struct nk_context *ctx, const char *selected, int len,
     struct nk_vec2 size)
@@ -30375,11 +37374,35 @@ nk_combo_begin_text(struct nk_context *ctx, const char *selected, int len,
     }
     return nk_combo_begin(ctx, win, size, is_clicked, header);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] selected <fill in>
+ * \param[in] size <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_combo_begin_label(struct nk_context *ctx, const char *selected, struct nk_vec2 size)
 {
     return nk_combo_begin_text(ctx, selected, nk_strlen(selected), size);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] color <fill in>
+ * \param[in] size <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_combo_begin_color(struct nk_context *ctx, struct nk_color color, struct nk_vec2 size)
 {
@@ -30471,6 +37494,18 @@ nk_combo_begin_color(struct nk_context *ctx, struct nk_color color, struct nk_ve
     }
     return nk_combo_begin(ctx, win, size, is_clicked, header);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] symbol <fill in>
+ * \param[in] size <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_combo_begin_symbol(struct nk_context *ctx, enum nk_symbol_type symbol, struct nk_vec2 size)
 {
@@ -30567,6 +37602,18 @@ nk_combo_begin_symbol(struct nk_context *ctx, enum nk_symbol_type symbol, struct
     }
     return nk_combo_begin(ctx, win, size, is_clicked, header);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] selected <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_combo_begin_symbol_text(struct nk_context *ctx, const char *selected, int len,
     enum nk_symbol_type symbol, struct nk_vec2 size)
@@ -30674,6 +37721,18 @@ nk_combo_begin_symbol_text(struct nk_context *ctx, const char *selected, int len
     }
     return nk_combo_begin(ctx, win, size, is_clicked, header);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] img <fill in>
+ * \param[in] size <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_combo_begin_image(struct nk_context *ctx, struct nk_image img, struct nk_vec2 size)
 {
@@ -30765,6 +37824,18 @@ nk_combo_begin_image(struct nk_context *ctx, struct nk_image img, struct nk_vec2
     }
     return nk_combo_begin(ctx, win, size, is_clicked, header);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] selected <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_combo_begin_image_text(struct nk_context *ctx, const char *selected, int len,
     struct nk_image img, struct nk_vec2 size)
@@ -30874,60 +37945,182 @@ nk_combo_begin_image_text(struct nk_context *ctx, const char *selected, int len,
     }
     return nk_combo_begin(ctx, win, size, is_clicked, header);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_combo_begin_symbol_label(struct nk_context *ctx,
     const char *selected, enum nk_symbol_type type, struct nk_vec2 size)
 {
     return nk_combo_begin_symbol_text(ctx, selected, nk_strlen(selected), type, size);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_combo_begin_image_label(struct nk_context *ctx,
     const char *selected, struct nk_image img, struct nk_vec2 size)
 {
     return nk_combo_begin_image_text(ctx, selected, nk_strlen(selected), img, size);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] text <fill in>
+ * \param[in] len <fill in>
+ * \param[in] align <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_combo_item_text(struct nk_context *ctx, const char *text, int len,nk_flags align)
 {
     return nk_contextual_item_text(ctx, text, len, align);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] label <fill in>
+ * \param[in] align <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_combo_item_label(struct nk_context *ctx, const char *label, nk_flags align)
 {
     return nk_contextual_item_label(ctx, label, align);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] img <fill in>
+ * \param[in] text <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_combo_item_image_text(struct nk_context *ctx, struct nk_image img, const char *text,
     int len, nk_flags alignment)
 {
     return nk_contextual_item_image_text(ctx, img, text, len, alignment);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] img <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_combo_item_image_label(struct nk_context *ctx, struct nk_image img,
     const char *text, nk_flags alignment)
 {
     return nk_contextual_item_image_label(ctx, img, text, alignment);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] sym <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_combo_item_symbol_text(struct nk_context *ctx, enum nk_symbol_type sym,
     const char *text, int len, nk_flags alignment)
 {
     return nk_contextual_item_symbol_text(ctx, sym, text, len, alignment);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] sym <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_combo_item_symbol_label(struct nk_context *ctx, enum nk_symbol_type sym,
     const char *label, nk_flags alignment)
 {
     return nk_contextual_item_symbol_label(ctx, sym, label, alignment);
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 }
 NK_API void nk_combo_end(struct nk_context *ctx)
 {
     nk_contextual_end(ctx);
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 }
 NK_API void nk_combo_close(struct nk_context *ctx)
 {
     nk_contextual_close(ctx);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] items <fill in>
+ * \param[in] count <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_combo(struct nk_context *ctx, const char *const *items, int count,
     int selected, int item_height, struct nk_vec2 size)
@@ -30958,6 +38151,17 @@ nk_combo(struct nk_context *ctx, const char *const *items, int count,
     }
     return selected;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] items_separated_by_separator <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_combo_separator(struct nk_context *ctx, const char *items_separated_by_separator,
     int separator, int selected, int count, int item_height, struct nk_vec2 size)
@@ -31007,12 +38211,35 @@ nk_combo_separator(struct nk_context *ctx, const char *items_separated_by_separa
     }
     return selected;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] items_separated_by_zeros <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_combo_string(struct nk_context *ctx, const char *items_separated_by_zeros,
     int selected, int count, int item_height, struct nk_vec2 size)
 {
     return nk_combo_separator(ctx, items_separated_by_zeros, '\0', selected, count, item_height, size);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] item_getter <fill in>
+ * \param[in] int <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_combo_callback(struct nk_context *ctx, void(*item_getter)(void*, int, const char**),
     void *userdata, int selected, int count, int item_height, struct nk_vec2 size)
@@ -31046,18 +38273,52 @@ nk_combo_callback(struct nk_context *ctx, void(*item_getter)(void*, int, const c
         nk_combo_end(ctx);
     } return selected;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] items <fill in>
+ * \param[in] count <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_combobox(struct nk_context *ctx, const char *const *items, int count,
     int *selected, int item_height, struct nk_vec2 size)
 {
     *selected = nk_combo(ctx, items, count, *selected, item_height, size);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] items_separated_by_zeros <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_combobox_string(struct nk_context *ctx, const char *items_separated_by_zeros,
     int *selected, int count, int item_height, struct nk_vec2 size)
 {
     *selected = nk_combo_string(ctx, items_separated_by_zeros, *selected, count, item_height, size);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] items_separated_by_separator <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_combobox_separator(struct nk_context *ctx, const char *items_separated_by_separator,
     int separator, int *selected, int count, int item_height, struct nk_vec2 size)
@@ -31065,6 +38326,16 @@ nk_combobox_separator(struct nk_context *ctx, const char *items_separated_by_sep
     *selected = nk_combo_separator(ctx, items_separated_by_separator, separator,
                                     *selected, count, item_height, size);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_combobox_callback(struct nk_context *ctx,
     void(*item_getter)(void* data, int id, const char **out_text),
@@ -31081,6 +38352,17 @@ nk_combobox_callback(struct nk_context *ctx,
  *                              TOOLTIP
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] width <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_tooltip_begin(struct nk_context *ctx, float width)
 {
@@ -31120,6 +38402,16 @@ nk_tooltip_begin(struct nk_context *ctx, float width)
     return ret;
 }
 
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_tooltip_end(struct nk_context *ctx)
 {
@@ -31130,6 +38422,17 @@ nk_tooltip_end(struct nk_context *ctx)
     nk_popup_close(ctx);
     nk_popup_end(ctx);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] text <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_tooltip(struct nk_context *ctx, const char *text)
 {
@@ -31166,6 +38469,17 @@ nk_tooltip(struct nk_context *ctx, const char *text)
     }
 }
 #ifdef NK_INCLUDE_STANDARD_VARARGS
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] fmt <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_tooltipf(struct nk_context *ctx, const char *fmt, ...)
 {
@@ -31174,6 +38488,18 @@ nk_tooltipf(struct nk_context *ctx, const char *fmt, ...)
     nk_tooltipfv(ctx, fmt, args);
     va_end(args);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] fmt <fill in>
+ * \param[in] args <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_tooltipfv(struct nk_context *ctx, const char *fmt, va_list args)
 {
