@@ -1,5 +1,5 @@
 
-docs_path:=./doc
+docs_path:=./docs
 doxyfile:=$(docs_path)/Doxyfile
 
 
