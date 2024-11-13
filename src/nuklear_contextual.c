@@ -6,6 +6,18 @@
  *                          CONTEXTUAL
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] flags <fill in>
+ * \param[in] size <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_contextual_begin(struct nk_context *ctx, nk_flags flags, struct nk_vec2 size,
     struct nk_rect trigger_bounds)
@@ -70,6 +82,18 @@ nk_contextual_begin(struct nk_context *ctx, nk_flags flags, struct nk_vec2 size,
     }
     return ret;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] text <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_contextual_item_text(struct nk_context *ctx, const char *text, int len,
     nk_flags alignment)
@@ -100,11 +124,34 @@ nk_contextual_item_text(struct nk_context *ctx, const char *text, int len,
     }
     return nk_false;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] label <fill in>
+ * \param[in] align <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_contextual_item_label(struct nk_context *ctx, const char *label, nk_flags align)
 {
     return nk_contextual_item_text(ctx, label, nk_strlen(label), align);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] img <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_contextual_item_image_text(struct nk_context *ctx, struct nk_image img,
     const char *text, int len, nk_flags align)
@@ -135,12 +182,34 @@ nk_contextual_item_image_text(struct nk_context *ctx, struct nk_image img,
     }
     return nk_false;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] img <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_contextual_item_image_label(struct nk_context *ctx, struct nk_image img,
     const char *label, nk_flags align)
 {
     return nk_contextual_item_image_text(ctx, img, label, nk_strlen(label), align);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] symbol <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_contextual_item_symbol_text(struct nk_context *ctx, enum nk_symbol_type symbol,
     const char *text, int len, nk_flags align)
@@ -171,12 +240,33 @@ nk_contextual_item_symbol_text(struct nk_context *ctx, enum nk_symbol_type symbo
     }
     return nk_false;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] symbol <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_contextual_item_symbol_label(struct nk_context *ctx, enum nk_symbol_type symbol,
     const char *text, nk_flags align)
 {
     return nk_contextual_item_symbol_text(ctx, symbol, text, nk_strlen(text), align);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_contextual_close(struct nk_context *ctx)
 {
@@ -186,6 +276,16 @@ nk_contextual_close(struct nk_context *ctx)
     if (!ctx || !ctx->current || !ctx->current->layout) return;
     nk_popup_close(ctx);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_contextual_end(struct nk_context *ctx)
 {

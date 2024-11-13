@@ -6,6 +6,17 @@
  *                              SCROLLBAR
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ * \param[in] in <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB float
 nk_scrollbar_behavior(nk_flags *state, struct nk_input *in,
     int has_scrolling, const struct nk_rect *scroll,
@@ -82,6 +93,17 @@ nk_scrollbar_behavior(nk_flags *state, struct nk_input *in,
         *state |= NK_WIDGET_STATE_LEFT;
     return scroll_offset;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] out <fill in>
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_draw_scrollbar(struct nk_command_buffer *out, nk_flags state,
     const struct nk_style_scrollbar *style, const struct nk_rect *bounds,
@@ -130,6 +152,16 @@ nk_draw_scrollbar(struct nk_command_buffer *out, nk_flags state,
             break;
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB float
 nk_do_scrollbarv(nk_flags *state,
     struct nk_command_buffer *out, struct nk_rect scroll, int has_scrolling,
@@ -219,6 +251,16 @@ nk_do_scrollbarv(nk_flags *state,
     if (style->draw_end) style->draw_end(out, style->userdata);
     return scroll_offset;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB float
 nk_do_scrollbarh(nk_flags *state,
     struct nk_command_buffer *out, struct nk_rect scroll, int has_scrolling,

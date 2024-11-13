@@ -6,6 +6,16 @@
  *                          GROUP
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_group_scrolled_offset_begin(struct nk_context *ctx,
     nk_uint *x_offset, nk_uint *y_offset, const char *title, nk_flags flags)
@@ -55,6 +65,16 @@ nk_group_scrolled_offset_begin(struct nk_context *ctx,
     }
     return 1;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_group_scrolled_end(struct nk_context *ctx)
 {
@@ -117,12 +137,33 @@ nk_group_scrolled_end(struct nk_context *ctx)
     g->bounds = pan.bounds;
     return;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_group_scrolled_begin(struct nk_context *ctx,
     struct nk_scroll *scroll, const char *title, nk_flags flags)
 {
     return nk_group_scrolled_offset_begin(ctx, &scroll->x, &scroll->y, title, flags);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] id <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_group_begin_titled(struct nk_context *ctx, const char *id,
     const char *title, nk_flags flags)
@@ -156,16 +197,50 @@ nk_group_begin_titled(struct nk_context *ctx, const char *id,
     } else y_offset = nk_find_value(win, id_hash+1);
     return nk_group_scrolled_offset_begin(ctx, x_offset, y_offset, title, flags);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] title <fill in>
+ * \param[in] flags <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_group_begin(struct nk_context *ctx, const char *title, nk_flags flags)
 {
     return nk_group_begin_titled(ctx, title, title, flags);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_group_end(struct nk_context *ctx)
 {
     nk_group_scrolled_end(ctx);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] id <fill in>
+ * \param[in] x_offset <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_group_get_scroll(struct nk_context *ctx, const char *id, nk_uint *x_offset, nk_uint *y_offset)
 {
@@ -201,6 +276,19 @@ nk_group_get_scroll(struct nk_context *ctx, const char *id, nk_uint *x_offset, n
     if (y_offset)
       *y_offset = *y_offset_ptr;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] id <fill in>
+ * \param[in] x_offset <fill in>
+ * \param[in] y_offset <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_group_set_scroll(struct nk_context *ctx, const char *id, nk_uint x_offset, nk_uint y_offset)
 {

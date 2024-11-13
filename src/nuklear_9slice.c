@@ -6,6 +6,20 @@
  *                          9-SLICE
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ptr <fill in>
+ * \param[in] w <fill in>
+ * \param[in] h <fill in>
+ * \param[in] rgn <fill in>
+ * \param[in] l <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_nine_slice
 nk_sub9slice_ptr(void *ptr, nk_ushort w, nk_ushort h, struct nk_rect rgn, nk_ushort l, nk_ushort t, nk_ushort r, nk_ushort b)
 {
@@ -21,6 +35,21 @@ nk_sub9slice_ptr(void *ptr, nk_ushort w, nk_ushort h, struct nk_rect rgn, nk_ush
     s.l = l; s.t = t; s.r = r; s.b = b;
     return s;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] id <fill in>
+ * \param[in] w <fill in>
+ * \param[in] h <fill in>
+ * \param[in] rgn <fill in>
+ * \param[in] l <fill in>
+ * \param[in] t <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_nine_slice
 nk_sub9slice_id(int id, nk_ushort w, nk_ushort h, struct nk_rect rgn, nk_ushort l, nk_ushort t, nk_ushort r, nk_ushort b)
 {
@@ -36,6 +65,20 @@ nk_sub9slice_id(int id, nk_ushort w, nk_ushort h, struct nk_rect rgn, nk_ushort 
     s.l = l; s.t = t; s.r = r; s.b = b;
     return s;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] handle <fill in>
+ * \param[in] w <fill in>
+ * \param[in] h <fill in>
+ * \param[in] rgn <fill in>
+ * \param[in] l <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_nine_slice
 nk_sub9slice_handle(nk_handle handle, nk_ushort w, nk_ushort h, struct nk_rect rgn, nk_ushort l, nk_ushort t, nk_ushort r, nk_ushort b)
 {
@@ -51,6 +94,20 @@ nk_sub9slice_handle(nk_handle handle, nk_ushort w, nk_ushort h, struct nk_rect r
     s.l = l; s.t = t; s.r = r; s.b = b;
     return s;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] handle <fill in>
+ * \param[in] l <fill in>
+ * \param[in] t <fill in>
+ * \param[in] r <fill in>
+ * \param[in] b <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_nine_slice
 nk_nine_slice_handle(nk_handle handle, nk_ushort l, nk_ushort t, nk_ushort r, nk_ushort b)
 {
@@ -66,6 +123,20 @@ nk_nine_slice_handle(nk_handle handle, nk_ushort l, nk_ushort t, nk_ushort r, nk
     s.l = l; s.t = t; s.r = r; s.b = b;
     return s;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ptr <fill in>
+ * \param[in] l <fill in>
+ * \param[in] t <fill in>
+ * \param[in] r <fill in>
+ * \param[in] b <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_nine_slice
 nk_nine_slice_ptr(void *ptr, nk_ushort l, nk_ushort t, nk_ushort r, nk_ushort b)
 {
@@ -82,6 +153,20 @@ nk_nine_slice_ptr(void *ptr, nk_ushort l, nk_ushort t, nk_ushort r, nk_ushort b)
     s.l = l; s.t = t; s.r = r; s.b = b;
     return s;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] id <fill in>
+ * \param[in] l <fill in>
+ * \param[in] t <fill in>
+ * \param[in] r <fill in>
+ * \param[in] b <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_nine_slice
 nk_nine_slice_id(int id, nk_ushort l, nk_ushort t, nk_ushort r, nk_ushort b)
 {
@@ -97,6 +182,16 @@ nk_nine_slice_id(int id, nk_ushort l, nk_ushort t, nk_ushort r, nk_ushort b)
     s.l = l; s.t = t; s.r = r; s.b = b;
     return s;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] slice <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_nine_slice_is_sub9slice(const struct nk_nine_slice* slice)
 {

@@ -6,6 +6,18 @@
  *                              STYLE
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] ctx <fill in>
+ * \param[in] 0 <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void nk_style_default(struct nk_context *ctx){nk_style_from_table(ctx, 0);}
 #define NK_COLOR_MAP(NK_COLOR)\
     NK_COLOR(NK_COLOR_TEXT,                     175,175,175,255) \
@@ -53,11 +65,31 @@ NK_GLOBAL const char *nk_color_names[NK_COLOR_COUNT] = {
 #undef NK_COLOR
 };
 
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] c <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API const char*
 nk_style_get_color_by_name(enum nk_style_colors c)
 {
     return nk_color_names[c];
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] col <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_style_item
 nk_style_item_color(struct nk_color col)
 {
@@ -66,6 +98,16 @@ nk_style_item_color(struct nk_color col)
     i.data.color = col;
     return i;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] img <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_style_item
 nk_style_item_image(struct nk_image img)
 {
@@ -74,6 +116,16 @@ nk_style_item_image(struct nk_image img)
     i.data.image = img;
     return i;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] slice <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_style_item
 nk_style_item_nine_slice(struct nk_nine_slice slice)
 {
@@ -82,6 +134,16 @@ nk_style_item_nine_slice(struct nk_nine_slice slice)
     i.data.slice = slice;
     return i;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] void <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_style_item
 nk_style_item_hide(void)
 {
@@ -90,6 +152,17 @@ nk_style_item_hide(void)
     i.data.color = nk_rgba(0,0,0,0);
     return i;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] table <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_style_from_table(struct nk_context *ctx, const struct nk_color *table)
 {
@@ -721,6 +794,17 @@ nk_style_from_table(struct nk_context *ctx, const struct nk_color *table)
     win->menu_padding = nk_vec2(4,4);
     win->tooltip_padding = nk_vec2(4,4);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] font <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_style_set_font(struct nk_context *ctx, const struct nk_user_font *font)
 {
@@ -734,6 +818,17 @@ nk_style_set_font(struct nk_context *ctx, const struct nk_user_font *font)
     if (ctx->current)
         nk_layout_reset_min_row_height(ctx);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] font <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_style_push_font(struct nk_context *ctx, const struct nk_user_font *font)
 {
@@ -754,6 +849,16 @@ nk_style_push_font(struct nk_context *ctx, const struct nk_user_font *font)
     ctx->style.font = font;
     return 1;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_style_pop_font(struct nk_context *ctx)
 {
@@ -803,6 +908,18 @@ nk_style_pop_##type(struct nk_context *ctx)\
     element = &type_stack->elements[--type_stack->head];\
     *element->address = element->old_value;\
     return 1;\
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] nk <fill in>
+ * \param[in] style_item <fill in>
+ * \param[in] style_items <fill in>
+ *
+ * \returns <fill in>
+ */
 }
 NK_API nk_bool NK_STYLE_PUSH_IMPLEMENATION(struct nk, style_item, style_items)
 NK_API nk_bool NK_STYLE_PUSH_IMPLEMENATION(nk,float, floats)
@@ -829,16 +946,47 @@ nk_style_set_cursor(struct nk_context *ctx, enum nk_style_cursor c)
     }
     return 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_style_show_cursor(struct nk_context *ctx)
 {
     ctx->style.cursor_visible = nk_true;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_style_hide_cursor(struct nk_context *ctx)
 {
     ctx->style.cursor_visible = nk_false;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] cursor <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_style_load_cursor(struct nk_context *ctx, enum nk_style_cursor cursor,
     const struct nk_cursor *c)
@@ -849,6 +997,17 @@ nk_style_load_cursor(struct nk_context *ctx, enum nk_style_cursor cursor,
     style = &ctx->style;
     style->cursors[cursor] = c;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] cursors <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_style_load_all_cursors(struct nk_context *ctx, const struct nk_cursor *cursors)
 {

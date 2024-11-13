@@ -6,6 +6,17 @@
  *                               KNOB
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ * \param[in] in <fill in>
+ *
+ * \returns <fill in>
+ */
 
 NK_LIB float
 nk_knob_behavior(nk_flags *state, struct nk_input *in,
@@ -70,6 +81,17 @@ nk_knob_behavior(nk_flags *state, struct nk_input *in,
         *state |= NK_WIDGET_STATE_LEFT;
 
     return knob_value;
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] out <fill in>
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 }
 NK_LIB void
 nk_draw_knob(struct nk_command_buffer *out, nk_flags state,
@@ -156,6 +178,16 @@ nk_draw_knob(struct nk_command_buffer *out, nk_flags state,
     /* draw cursor */
     nk_stroke_line(out, cursor_start.x, cursor_start.y, cursor_end.x, cursor_end.y, 2, nk_rgb_factor(cursor, style->color_factor));
     }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 }
 NK_LIB float
 nk_do_knob(nk_flags *state,
@@ -201,6 +233,19 @@ nk_do_knob(nk_flags *state,
     nk_draw_knob(out, *state, style, &bounds, knob_min, knob_value, knob_max, zero_direction, dead_zone_percent);
     if (style->draw_end) style->draw_end(out, style->userdata);
     return knob_value;
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] min_value <fill in>
+ * \param[in] value <fill in>
+ * \param[in] max_value <fill in>
+ *
+ * \returns <fill in>
+ */
 }
 NK_API nk_bool
 nk_knob_float(struct nk_context *ctx, float min_value, float *value, float max_value,
@@ -237,6 +282,20 @@ nk_knob_float(struct nk_context *ctx, float min_value, float *value, float max_v
                 old_value, max_value, value_step, zero_direction, dead_zone_degrees / 360.0f, &style->knob, in);
 
     return (old_value > *value || old_value < *value);
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] min <fill in>
+ * \param[in] val <fill in>
+ * \param[in] max <fill in>
+ * \param[in] step <fill in>
+ *
+ * \returns <fill in>
+ */
 }
 NK_API nk_bool
 nk_knob_int(struct nk_context *ctx, int min, int *val, int max, int step,

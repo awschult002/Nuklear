@@ -6,6 +6,17 @@
  *                              POOL
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] pool <fill in>
+ * \param[in] alloc <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_pool_init(struct nk_pool *pool, const struct nk_allocator *alloc,
     unsigned int capacity)
@@ -17,6 +28,16 @@ nk_pool_init(struct nk_pool *pool, const struct nk_allocator *alloc,
     pool->type = NK_BUFFER_DYNAMIC;
     pool->pages = 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] pool <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_pool_free(struct nk_pool *pool)
 {
@@ -30,6 +51,18 @@ nk_pool_free(struct nk_pool *pool)
         iter = next;
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] pool <fill in>
+ * \param[in] memory <fill in>
+ * \param[in] size <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_pool_init_fixed(struct nk_pool *pool, void *memory, nk_size size)
 {
@@ -42,6 +75,16 @@ nk_pool_init_fixed(struct nk_pool *pool, void *memory, nk_size size)
     pool->type = NK_BUFFER_FIXED;
     pool->size = size;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] pool <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB struct nk_page_element*
 nk_pool_alloc(struct nk_pool *pool)
 {

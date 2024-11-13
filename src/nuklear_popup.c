@@ -6,6 +6,17 @@
  *                              POPUP
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_popup_begin(struct nk_context *ctx, enum nk_popup_type type,
     const char *title, nk_flags flags, struct nk_rect rect)
@@ -102,6 +113,16 @@ nk_popup_begin(struct nk_context *ctx, enum nk_popup_type type,
         return 0;
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB nk_bool
 nk_nonblock_begin(struct nk_context *ctx,
     nk_flags flags, struct nk_rect body, struct nk_rect header,
@@ -185,6 +206,16 @@ nk_nonblock_begin(struct nk_context *ctx,
     }}
     return is_active;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_popup_close(struct nk_context *ctx)
 {
@@ -197,6 +228,16 @@ nk_popup_close(struct nk_context *ctx)
     NK_ASSERT((int)popup->layout->type & (int)NK_PANEL_SET_POPUP);
     popup->flags |= NK_WINDOW_HIDDEN;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_popup_end(struct nk_context *ctx)
 {
@@ -229,6 +270,18 @@ nk_popup_end(struct nk_context *ctx)
     ctx->current = win;
     nk_push_scissor(&win->buffer, win->layout->clip);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] offset_x <fill in>
+ * \param[in] offset_y <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_popup_get_scroll(const struct nk_context *ctx, nk_uint *offset_x, nk_uint *offset_y)
 {
@@ -246,6 +299,18 @@ nk_popup_get_scroll(const struct nk_context *ctx, nk_uint *offset_x, nk_uint *of
     if (offset_y)
       *offset_y = popup->scrollbar.y;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] offset_x <fill in>
+ * \param[in] offset_y <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_popup_set_scroll(struct nk_context *ctx, nk_uint offset_x, nk_uint offset_y)
 {

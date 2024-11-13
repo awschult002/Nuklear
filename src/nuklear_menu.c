@@ -6,6 +6,16 @@
  *                              MENU
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_menubar_begin(struct nk_context *ctx)
 {
@@ -43,6 +53,16 @@ nk_menubar_begin(struct nk_context *ctx)
     layout->menu.offset.y = *layout->offset_y;
     *layout->offset_y = 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_menubar_end(struct nk_context *ctx)
 {
@@ -76,6 +96,17 @@ nk_menubar_end(struct nk_context *ctx)
     layout->clip.h = layout->bounds.h;
     nk_push_scissor(out, layout->clip);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] win <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN int
 nk_menu_begin(struct nk_context *ctx, struct nk_window *win,
     const char *id, int is_clicked, struct nk_rect header, struct nk_vec2 size)
@@ -109,6 +140,18 @@ nk_menu_begin(struct nk_context *ctx, struct nk_window *win,
     win->popup.name = hash;
     return 1;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] title <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_menu_begin_text(struct nk_context *ctx, const char *title, int len,
     nk_flags align, struct nk_vec2 size)
@@ -133,12 +176,34 @@ nk_menu_begin_text(struct nk_context *ctx, const char *title, int len,
         title, len, align, NK_BUTTON_DEFAULT, &ctx->style.menu_button, in, ctx->style.font))
         is_clicked = nk_true;
     return nk_menu_begin(ctx, win, title, is_clicked, header, size);
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 }
 NK_API nk_bool nk_menu_begin_label(struct nk_context *ctx,
     const char *text, nk_flags align, struct nk_vec2 size)
 {
     return nk_menu_begin_text(ctx, text, nk_strlen(text), align, size);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] id <fill in>
+ * \param[in] img <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_menu_begin_image(struct nk_context *ctx, const char *id, struct nk_image img,
     struct nk_vec2 size)
@@ -164,6 +229,17 @@ nk_menu_begin_image(struct nk_context *ctx, const char *id, struct nk_image img,
         is_clicked = nk_true;
     return nk_menu_begin(ctx, win, id, is_clicked, header, size);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] id <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_menu_begin_symbol(struct nk_context *ctx, const char *id,
     enum nk_symbol_type sym, struct nk_vec2 size)
@@ -189,6 +265,18 @@ nk_menu_begin_symbol(struct nk_context *ctx, const char *id,
         is_clicked = nk_true;
     return nk_menu_begin(ctx, win, id, is_clicked, header, size);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] title <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_menu_begin_image_text(struct nk_context *ctx, const char *title, int len,
     nk_flags align, struct nk_image img, struct nk_vec2 size)
@@ -215,12 +303,34 @@ nk_menu_begin_image_text(struct nk_context *ctx, const char *title, int len,
         is_clicked = nk_true;
     return nk_menu_begin(ctx, win, title, is_clicked, header, size);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_menu_begin_image_label(struct nk_context *ctx,
     const char *title, nk_flags align, struct nk_image img, struct nk_vec2 size)
 {
     return nk_menu_begin_image_text(ctx, title, nk_strlen(title), align, img, size);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] title <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_menu_begin_symbol_text(struct nk_context *ctx, const char *title, int len,
     nk_flags align, enum nk_symbol_type sym, struct nk_vec2 size)
@@ -247,48 +357,147 @@ nk_menu_begin_symbol_text(struct nk_context *ctx, const char *title, int len,
         ctx->style.font, in)) is_clicked = nk_true;
     return nk_menu_begin(ctx, win, title, is_clicked, header, size);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_menu_begin_symbol_label(struct nk_context *ctx,
     const char *title, nk_flags align, enum nk_symbol_type sym, struct nk_vec2 size )
 {
     return nk_menu_begin_symbol_text(ctx, title, nk_strlen(title), align,sym,size);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] title <fill in>
+ * \param[in] len <fill in>
+ * \param[in] align <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_menu_item_text(struct nk_context *ctx, const char *title, int len, nk_flags align)
 {
     return nk_contextual_item_text(ctx, title, len, align);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] label <fill in>
+ * \param[in] align <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_menu_item_label(struct nk_context *ctx, const char *label, nk_flags align)
 {
     return nk_contextual_item_label(ctx, label, align);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] img <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_menu_item_image_label(struct nk_context *ctx, struct nk_image img,
     const char *label, nk_flags align)
 {
     return nk_contextual_item_image_label(ctx, img, label, align);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] img <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_menu_item_image_text(struct nk_context *ctx, struct nk_image img,
     const char *text, int len, nk_flags align)
 {
     return nk_contextual_item_image_text(ctx, img, text, len, align);
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] sym <fill in>
+ *
+ * \returns <fill in>
+ */
 }
 NK_API nk_bool nk_menu_item_symbol_text(struct nk_context *ctx, enum nk_symbol_type sym,
     const char *text, int len, nk_flags align)
 {
     return nk_contextual_item_symbol_text(ctx, sym, text, len, align);
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] sym <fill in>
+ *
+ * \returns <fill in>
+ */
 }
 NK_API nk_bool nk_menu_item_symbol_label(struct nk_context *ctx, enum nk_symbol_type sym,
     const char *label, nk_flags align)
 {
     return nk_contextual_item_symbol_label(ctx, sym, label, align);
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 }
 NK_API void nk_menu_close(struct nk_context *ctx)
 {
     nk_contextual_close(ctx);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_menu_end(struct nk_context *ctx)
 {

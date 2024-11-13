@@ -6,6 +6,16 @@
  *                              PANEL
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void*
 nk_create_panel(struct nk_context *ctx)
 {
@@ -15,6 +25,17 @@ nk_create_panel(struct nk_context *ctx)
     nk_zero_struct(*elem);
     return &elem->data.pan;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] pan <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_free_panel(struct nk_context *ctx, struct nk_panel *pan)
 {
@@ -22,6 +43,17 @@ nk_free_panel(struct nk_context *ctx, struct nk_panel *pan)
     struct nk_page_element *pe = NK_CONTAINER_OF(pd, struct nk_page_element, data);
     nk_free_page_element(ctx, pe);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] flags <fill in>
+ * \param[in] title <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB nk_bool
 nk_panel_has_header(nk_flags flags, const char *title)
 {
@@ -31,6 +63,17 @@ nk_panel_has_header(nk_flags flags, const char *title)
     active = active && !(flags & NK_WINDOW_HIDDEN) && title;
     return active;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] style <fill in>
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB struct nk_vec2
 nk_panel_get_padding(const struct nk_style *style, enum nk_panel_type type)
 {
@@ -44,6 +87,17 @@ nk_panel_get_padding(const struct nk_style *style, enum nk_panel_type type)
     case NK_PANEL_MENU: return style->window.menu_padding;
     case NK_PANEL_TOOLTIP: return style->window.menu_padding;}
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] style <fill in>
+ * \param[in] flags <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB float
 nk_panel_get_border(const struct nk_style *style, nk_flags flags,
     enum nk_panel_type type)
@@ -60,6 +114,17 @@ nk_panel_get_border(const struct nk_style *style, nk_flags flags,
         case NK_PANEL_TOOLTIP: return style->window.menu_border;
     }} else return 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] style <fill in>
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB struct nk_color
 nk_panel_get_border_color(const struct nk_style *style, enum nk_panel_type type)
 {
@@ -73,16 +138,48 @@ nk_panel_get_border_color(const struct nk_style *style, enum nk_panel_type type)
     case NK_PANEL_MENU: return style->window.menu_border_color;
     case NK_PANEL_TOOLTIP: return style->window.menu_border_color;}
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB nk_bool
 nk_panel_is_sub(enum nk_panel_type type)
 {
     return ((int)type & (int)NK_PANEL_SET_SUB)?1:0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB nk_bool
 nk_panel_is_nonblock(enum nk_panel_type type)
 {
     return ((int)type & (int)NK_PANEL_SET_NONBLOCK)?1:0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] title <fill in>
+ * \param[in] panel_type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB nk_bool
 nk_panel_begin(struct nk_context *ctx, const char *title, enum nk_panel_type panel_type)
 {
@@ -323,6 +420,16 @@ nk_panel_begin(struct nk_context *ctx, const char *title, enum nk_panel_type pan
     layout->clip = clip;}
     return !(layout->flags & NK_WINDOW_HIDDEN) && !(layout->flags & NK_WINDOW_MINIMIZED);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_panel_end(struct nk_context *ctx)
 {

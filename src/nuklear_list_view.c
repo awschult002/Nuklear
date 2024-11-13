@@ -6,6 +6,17 @@
  *                          LIST VIEW
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] view <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_list_view_begin(struct nk_context *ctx, struct nk_list_view *view,
     const char *title, nk_flags flags, int row_height, int row_count)
@@ -60,6 +71,16 @@ nk_list_view_begin(struct nk_context *ctx, struct nk_list_view *view,
     view->ctx = ctx;
     return result;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] view <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_list_view_end(struct nk_list_view *view)
 {

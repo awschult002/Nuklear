@@ -6,6 +6,17 @@
  *                          CONTEXT
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] font <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_setup(struct nk_context *ctx, const struct nk_user_font *font)
 {
@@ -20,6 +31,17 @@ nk_setup(struct nk_context *ctx, const struct nk_user_font *font)
 #endif
 }
 #ifdef NK_INCLUDE_DEFAULT_ALLOCATOR
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] font <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_init_default(struct nk_context *ctx, const struct nk_user_font *font)
 {
@@ -30,6 +52,18 @@ nk_init_default(struct nk_context *ctx, const struct nk_user_font *font)
     return nk_init(ctx, &alloc, font);
 }
 #endif
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] memory <fill in>
+ * \param[in] size <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_init_fixed(struct nk_context *ctx, void *memory, nk_size size,
     const struct nk_user_font *font)
@@ -41,6 +75,17 @@ nk_init_fixed(struct nk_context *ctx, void *memory, nk_size size,
     ctx->use_pool = nk_false;
     return 1;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] cmds <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_init_custom(struct nk_context *ctx, struct nk_buffer *cmds,
     struct nk_buffer *pool, const struct nk_user_font *font)
@@ -62,6 +107,17 @@ nk_init_custom(struct nk_context *ctx, struct nk_buffer *cmds,
     ctx->use_pool = nk_true;
     return 1;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] alloc <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_init(struct nk_context *ctx, const struct nk_allocator *alloc,
     const struct nk_user_font *font)
@@ -75,6 +131,17 @@ nk_init(struct nk_context *ctx, const struct nk_allocator *alloc,
     return 1;
 }
 #ifdef NK_INCLUDE_COMMAND_USERDATA
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] handle <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_set_user_data(struct nk_context *ctx, nk_handle handle)
 {
@@ -84,6 +151,16 @@ nk_set_user_data(struct nk_context *ctx, nk_handle handle)
         ctx->current->buffer.userdata = handle;
 }
 #endif
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_free(struct nk_context *ctx)
 {
@@ -106,6 +183,16 @@ nk_free(struct nk_context *ctx)
     ctx->freelist = 0;
     ctx->count = 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_clear(struct nk_context *ctx)
 {
@@ -172,6 +259,17 @@ nk_clear(struct nk_context *ctx)
     }
     ctx->seq++;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] buffer <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_start_buffer(struct nk_context *ctx, struct nk_command_buffer *buffer)
 {
@@ -183,6 +281,17 @@ nk_start_buffer(struct nk_context *ctx, struct nk_command_buffer *buffer)
     buffer->last = buffer->begin;
     buffer->clip = nk_null_rect;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] win <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_start(struct nk_context *ctx, struct nk_window *win)
 {
@@ -190,6 +299,17 @@ nk_start(struct nk_context *ctx, struct nk_window *win)
     NK_ASSERT(win);
     nk_start_buffer(ctx, &win->buffer);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] win <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_start_popup(struct nk_context *ctx, struct nk_window *win)
 {
@@ -206,6 +326,17 @@ nk_start_popup(struct nk_context *ctx, struct nk_window *win)
     buf->last = buf->begin;
     buf->active = nk_true;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] win <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_finish_popup(struct nk_context *ctx, struct nk_window *win)
 {
@@ -218,6 +349,17 @@ nk_finish_popup(struct nk_context *ctx, struct nk_window *win)
     buf->last = win->buffer.last;
     buf->end = win->buffer.end;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] buffer <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_finish_buffer(struct nk_context *ctx, struct nk_command_buffer *buffer)
 {
@@ -226,6 +368,17 @@ nk_finish_buffer(struct nk_context *ctx, struct nk_command_buffer *buffer)
     if (!ctx || !buffer) return;
     buffer->end = ctx->memory.allocated;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] win <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_finish(struct nk_context *ctx, struct nk_window *win)
 {
@@ -244,6 +397,16 @@ nk_finish(struct nk_context *ctx, struct nk_window *win)
     parent_last = nk_ptr_add(struct nk_command, memory, buf->parent);
     parent_last->next = buf->end;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_build(struct nk_context *ctx)
 {
@@ -306,6 +469,16 @@ nk_build(struct nk_context *ctx)
         else cmd->next = ctx->memory.allocated;
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx
+ *
+ * \returns <fill in>
+ */
 NK_API const struct nk_command*
 nk__begin(struct nk_context *ctx)
 {
@@ -328,6 +501,17 @@ nk__begin(struct nk_context *ctx)
     return nk_ptr_add_const(struct nk_command, buffer, iter->buffer.begin);
 }
 
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] cmd <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API const struct nk_command*
 nk__next(struct nk_context *ctx, const struct nk_command *cmd)
 {

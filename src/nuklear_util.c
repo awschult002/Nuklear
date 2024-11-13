@@ -15,6 +15,18 @@ NK_LIB int nk_to_lower(int c) {return (c >= 'A' && c <= 'Z') ? (c - ('a' + 'A'))
 
 #ifndef NK_MEMCPY
 #define NK_MEMCPY nk_memcopy
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] dst0 <fill in>
+ * \param[in] src0 <fill in>
+ * \param[in] length <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void*
 nk_memcopy(void *dst0, const void *src0, nk_size length)
 {
@@ -74,6 +86,18 @@ done:
 #endif
 #ifndef NK_MEMSET
 #define NK_MEMSET nk_memset
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ptr <fill in>
+ * \param[in] c0 <fill in>
+ * \param[in] size <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_memset(void *ptr, int c0, nk_size size)
 {
@@ -126,12 +150,33 @@ nk_memset(void *ptr, int c0, nk_size size)
     #undef nk_wmask
 }
 #endif
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ptr <fill in>
+ * \param[in] size <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_zero(void *ptr, nk_size size)
 {
     NK_ASSERT(ptr);
     NK_MEMSET(ptr, 0, size);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] str <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_strlen(const char *str)
 {
@@ -140,6 +185,17 @@ nk_strlen(const char *str)
     while (str && *str++ != '\0') siz++;
     return siz;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] str <fill in>
+ * \param[in] endptr <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_strtoi(const char *str, char **endptr)
 {
@@ -164,6 +220,17 @@ nk_strtoi(const char *str, char **endptr)
         *endptr = (char *)p;
     return neg*value;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] str <fill in>
+ * \param[in] endptr <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API double
 nk_strtod(const char *str, char **endptr)
 {
@@ -221,6 +288,17 @@ nk_strtod(const char *str, char **endptr)
         *endptr = p;
     return number;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] str <fill in>
+ * \param[in] endptr <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API float
 nk_strtof(const char *str, char **endptr)
 {
@@ -230,6 +308,17 @@ nk_strtof(const char *str, char **endptr)
     float_value = (float)double_value;
     return float_value;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] s1 <fill in>
+ * \param[in] s2 <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_stricmp(const char *s1, const char *s2)
 {
@@ -252,6 +341,18 @@ nk_stricmp(const char *s1, const char *s2)
     } while (c1);
     return 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] s1 <fill in>
+ * \param[in] s2 <fill in>
+ * \param[in] n <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_stricmpn(const char *s1, const char *s2, int n)
 {
@@ -277,6 +378,17 @@ nk_stricmpn(const char *s1, const char *s2, int n)
     } while (c1);
     return 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] regexp <fill in>
+ * \param[in] text <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN int
 nk_str_match_here(const char *regexp, const char *text)
 {
@@ -290,6 +402,18 @@ nk_str_match_here(const char *regexp, const char *text)
         return nk_str_match_here(regexp+1, text+1);
     return 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] c <fill in>
+ * \param[in] regexp <fill in>
+ * \param[in] text <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN int
 nk_str_match_star(int c, const char *regexp, const char *text)
 {
@@ -299,6 +423,17 @@ nk_str_match_star(int c, const char *regexp, const char *text)
     } while (*text != '\0' && (*text++ == c || c == '.'));
     return 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] text <fill in>
+ * \param[in] regexp <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_strfilter(const char *text, const char *regexp)
 {
@@ -316,6 +451,17 @@ nk_strfilter(const char *text, const char *regexp)
     } while (*text++ != '\0');
     return 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] str <fill in>
+ * \param[in] str_len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_strmatch_fuzzy_text(const char *str, int str_len,
     const char *pattern, int *out_score)
@@ -437,11 +583,34 @@ nk_strmatch_fuzzy_text(const char *str, int str_len,
         *out_score = score;
     return nk_true;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] str <fill in>
+ * \param[in] pattern <fill in>
+ * \param[in] out_score <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_strmatch_fuzzy_string(char const *str, char const *pattern, int *out_score)
 {
     return nk_strmatch_fuzzy_text(str, nk_strlen(str), pattern, out_score);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] string <fill in>
+ * \param[in] prec <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB int
 nk_string_float_limit(char *string, int prec)
 {
@@ -462,6 +631,16 @@ nk_string_float_limit(char *string, int prec)
     }
     return (int)(c - string);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] s <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_strrev_ascii(char *s)
 {
@@ -475,6 +654,17 @@ nk_strrev_ascii(char *s)
         s[len -1 - i] = t;
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] s <fill in>
+ * \param[in] n <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB char*
 nk_itoa(char *s, long n)
 {
@@ -501,6 +691,17 @@ nk_itoa(char *s, long n)
 }
 #ifndef NK_DTOA
 #define NK_DTOA nk_dtoa
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] s <fill in>
+ * \param[in] n <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB char*
 nk_dtoa(char *s, double n)
 {
@@ -582,6 +783,19 @@ nk_dtoa(char *s, double n)
 #endif
 #ifdef NK_INCLUDE_STANDARD_VARARGS
 #ifndef NK_INCLUDE_STANDARD_IO
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] buf <fill in>
+ * \param[in] buf_size <fill in>
+ * \param[in] fmt <fill in>
+ * \param[in] args <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN int
 nk_vsnprintf(char *buf, int buf_size, const char *fmt, va_list args)
 {
@@ -901,6 +1115,19 @@ nk_vsnprintf(char *buf, int buf_size, const char *fmt, va_list args)
     return result;
 }
 #endif
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] buf <fill in>
+ * \param[in] buf_size <fill in>
+ * \param[in] fmt <fill in>
+ * \param[in] args <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB int
 nk_strfmt(char *buf, int buf_size, const char *fmt, va_list args)
 {
@@ -918,6 +1145,18 @@ nk_strfmt(char *buf, int buf_size, const char *fmt, va_list args)
     return result;
 }
 #endif
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] key <fill in>
+ * \param[in] len <fill in>
+ * \param[in] seed <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_hash
 nk_murmur_hash(const void * key, int len, nk_hash seed)
 {
@@ -983,6 +1222,18 @@ nk_murmur_hash(const void * key, int len, nk_hash seed)
     return h1;
 }
 #ifdef NK_INCLUDE_STANDARD_IO
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] path <fill in>
+ * \param[in] siz <fill in>
+ * \param[in] alloc <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB char*
 nk_file_load(const char* path, nk_size* siz, const struct nk_allocator *alloc)
 {
@@ -1017,6 +1268,17 @@ nk_file_load(const char* path, nk_size* siz, const struct nk_allocator *alloc)
     return buf;
 }
 #endif
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] font <fill in>
+ * \param[in] text <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB int
 nk_text_clamp(const struct nk_user_font *font, const char *text,
     int text_len, float space, int *glyphs, float *text_width,
@@ -1065,6 +1327,16 @@ nk_text_clamp(const struct nk_user_font *font, const char *text,
         return (!sep_len) ? len: sep_len;
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] font <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB struct nk_vec2
 nk_text_calculate_text_bounds(const struct nk_user_font *font,
     const char *begin, int byte_len, float row_height, const char **remaining,

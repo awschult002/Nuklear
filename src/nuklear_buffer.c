@@ -7,6 +7,18 @@
  *
  * ===============================================================*/
 #ifdef NK_INCLUDE_DEFAULT_ALLOCATOR
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] unused <fill in>
+ * \param[in] old <fill in>
+ * \param[in] size <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void*
 nk_malloc(nk_handle unused, void *old,nk_size size)
 {
@@ -14,12 +26,33 @@ nk_malloc(nk_handle unused, void *old,nk_size size)
     NK_UNUSED(old);
     return malloc(size);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] unused <fill in>
+ * \param[in] ptr <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_mfree(nk_handle unused, void *ptr)
 {
     NK_UNUSED(unused);
     free(ptr);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] buffer <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_buffer_init_default(struct nk_buffer *buffer)
 {
@@ -31,6 +64,17 @@ nk_buffer_init_default(struct nk_buffer *buffer)
 }
 #endif
 
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] a <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_buffer_init(struct nk_buffer *b, const struct nk_allocator *a,
     nk_size initial_size)
@@ -48,6 +92,18 @@ nk_buffer_init(struct nk_buffer *b, const struct nk_allocator *a,
     b->grow_factor = 2.0f;
     b->pool = *a;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] m <fill in>
+ * \param[in] size <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_buffer_init_fixed(struct nk_buffer *b, void *m, nk_size size)
 {
@@ -62,6 +118,16 @@ nk_buffer_init_fixed(struct nk_buffer *b, void *m, nk_size size)
     b->memory.size = size;
     b->size = size;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] unaligned <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void*
 nk_buffer_align(void *unaligned,
     nk_size align, nk_size *alignment,
@@ -92,6 +158,18 @@ nk_buffer_align(void *unaligned,
     }
     return memory;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] capacity <fill in>
+ * \param[in] size <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void*
 nk_buffer_realloc(struct nk_buffer *b, nk_size capacity, nk_size *size)
 {
@@ -130,6 +208,17 @@ nk_buffer_realloc(struct nk_buffer *b, nk_size capacity, nk_size *size)
     }
     return temp;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void*
 nk_buffer_alloc(struct nk_buffer *b, enum nk_buffer_allocation_type type,
     nk_size size, nk_size align)
@@ -182,6 +271,17 @@ nk_buffer_alloc(struct nk_buffer *b, enum nk_buffer_allocation_type type,
     b->calls++;
     return memory;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_buffer_push(struct nk_buffer *b, enum nk_buffer_allocation_type type,
     const void *memory, nk_size size, nk_size align)
@@ -190,6 +290,17 @@ nk_buffer_push(struct nk_buffer *b, enum nk_buffer_allocation_type type,
     if (!mem) return;
     NK_MEMCPY(mem, memory, size);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] buffer <fill in>
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_buffer_mark(struct nk_buffer *buffer, enum nk_buffer_allocation_type type)
 {
@@ -200,6 +311,17 @@ nk_buffer_mark(struct nk_buffer *buffer, enum nk_buffer_allocation_type type)
         buffer->marker[type].offset = buffer->size;
     else buffer->marker[type].offset = buffer->allocated;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] buffer <fill in>
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_buffer_reset(struct nk_buffer *buffer, enum nk_buffer_allocation_type type)
 {
@@ -221,6 +343,16 @@ nk_buffer_reset(struct nk_buffer *buffer, enum nk_buffer_allocation_type type)
         buffer->marker[type].active = nk_false;
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_buffer_clear(struct nk_buffer *b)
 {
@@ -231,6 +363,16 @@ nk_buffer_clear(struct nk_buffer *b)
     b->calls = 0;
     b->needed = 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_buffer_free(struct nk_buffer *b)
 {
@@ -241,6 +383,17 @@ nk_buffer_free(struct nk_buffer *b)
     NK_ASSERT(b->pool.free);
     b->pool.free(b->pool.userdata, b->memory.ptr);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] s <fill in>
+ * \param[in] b <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_buffer_info(struct nk_memory_status *s, const struct nk_buffer *b)
 {
@@ -253,6 +406,16 @@ nk_buffer_info(struct nk_memory_status *s, const struct nk_buffer *b)
     s->memory = b->memory.ptr;
     s->calls = b->calls;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] buffer <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void*
 nk_buffer_memory(struct nk_buffer *buffer)
 {
@@ -260,6 +423,16 @@ nk_buffer_memory(struct nk_buffer *buffer)
     if (!buffer) return 0;
     return buffer->memory.ptr;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] buffer <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API const void*
 nk_buffer_memory_const(const struct nk_buffer *buffer)
 {
@@ -267,6 +440,16 @@ nk_buffer_memory_const(const struct nk_buffer *buffer)
     if (!buffer) return 0;
     return buffer->memory.ptr;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] buffer <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_size
 nk_buffer_total(const struct nk_buffer *buffer)
 {

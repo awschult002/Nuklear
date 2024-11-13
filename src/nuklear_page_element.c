@@ -6,6 +6,16 @@
  *                          PAGE ELEMENT
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB struct nk_page_element*
 nk_create_page_element(struct nk_context *ctx)
 {
@@ -32,6 +42,16 @@ nk_create_page_element(struct nk_context *ctx)
     elem->prev = 0;
     return elem;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_link_page_element_into_freelist(struct nk_context *ctx,
     struct nk_page_element *elem)
@@ -44,6 +64,17 @@ nk_link_page_element_into_freelist(struct nk_context *ctx,
         ctx->freelist = elem;
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] elem <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_free_page_element(struct nk_context *ctx, struct nk_page_element *elem)
 {

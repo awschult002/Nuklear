@@ -6,6 +6,16 @@
  *                              WIDGET
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_rect
 nk_widget_bounds(const struct nk_context *ctx)
 {
@@ -17,6 +27,16 @@ nk_widget_bounds(const struct nk_context *ctx)
     nk_layout_peek(&bounds, ctx);
     return bounds;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_vec2
 nk_widget_position(const struct nk_context *ctx)
 {
@@ -29,6 +49,16 @@ nk_widget_position(const struct nk_context *ctx)
     nk_layout_peek(&bounds, ctx);
     return nk_vec2(bounds.x, bounds.y);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_vec2
 nk_widget_size(const struct nk_context *ctx)
 {
@@ -41,6 +71,16 @@ nk_widget_size(const struct nk_context *ctx)
     nk_layout_peek(&bounds, ctx);
     return nk_vec2(bounds.w, bounds.h);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API float
 nk_widget_width(const struct nk_context *ctx)
 {
@@ -53,6 +93,16 @@ nk_widget_width(const struct nk_context *ctx)
     nk_layout_peek(&bounds, ctx);
     return bounds.w;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API float
 nk_widget_height(const struct nk_context *ctx)
 {
@@ -65,6 +115,16 @@ nk_widget_height(const struct nk_context *ctx)
     nk_layout_peek(&bounds, ctx);
     return bounds.h;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_widget_is_hovered(const struct nk_context *ctx)
 {
@@ -87,6 +147,17 @@ nk_widget_is_hovered(const struct nk_context *ctx)
         return 0;
     return nk_input_is_mouse_hovering_rect(&ctx->input, bounds);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] btn <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_widget_is_mouse_clicked(const struct nk_context *ctx, enum nk_buttons btn)
 {
@@ -109,6 +180,18 @@ nk_widget_is_mouse_clicked(const struct nk_context *ctx, enum nk_buttons btn)
         return 0;
     return nk_input_mouse_clicked(&ctx->input, btn, bounds);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] btn <fill in>
+ * \param[in] down <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_widget_has_mouse_click_down(const struct nk_context *ctx, enum nk_buttons btn, nk_bool down)
 {
@@ -131,6 +214,17 @@ nk_widget_has_mouse_click_down(const struct nk_context *ctx, enum nk_buttons btn
         return 0;
     return nk_input_has_mouse_click_down_in_rect(&ctx->input, btn, bounds, down);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] bounds <fill in>
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API enum nk_widget_layout_states
 nk_widget(struct nk_rect *bounds, const struct nk_context *ctx)
 {
@@ -181,6 +275,17 @@ nk_widget(struct nk_rect *bounds, const struct nk_context *ctx)
         return NK_WIDGET_ROM;
     return NK_WIDGET_VALID;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] bounds <fill in>
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API enum nk_widget_layout_states
 nk_widget_fitting(struct nk_rect *bounds, const struct nk_context *ctx,
     struct nk_vec2 item_padding)
@@ -198,6 +303,17 @@ nk_widget_fitting(struct nk_rect *bounds, const struct nk_context *ctx,
     state = nk_widget(bounds, ctx);
     return state;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] cols <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_spacing(struct nk_context *ctx, int cols)
 {
@@ -229,6 +345,16 @@ nk_spacing(struct nk_context *ctx, int cols)
             nk_panel_alloc_space(&none, ctx);
     } layout->row.index = index;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_widget_disable_begin(struct nk_context* ctx)
 {
@@ -292,6 +418,16 @@ nk_widget_disable_begin(struct nk_context* ctx)
     style->tab.tab_minimize_button.color_factor_background = style->tab.tab_minimize_button.disabled_factor;
     style->text.color_factor = style->text.disabled_factor;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_widget_disable_end(struct nk_context* ctx)
 {

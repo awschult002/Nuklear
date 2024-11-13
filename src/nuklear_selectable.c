@@ -6,6 +6,16 @@
  *                              SELECTABLE
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] out <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_draw_selectable(struct nk_command_buffer *out,
     nk_flags state, const struct nk_style_selectable *style, nk_bool active,
@@ -65,6 +75,17 @@ nk_draw_selectable(struct nk_command_buffer *out,
     }
     nk_widget_text(out, *bounds, string, len, &text, align, font);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ * \param[in] out <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB nk_bool
 nk_do_selectable(nk_flags *state, struct nk_command_buffer *out,
     struct nk_rect bounds, const char *str, int len, nk_flags align, nk_bool *value,
@@ -101,6 +122,17 @@ nk_do_selectable(nk_flags *state, struct nk_command_buffer *out,
     if (style->draw_end) style->draw_end(out, style->userdata);
     return old_value != *value;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ * \param[in] out <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB nk_bool
 nk_do_selectable_image(nk_flags *state, struct nk_command_buffer *out,
     struct nk_rect bounds, const char *str, int len, nk_flags align, nk_bool *value,
@@ -148,6 +180,17 @@ nk_do_selectable_image(nk_flags *state, struct nk_command_buffer *out,
     if (style->draw_end) style->draw_end(out, style->userdata);
     return old_value != *value;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ * \param[in] out <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB nk_bool
 nk_do_selectable_symbol(nk_flags *state, struct nk_command_buffer *out,
     struct nk_rect bounds, const char *str, int len, nk_flags align, nk_bool *value,
@@ -196,6 +239,18 @@ nk_do_selectable_symbol(nk_flags *state, struct nk_command_buffer *out,
     return old_value != *value;
 }
 
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] str <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_selectable_text(struct nk_context *ctx, const char *str, int len,
     nk_flags align, nk_bool *value)
@@ -225,6 +280,17 @@ nk_selectable_text(struct nk_context *ctx, const char *str, int len,
     return nk_do_selectable(&ctx->last_widget_state, &win->buffer, bounds,
                 str, len, align, value, &style->selectable, in, style->font);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] img <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_selectable_image_text(struct nk_context *ctx, struct nk_image img,
     const char *str, int len, nk_flags align, nk_bool *value)
@@ -254,6 +320,17 @@ nk_selectable_image_text(struct nk_context *ctx, struct nk_image img,
     return nk_do_selectable_image(&ctx->last_widget_state, &win->buffer, bounds,
                 str, len, align, value, &img, &style->selectable, in, style->font);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] sym <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_selectable_symbol_text(struct nk_context *ctx, enum nk_symbol_type sym,
     const char *str, int len, nk_flags align, nk_bool *value)
@@ -283,46 +360,148 @@ nk_selectable_symbol_text(struct nk_context *ctx, enum nk_symbol_type sym,
     return nk_do_selectable_symbol(&ctx->last_widget_state, &win->buffer, bounds,
                 str, len, align, value, sym, &style->selectable, in, style->font);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] sym <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_selectable_symbol_label(struct nk_context *ctx, enum nk_symbol_type sym,
     const char *title, nk_flags align, nk_bool *value)
 {
     return nk_selectable_symbol_text(ctx, sym, title, nk_strlen(title), align, value);
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] str <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 }
 NK_API nk_bool nk_select_text(struct nk_context *ctx, const char *str, int len,
     nk_flags align, nk_bool value)
 {
     nk_selectable_text(ctx, str, len, align, &value);return value;
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] str <fill in>
+ * \param[in] align <fill in>
+ *
+ * \returns <fill in>
+ */
 }
 NK_API nk_bool nk_selectable_label(struct nk_context *ctx, const char *str, nk_flags align, nk_bool *value)
 {
     return nk_selectable_text(ctx, str, nk_strlen(str), align, value);
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] img <fill in>
+ *
+ * \returns <fill in>
+ */
 }
 NK_API nk_bool nk_selectable_image_label(struct nk_context *ctx,struct nk_image img,
     const char *str, nk_flags align, nk_bool *value)
 {
     return nk_selectable_image_text(ctx, img, str, nk_strlen(str), align, value);
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] str <fill in>
+ * \param[in] align <fill in>
+ *
+ * \returns <fill in>
+ */
 }
 NK_API nk_bool nk_select_label(struct nk_context *ctx, const char *str, nk_flags align, nk_bool value)
 {
     nk_selectable_text(ctx, str, nk_strlen(str), align, &value);return value;
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] img <fill in>
+ *
+ * \returns <fill in>
+ */
 }
 NK_API nk_bool nk_select_image_label(struct nk_context *ctx, struct nk_image img,
     const char *str, nk_flags align, nk_bool value)
 {
     nk_selectable_image_text(ctx, img, str, nk_strlen(str), align, &value);return value;
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] img <fill in>
+ *
+ * \returns <fill in>
+ */
 }
 NK_API nk_bool nk_select_image_text(struct nk_context *ctx, struct nk_image img,
     const char *str, int len, nk_flags align, nk_bool value)
 {
     nk_selectable_image_text(ctx, img, str, len, align, &value);return value;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] sym <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_select_symbol_text(struct nk_context *ctx, enum nk_symbol_type sym,
     const char *title, int title_len, nk_flags align, nk_bool value)
 {
     nk_selectable_symbol_text(ctx, sym, title, title_len, align, &value);return value;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] sym <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_select_symbol_label(struct nk_context *ctx, enum nk_symbol_type sym,
     const char *title, nk_flags align, nk_bool value)

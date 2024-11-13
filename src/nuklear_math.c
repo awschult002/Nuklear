@@ -6,36 +6,46 @@
  *                              MATH
  *
  * ===============================================================*/
-/*/// ### Math
-///  Since nuklear is supposed to work on all systems providing floating point
-///  math without any dependencies I also had to implement my own math functions
-///  for sqrt, sin and cos. Since the actual highly accurate implementations for
-///  the standard library functions are quite complex and I do not need high
-///  precision for my use cases I use approximations.
-///
-///  Sqrt
-///  ----
-///  For square root nuklear uses the famous fast inverse square root:
-///  https://en.wikipedia.org/wiki/Fast_inverse_square_root with
-///  slightly tweaked magic constant. While on today's hardware it is
-///  probably not faster it is still fast and accurate enough for
-///  nuklear's use cases. IMPORTANT: this requires float format IEEE 754
-///
-///  Sine/Cosine
-///  -----------
-///  All constants inside both function are generated Remez's minimax
-///  approximations for value range 0...2*PI. The reason why I decided to
-///  approximate exactly that range is that nuklear only needs sine and
-///  cosine to generate circles which only requires that exact range.
-///  In addition I used Remez instead of Taylor for additional precision:
-///  www.lolengine.net/blog/2011/12/21/better-function-approximations.
-///
-///  The tool I used to generate constants for both sine and cosine
-///  (it can actually approximate a lot more functions) can be
-///  found here: www.lolengine.net/wiki/oss/lolremez
+/* ### Math
+  Since nuklear is supposed to work on all systems providing floating point
+  math without any dependencies I also had to implement my own math functions
+  for sqrt, sin and cos. Since the actual highly accurate implementations for
+  the standard library functions are quite complex and I do not need high
+  precision for my use cases I use approximations.
+
+  Sqrt
+  ----
+  For square root nuklear uses the famous fast inverse square root:
+  https://en.wikipedia.org/wiki/Fast_inverse_square_root with
+  slightly tweaked magic constant. While on today's hardware it is
+  probably not faster it is still fast and accurate enough for
+  nuklear's use cases. IMPORTANT: this requires float format IEEE 754
+
+  Sine/Cosine
+  -----------
+  All constants inside both function are generated Remez's minimax
+  approximations for value range 0...2*PI. The reason why I decided to
+  approximate exactly that range is that nuklear only needs sine and
+  cosine to generate circles which only requires that exact range.
+  In addition I used Remez instead of Taylor for additional precision:
+  www.lolengine.net/blog/2011/12/21/better-function-approximations.
+
+  The tool I used to generate constants for both sine and cosine
+  (it can actually approximate a lot more functions) can be
+  found here: www.lolengine.net/wiki/oss/lolremez
 */
 #ifndef NK_INV_SQRT
 #define NK_INV_SQRT nk_inv_sqrt
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] n <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB float
 nk_inv_sqrt(float n)
 {
@@ -51,6 +61,16 @@ nk_inv_sqrt(float n)
 #endif
 #ifndef NK_SIN
 #define NK_SIN nk_sin
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] x <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB float
 nk_sin(float x)
 {
@@ -67,6 +87,16 @@ nk_sin(float x)
 #endif
 #ifndef NK_COS
 #define NK_COS nk_cos
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] x <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB float
 nk_cos(float x)
 {
@@ -86,6 +116,16 @@ nk_cos(float x)
 #endif
 #ifndef NK_ATAN
 #define NK_ATAN nk_atan
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] x <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB float
 nk_atan(float x)
 {
@@ -106,6 +146,17 @@ nk_atan(float x)
 #endif
 #ifndef NK_ATAN2
 #define NK_ATAN2 nk_atan2
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] y <fill in>
+ * \param[in] x <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB float
 nk_atan2(float y, float x)
 {
@@ -130,6 +181,16 @@ nk_atan2(float y, float x)
     return 0.0f; /* prevents warning */
 }
 #endif
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] v <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB nk_uint
 nk_round_up_pow2(nk_uint v)
 {
@@ -142,6 +203,17 @@ nk_round_up_pow2(nk_uint v)
     v++;
     return v;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] x <fill in>
+ * \param[in] n <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB double
 nk_pow(double x, int n)
 {
@@ -157,18 +229,48 @@ nk_pow(double x, int n)
     }
     return plus ? r : 1.0 / r;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] x <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB int
 nk_ifloord(double x)
 {
     x = (double)((int)x - ((x < 0.0) ? 1 : 0));
     return (int)x;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] x <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB int
 nk_ifloorf(float x)
 {
     x = (float)((int)x - ((x < 0.0f) ? 1 : 0));
     return (int)x;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] x <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB int
 nk_iceilf(float x)
 {
@@ -181,6 +283,16 @@ nk_iceilf(float x)
         return (r > 0.0f) ? t+1: t;
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] n <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB int
 nk_log10(double n)
 {
@@ -197,16 +309,49 @@ nk_log10(double n)
     if (neg) exp = -exp;
     return exp;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] x <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB float
 nk_roundf(float x)
 {
     return (x >= 0.0) ? nk_ifloorf(x + 0.5) : nk_iceilf(x - 0.5);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] void <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_rect
 nk_get_null_rect(void)
 {
     return nk_null_rect;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] x <fill in>
+ * \param[in] y <fill in>
+ * \param[in] w <fill in>
+ * \param[in] h <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_rect
 nk_rect(float x, float y, float w, float h)
 {
@@ -215,6 +360,19 @@ nk_rect(float x, float y, float w, float h)
     r.w = w; r.h = h;
     return r;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] x <fill in>
+ * \param[in] y <fill in>
+ * \param[in] w <fill in>
+ * \param[in] h <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_rect
 nk_recti(int x, int y, int w, int h)
 {
@@ -225,21 +383,62 @@ nk_recti(int x, int y, int w, int h)
     r.h = (float)h;
     return r;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] pos <fill in>
+ * \param[in] size <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_rect
 nk_recta(struct nk_vec2 pos, struct nk_vec2 size)
 {
     return nk_rect(pos.x, pos.y, size.x, size.y);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] r <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_rect
 nk_rectv(const float *r)
 {
     return nk_rect(r[0], r[1], r[2], r[3]);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] r <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_rect
 nk_rectiv(const int *r)
 {
     return nk_recti(r[0], r[1], r[2], r[3]);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] r <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_vec2
 nk_rect_pos(struct nk_rect r)
 {
@@ -247,6 +446,16 @@ nk_rect_pos(struct nk_rect r)
     ret.x = r.x; ret.y = r.y;
     return ret;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] r <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_vec2
 nk_rect_size(struct nk_rect r)
 {
@@ -254,6 +463,17 @@ nk_rect_size(struct nk_rect r)
     ret.x = r.w; ret.y = r.h;
     return ret;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] r <fill in>
+ * \param[in] amount <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB struct nk_rect
 nk_shrink_rect(struct nk_rect r, float amount)
 {
@@ -266,6 +486,17 @@ nk_shrink_rect(struct nk_rect r, float amount)
     res.h = r.h - 2 * amount;
     return res;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] r <fill in>
+ * \param[in] pad <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB struct nk_rect
 nk_pad_rect(struct nk_rect r, struct nk_vec2 pad)
 {
@@ -276,6 +507,17 @@ nk_pad_rect(struct nk_rect r, struct nk_vec2 pad)
     r.h -= 2 * pad.y;
     return r;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] x <fill in>
+ * \param[in] y <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_vec2
 nk_vec2(float x, float y)
 {
@@ -283,6 +525,17 @@ nk_vec2(float x, float y)
     ret.x = x; ret.y = y;
     return ret;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] x <fill in>
+ * \param[in] y <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_vec2
 nk_vec2i(int x, int y)
 {
@@ -291,16 +544,49 @@ nk_vec2i(int x, int y)
     ret.y = (float)y;
     return ret;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] v <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_vec2
 nk_vec2v(const float *v)
 {
     return nk_vec2(v[0], v[1]);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] v <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_vec2
 nk_vec2iv(const int *v)
 {
     return nk_vec2i(v[0], v[1]);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] clip <fill in>
+ * \param[in] a <fill in>
+ * \param[in] x0 <fill in>
+ * \param[in] y0 <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_unify(struct nk_rect *clip, const struct nk_rect *a, float x0, float y0,
     float x1, float y1)
@@ -315,6 +601,17 @@ nk_unify(struct nk_rect *clip, const struct nk_rect *a, float x0, float y0,
     clip->h = NK_MAX(0, clip->h);
 }
 
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] result <fill in>
+ * \param[in] r <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_triangle_from_direction(struct nk_vec2 *result, struct nk_rect r,
     float pad_x, float pad_y, enum nk_heading direction)

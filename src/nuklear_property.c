@@ -6,6 +6,17 @@
  *                              PROPERTY
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ * \param[in] in <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_drag_behavior(nk_flags *state, const struct nk_input *in,
     struct nk_rect drag, struct nk_property_variant *variant,
@@ -45,6 +56,17 @@ nk_drag_behavior(nk_flags *state, const struct nk_input *in,
     else if (nk_input_is_mouse_prev_hovering_rect(in, drag))
         *state |= NK_WIDGET_STATE_LEFT;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ws <fill in>
+ * \param[in] in <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_property_behavior(nk_flags *ws, const struct nk_input *in,
     struct nk_rect property,  struct nk_rect label, struct nk_rect edit,
@@ -65,6 +87,17 @@ nk_property_behavior(nk_flags *ws, const struct nk_input *in,
         if (!(*ws & NK_WIDGET_STATE_ACTIVED)) *state = NK_PROPERTY_DEFAULT;
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] out <fill in>
+ * \param[in] style <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_draw_property(struct nk_command_buffer *out, const struct nk_style_property *style,
     const struct nk_rect *bounds, const struct nk_rect *label, nk_flags state,
@@ -110,6 +143,16 @@ nk_draw_property(struct nk_command_buffer *out, const struct nk_style_property *
         nk_widget_text(out, *label, name, len, &text, NK_TEXT_CENTERED, font);
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ws <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_do_property(nk_flags *ws,
     struct nk_command_buffer *out, struct nk_rect property,
@@ -288,6 +331,19 @@ nk_do_property(nk_flags *ws,
         }
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] value <fill in>
+ * \param[in] min_value <fill in>
+ * \param[in] max_value <fill in>
+ * \param[in] step <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB struct nk_property_variant
 nk_property_variant_int(int value, int min_value, int max_value, int step)
 {
@@ -299,6 +355,19 @@ nk_property_variant_int(int value, int min_value, int max_value, int step)
     result.step.i = step;
     return result;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] value <fill in>
+ * \param[in] min_value <fill in>
+ * \param[in] max_value <fill in>
+ * \param[in] step <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB struct nk_property_variant
 nk_property_variant_float(float value, float min_value, float max_value, float step)
 {
@@ -310,6 +379,18 @@ nk_property_variant_float(float value, float min_value, float max_value, float s
     result.step.f = step;
     return result;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] value <fill in>
+ * \param[in] min_value <fill in>
+ * \param[in] max_value <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB struct nk_property_variant
 nk_property_variant_double(double value, double min_value, double max_value,
     double step)
@@ -322,6 +403,18 @@ nk_property_variant_double(double value, double min_value, double max_value,
     result.step.d = step;
     return result;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] name <fill in>
+ * \param[in] variant <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_property(struct nk_context *ctx, const char *name, struct nk_property_variant *variant,
     float inc_per_pixel, const enum nk_property_filter filter)
@@ -422,6 +515,17 @@ nk_property(struct nk_context *ctx, const char *name, struct nk_property_variant
         win->property.active = 0;
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] name <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_property_int(struct nk_context *ctx, const char *name,
     int min, int *val, int max, int step, float inc_per_pixel)
@@ -436,6 +540,17 @@ nk_property_int(struct nk_context *ctx, const char *name,
     nk_property(ctx, name, &variant, inc_per_pixel, NK_FILTER_INT);
     *val = variant.value.i;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] name <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_property_float(struct nk_context *ctx, const char *name,
     float min, float *val, float max, float step, float inc_per_pixel)
@@ -450,6 +565,17 @@ nk_property_float(struct nk_context *ctx, const char *name,
     nk_property(ctx, name, &variant, inc_per_pixel, NK_FILTER_FLOAT);
     *val = variant.value.f;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] name <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_property_double(struct nk_context *ctx, const char *name,
     double min, double *val, double max, double step, float inc_per_pixel)
@@ -464,6 +590,19 @@ nk_property_double(struct nk_context *ctx, const char *name,
     nk_property(ctx, name, &variant, inc_per_pixel, NK_FILTER_FLOAT);
     *val = variant.value.d;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] name <fill in>
+ * \param[in] min <fill in>
+ * \param[in] val <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_propertyi(struct nk_context *ctx, const char *name, int min, int val,
     int max, int step, float inc_per_pixel)
@@ -478,6 +617,18 @@ nk_propertyi(struct nk_context *ctx, const char *name, int min, int val,
     val = variant.value.i;
     return val;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] name <fill in>
+ * \param[in] min <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API float
 nk_propertyf(struct nk_context *ctx, const char *name, float min,
     float val, float max, float step, float inc_per_pixel)
@@ -492,6 +643,18 @@ nk_propertyf(struct nk_context *ctx, const char *name, float min,
     val = variant.value.f;
     return val;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] name <fill in>
+ * \param[in] min <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API double
 nk_propertyd(struct nk_context *ctx, const char *name, double min,
     double val, double max, double step, float inc_per_pixel)

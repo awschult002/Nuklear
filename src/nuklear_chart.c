@@ -6,6 +6,17 @@
  *                          CHART
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_chart_begin_colored(struct nk_context *ctx, enum nk_chart_type type,
     struct nk_color color, struct nk_color highlight,
@@ -73,6 +84,17 @@ nk_chart_begin_colored(struct nk_context *ctx, enum nk_chart_type type,
     }
     return 1;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_chart_begin(struct nk_context *ctx, const enum nk_chart_type type,
     int count, float min_value, float max_value)
@@ -80,6 +102,17 @@ nk_chart_begin(struct nk_context *ctx, const enum nk_chart_type type,
     return nk_chart_begin_colored(ctx, type, ctx->style.chart.color,
                 ctx->style.chart.selected_color, count, min_value, max_value);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_chart_add_slot_colored(struct nk_context *ctx, const enum nk_chart_type type,
     struct nk_color color, struct nk_color highlight,
@@ -108,6 +141,17 @@ nk_chart_add_slot_colored(struct nk_context *ctx, const enum nk_chart_type type,
     slot->range = slot->max - slot->min;
     slot->show_markers = style->show_markers;}
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_chart_add_slot(struct nk_context *ctx, const enum nk_chart_type type,
     int count, float min_value, float max_value)
@@ -115,6 +159,17 @@ nk_chart_add_slot(struct nk_context *ctx, const enum nk_chart_type type,
     nk_chart_add_slot_colored(ctx, type, ctx->style.chart.color,
         ctx->style.chart.selected_color, count, min_value, max_value);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] win <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN nk_flags
 nk_chart_push_line(struct nk_context *ctx, struct nk_window *win,
     struct nk_chart *g, float value, int slot)
@@ -189,6 +244,17 @@ nk_chart_push_line(struct nk_context *ctx, struct nk_window *win,
     g->slots[slot].index  += 1;
     return ret;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] win <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN nk_flags
 nk_chart_push_column(const struct nk_context *ctx, struct nk_window *win,
     struct nk_chart *chart, float value, int slot)
@@ -235,6 +301,18 @@ nk_chart_push_column(const struct nk_context *ctx, struct nk_window *win,
     chart->slots[slot].index += 1;
     return ret;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] value <fill in>
+ * \param[in] slot <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_flags
 nk_chart_push_slot(struct nk_context *ctx, float value, int slot)
 {
@@ -261,11 +339,32 @@ nk_chart_push_slot(struct nk_context *ctx, float value, int slot)
     }
     return flags;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] value <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_flags
 nk_chart_push(struct nk_context *ctx, float value)
 {
     return nk_chart_push_slot(ctx, value, 0);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_chart_end(struct nk_context *ctx)
 {
@@ -282,6 +381,18 @@ nk_chart_end(struct nk_context *ctx)
     NK_MEMSET(chart, 0, sizeof(*chart));
     return;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] type <fill in>
+ * \param[in] values <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_plot(struct nk_context *ctx, enum nk_chart_type type, const float *values,
     int count, int offset)
@@ -307,6 +418,18 @@ nk_plot(struct nk_context *ctx, enum nk_chart_type type, const float *values,
         nk_chart_end(ctx);
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] type <fill in>
+ * \param[in] userdata <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_plot_function(struct nk_context *ctx, enum nk_chart_type type, void *userdata,
     float(*value_getter)(void* user, int index), int count, int offset)

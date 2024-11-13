@@ -30,6 +30,18 @@ NK_INTERN void nk_textedit_makeundo_insert(struct nk_text_edit*, int, int);
 NK_INTERN void nk_textedit_makeundo_replace(struct nk_text_edit*, int, int, int);
 #define NK_TEXT_HAS_SELECTION(s)   ((s)->select_start != (s)->select_end)
 
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] edit <fill in>
+ * \param[in] line_start <fill in>
+ * \param[in] char_id <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN float
 nk_textedit_get_width(const struct nk_text_edit *edit, int line_start, int char_id,
     const struct nk_user_font *font)
@@ -39,6 +51,17 @@ nk_textedit_get_width(const struct nk_text_edit *edit, int line_start, int char_
     const char *str = nk_str_at_const(&edit->string, line_start + char_id, &unicode, &len);
     return font->width(font->userdata, font->height, str, len);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] r <fill in>
+ * \param[in] edit <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_textedit_layout_row(struct nk_text_edit_row *r, struct nk_text_edit *edit,
     int line_start_id, float row_height, const struct nk_user_font *font)
@@ -60,6 +83,18 @@ nk_textedit_layout_row(struct nk_text_edit_row *r, struct nk_text_edit *edit,
     r->ymax = size.y;
     r->num_chars = glyphs;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] edit <fill in>
+ * \param[in] x <fill in>
+ * \param[in] y <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN int
 nk_textedit_locate_coord(struct nk_text_edit *edit, float x, float y,
     const struct nk_user_font *font, float row_height)
@@ -120,6 +155,18 @@ nk_textedit_locate_coord(struct nk_text_edit *edit, float x, float y,
         return i+r.num_chars-1;
     else return i+r.num_chars;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ * \param[in] x <fill in>
+ * \param[in] y <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_textedit_click(struct nk_text_edit *state, float x, float y,
     const struct nk_user_font *font, float row_height)
@@ -131,6 +178,18 @@ nk_textedit_click(struct nk_text_edit *state, float x, float y,
     state->select_end = state->cursor;
     state->has_preferred_x = 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ * \param[in] x <fill in>
+ * \param[in] y <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_textedit_drag(struct nk_text_edit *state, float x, float y,
     const struct nk_user_font *font, float row_height)
@@ -142,6 +201,17 @@ nk_textedit_drag(struct nk_text_edit *state, float x, float y,
         state->select_start = state->cursor;
     state->cursor = state->select_end = p;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] find <fill in>
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_textedit_find_charpos(struct nk_text_find *find, struct nk_text_edit *state,
     int n, int single_line, const struct nk_user_font *font, float row_height)
@@ -199,6 +269,16 @@ nk_textedit_find_charpos(struct nk_text_find *find, struct nk_text_edit *state,
     for (i=0; first+i < n; ++i)
         find->x += nk_textedit_get_width(state, first, i, font);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_textedit_clamp(struct nk_text_edit *state)
 {
@@ -213,6 +293,18 @@ nk_textedit_clamp(struct nk_text_edit *state)
     }
     if (state->cursor > n) state->cursor = n;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ * \param[in] where <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_textedit_delete(struct nk_text_edit *state, int where, int len)
 {
@@ -221,6 +313,16 @@ nk_textedit_delete(struct nk_text_edit *state, int where, int len)
     nk_str_delete_runes(&state->string, where, len);
     state->has_preferred_x = 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_textedit_delete_selection(struct nk_text_edit *state)
 {
@@ -239,6 +341,16 @@ nk_textedit_delete_selection(struct nk_text_edit *state)
         state->has_preferred_x = 0;
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_textedit_sortselection(struct nk_text_edit *state)
 {
@@ -249,6 +361,16 @@ nk_textedit_sortselection(struct nk_text_edit *state)
         state->select_start = temp;
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_textedit_move_to_first(struct nk_text_edit *state)
 {
@@ -260,6 +382,16 @@ nk_textedit_move_to_first(struct nk_text_edit *state)
         state->has_preferred_x = 0;
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_textedit_move_to_last(struct nk_text_edit *state)
 {
@@ -272,6 +404,17 @@ nk_textedit_move_to_last(struct nk_text_edit *state)
         state->has_preferred_x = 0;
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ * \param[in] idx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN int
 nk_is_word_boundary( struct nk_text_edit *state, int idx)
 {
@@ -283,6 +426,16 @@ nk_is_word_boundary( struct nk_text_edit *state, int idx)
             c == '(' || c == ')' || c == '{' || c == '}' || c == '[' || c == ']' ||
             c == '|');
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN int
 nk_textedit_move_to_word_previous(struct nk_text_edit *state)
 {
@@ -295,6 +448,16 @@ nk_textedit_move_to_word_previous(struct nk_text_edit *state)
 
    return c;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN int
 nk_textedit_move_to_word_next(struct nk_text_edit *state)
 {
@@ -308,6 +471,16 @@ nk_textedit_move_to_word_next(struct nk_text_edit *state)
 
    return c;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_textedit_prep_selection_at_cursor(struct nk_text_edit *state)
 {
@@ -316,6 +489,16 @@ nk_textedit_prep_selection_at_cursor(struct nk_text_edit *state)
         state->select_start = state->select_end = state->cursor;
     else state->cursor = state->select_end;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_textedit_cut(struct nk_text_edit *state)
 {
@@ -329,6 +512,18 @@ nk_textedit_cut(struct nk_text_edit *state)
     }
    return 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ * \param[in] ctext <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_textedit_paste(struct nk_text_edit *state, char const *ctext, int len)
 {
@@ -354,6 +549,18 @@ nk_textedit_paste(struct nk_text_edit *state, char const *ctext, int len)
         --state->undo.undo_point;
     return 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ * \param[in] text <fill in>
+ * \param[in] total_len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_textedit_text(struct nk_text_edit *state, const char *text, int total_len)
 {
@@ -403,6 +610,18 @@ nk_textedit_text(struct nk_text_edit *state, const char *text, int total_len)
         glyph_len = nk_utf_decode(text + text_len, &unicode, total_len-text_len);
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ * \param[in] key <fill in>
+ * \param[in] shift_mod <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_textedit_key(struct nk_text_edit *state, enum nk_keys key, int shift_mod,
     const struct nk_user_font *font, float row_height)
@@ -713,12 +932,32 @@ retry:
         }} break;
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_textedit_flush_redo(struct nk_text_undo_state *state)
 {
     state->redo_point = NK_TEXTEDIT_UNDOSTATECOUNT;
     state->redo_char_point = NK_TEXTEDIT_UNDOCHARCOUNT;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_textedit_discard_undo(struct nk_text_undo_state *state)
 {
@@ -742,6 +981,16 @@ nk_textedit_discard_undo(struct nk_text_undo_state *state)
             (nk_size)((nk_size)state->undo_point * sizeof(state->undo_rec[0])));
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_textedit_discard_redo(struct nk_text_undo_state *state)
 {
@@ -773,6 +1022,17 @@ nk_textedit_discard_redo(struct nk_text_undo_state *state)
             state->undo_rec + state->redo_point, num * sizeof(state->undo_rec[0]));
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ * \param[in] numchars <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN struct nk_text_undo_record*
 nk_textedit_create_undo_record(struct nk_text_undo_state *state, int numchars)
 {
@@ -798,6 +1058,17 @@ nk_textedit_create_undo_record(struct nk_text_undo_state *state, int numchars)
         nk_textedit_discard_undo(state);
     return &state->undo_rec[state->undo_point++];
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ * \param[in] pos <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN nk_rune*
 nk_textedit_createundo(struct nk_text_undo_state *state, int pos,
     int insert_len, int delete_len)
@@ -819,6 +1090,16 @@ nk_textedit_createundo(struct nk_text_undo_state *state, int pos,
         return &state->undo_char[r->char_storage];
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_textedit_undo(struct nk_text_edit *state)
 {
@@ -886,6 +1167,16 @@ nk_textedit_undo(struct nk_text_edit *state)
     s->undo_point--;
     s->redo_point--;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_textedit_redo(struct nk_text_edit *state)
 {
@@ -935,11 +1226,35 @@ nk_textedit_redo(struct nk_text_edit *state)
     s->undo_point++;
     s->redo_point++;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ * \param[in] where <fill in>
+ * \param[in] length <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_textedit_makeundo_insert(struct nk_text_edit *state, int where, int length)
 {
     nk_textedit_createundo(&state->undo, where, 0, length);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ * \param[in] where <fill in>
+ * \param[in] length <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_textedit_makeundo_delete(struct nk_text_edit *state, int where, int length)
 {
@@ -950,6 +1265,17 @@ nk_textedit_makeundo_delete(struct nk_text_edit *state, int where, int length)
             p[i] = nk_str_rune_at(&state->string, where+i);
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ * \param[in] where <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_textedit_makeundo_replace(struct nk_text_edit *state, int where,
     int old_length, int new_length)
@@ -961,6 +1287,17 @@ nk_textedit_makeundo_replace(struct nk_text_edit *state, int where,
             p[i] = nk_str_rune_at(&state->string, where+i);
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_textedit_clear_state(struct nk_text_edit *state, enum nk_text_edit_type type,
     nk_plugin_filter filter)
@@ -981,6 +1318,18 @@ nk_textedit_clear_state(struct nk_text_edit *state, enum nk_text_edit_type type,
    state->filter = filter;
    state->scrollbar = nk_vec2(0,0);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ * \param[in] memory <fill in>
+ * \param[in] size <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_textedit_init_fixed(struct nk_text_edit *state, void *memory, nk_size size)
 {
@@ -991,6 +1340,18 @@ nk_textedit_init_fixed(struct nk_text_edit *state, void *memory, nk_size size)
     nk_textedit_clear_state(state, NK_TEXT_EDIT_SINGLE_LINE, 0);
     nk_str_init_fixed(&state->string, memory, size);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ * \param[in] alloc <fill in>
+ * \param[in] size <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_textedit_init(struct nk_text_edit *state, const struct nk_allocator *alloc, nk_size size)
 {
@@ -1002,6 +1363,16 @@ nk_textedit_init(struct nk_text_edit *state, const struct nk_allocator *alloc, n
     nk_str_init(&state->string, alloc, size);
 }
 #ifdef NK_INCLUDE_DEFAULT_ALLOCATOR
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_textedit_init_default(struct nk_text_edit *state)
 {
@@ -1012,6 +1383,16 @@ nk_textedit_init_default(struct nk_text_edit *state)
     nk_str_init_default(&state->string);
 }
 #endif
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_textedit_select_all(struct nk_text_edit *state)
 {
@@ -1019,6 +1400,16 @@ nk_textedit_select_all(struct nk_text_edit *state)
     state->select_start = 0;
     state->select_end = state->string.len;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_textedit_free(struct nk_text_edit *state)
 {

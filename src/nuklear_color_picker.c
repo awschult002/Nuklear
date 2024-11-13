@@ -6,6 +6,16 @@
  *                          COLOR PICKER
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB nk_bool
 nk_color_picker_behavior(nk_flags *state,
     const struct nk_rect *bounds, const struct nk_rect *matrix,
@@ -58,6 +68,17 @@ nk_color_picker_behavior(nk_flags *state,
         *state |= NK_WIDGET_STATE_LEFT;
     return value_changed;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] o <fill in>
+ * \param[in] matrix <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_draw_color_picker(struct nk_command_buffer *o, const struct nk_rect *matrix,
     const struct nk_rect *hue_bar, const struct nk_rect *alpha_bar,
@@ -117,6 +138,16 @@ nk_draw_color_picker(struct nk_command_buffer *o, const struct nk_rect *matrix,
     nk_stroke_line(o, p.x, p.y + crosshair_size + 1, p.x, p.y+3, 1.0f, white);
     nk_stroke_line(o, p.x, p.y - crosshair_size, p.x, p.y-2, 1.0f, white);}
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB nk_bool
 nk_do_color_picker(nk_flags *state,
     struct nk_command_buffer *out, struct nk_colorf *col,
@@ -163,6 +194,17 @@ nk_do_color_picker(nk_flags *state,
     nk_draw_color_picker(out, &matrix, &hue_bar, (fmt == NK_RGBA) ? &alpha_bar:0, *col);
     return ret;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] color <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_color_pick(struct nk_context * ctx, struct nk_colorf *color,
     enum nk_color_format fmt)
@@ -191,6 +233,17 @@ nk_color_pick(struct nk_context * ctx, struct nk_colorf *color,
     return nk_do_color_picker(&ctx->last_widget_state, &win->buffer, color, fmt, bounds,
                 nk_vec2(0,0), in, config->font);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] color <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_colorf
 nk_color_picker(struct nk_context *ctx, struct nk_colorf color,
     enum nk_color_format fmt)

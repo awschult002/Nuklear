@@ -47,6 +47,16 @@ NK_GLOBAL const nk_size nk_char_align = NK_ALIGNOF(stbtt_packedchar);
 NK_GLOBAL const nk_size nk_build_align = NK_ALIGNOF(struct nk_font_bake_data);
 NK_GLOBAL const nk_size nk_baker_align = NK_ALIGNOF(struct nk_font_baker);
 
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] range <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN int
 nk_range_count(const nk_rune *range)
 {
@@ -56,6 +66,17 @@ nk_range_count(const nk_rune *range)
     while (*(iter++) != 0);
     return (iter == range) ? 0 : (int)((iter - range)/2);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] range <fill in>
+ * \param[in] count <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN int
 nk_range_glyph_count(const nk_rune *range, int count)
 {
@@ -71,12 +92,32 @@ nk_range_glyph_count(const nk_rune *range, int count)
     }
     return total_glyphs;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] void <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API const nk_rune*
 nk_font_default_glyph_ranges(void)
 {
     NK_STORAGE const nk_rune ranges[] = {0x0020, 0x00FF, 0};
     return ranges;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] void <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API const nk_rune*
 nk_font_chinese_glyph_ranges(void)
 {
@@ -90,6 +131,16 @@ nk_font_chinese_glyph_ranges(void)
     };
     return ranges;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] void <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API const nk_rune*
 nk_font_cyrillic_glyph_ranges(void)
 {
@@ -102,6 +153,16 @@ nk_font_cyrillic_glyph_ranges(void)
     };
     return ranges;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] void <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API const nk_rune*
 nk_font_korean_glyph_ranges(void)
 {
@@ -113,6 +174,17 @@ nk_font_korean_glyph_ranges(void)
     };
     return ranges;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] temp <fill in>
+ * \param[in] glyph_count <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_font_baker_memory(nk_size *temp, int *glyph_count,
     struct nk_font_config *config_list, int count)
@@ -145,6 +217,19 @@ nk_font_baker_memory(nk_size *temp, int *glyph_count,
     *temp += nk_rect_align + nk_range_align + nk_char_align;
     *temp += nk_build_align + nk_baker_align;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] memory <fill in>
+ * \param[in] glyph_count <fill in>
+ * \param[in] count <fill in>
+ * \param[in] alloc <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN struct nk_font_baker*
 nk_font_baker(void *memory, int glyph_count, int count, const struct nk_allocator *alloc)
 {
@@ -159,6 +244,16 @@ nk_font_baker(void *memory, int glyph_count, int count, const struct nk_allocato
     baker->alloc = *alloc;
     return baker;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] baker <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN int
 nk_font_bake_pack(struct nk_font_baker *baker,
     nk_size *image_memory, int *width, int *height, struct nk_recti *custom,
@@ -277,6 +372,19 @@ nk_font_bake_pack(struct nk_font_baker *baker,
     *image_memory = (nk_size)(*width) * (nk_size)(*height);
     return nk_true;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] baker <fill in>
+ * \param[in] image_memory <fill in>
+ * \param[in] width <fill in>
+ * \param[in] height <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_font_bake(struct nk_font_baker *baker, void *image_memory, int width, int height,
     struct nk_font_glyph *glyphs, int glyphs_count,
@@ -390,6 +498,18 @@ nk_font_bake(struct nk_font_baker *baker, void *image_memory, int width, int hei
         } while ((it = it->n) != config_iter);
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] img_memory <fill in>
+ * \param[in] img_width <fill in>
+ * \param[in] img_height <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_font_bake_custom_data(void *img_memory, int img_width, int img_height,
     struct nk_recti img_dst, const char *texture_data_mask, int tex_width,
@@ -418,6 +538,18 @@ nk_font_bake_custom_data(void *img_memory, int img_width, int img_height,
         }
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] out_memory <fill in>
+ * \param[in] img_width <fill in>
+ * \param[in] img_height <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_font_bake_convert(void *out_memory, int img_width, int img_height,
     const void *in_memory)
@@ -443,6 +575,19 @@ nk_font_bake_convert(void *out_memory, int img_width, int img_height,
  *                          FONT
  *
  * --------------------------------------------------------------*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] handle <fill in>
+ * \param[in] height <fill in>
+ * \param[in] text <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN float
 nk_font_text_width(nk_handle handle, float height, const char *text, int len)
 {
@@ -476,6 +621,17 @@ nk_font_text_width(nk_handle handle, float height, const char *text, int len)
     return text_width;
 }
 #ifdef NK_INCLUDE_VERTEX_BUFFER_OUTPUT
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] handle <fill in>
+ * \param[in] height <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_font_query_font_glyph(nk_handle handle, float height,
     struct nk_user_font_glyph *glyph, nk_rune codepoint, nk_rune next_codepoint)
@@ -503,6 +659,17 @@ nk_font_query_font_glyph(nk_handle handle, float height,
     glyph->uv[1] = nk_vec2(g->u1, g->v1);
 }
 #endif
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] font <fill in>
+ * \param[in] unicode <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API const struct nk_font_glyph*
 nk_font_find_glyph(const struct nk_font *font, nk_rune unicode)
 {
@@ -531,6 +698,17 @@ nk_font_find_glyph(const struct nk_font *font, nk_rune unicode)
     } while ((iter = iter->n) != font->config);
     return glyph;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] font <fill in>
+ * \param[in] pixel_height <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_font_init(struct nk_font *font, float pixel_height,
     nk_rune fallback_codepoint, struct nk_font_glyph *glyphs,
@@ -715,11 +893,32 @@ NK_GLOBAL unsigned char *nk__barrier3;
 NK_GLOBAL unsigned char *nk__barrier4;
 NK_GLOBAL unsigned char *nk__dout;
 
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] input <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN unsigned int
 nk_decompress_length(unsigned char *input)
 {
     return (unsigned int)((input[8] << 24) + (input[9] << 16) + (input[10] << 8) + input[11]);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] data <fill in>
+ * \param[in] length <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk__match(unsigned char *data, unsigned int length)
 {
@@ -729,6 +928,17 @@ nk__match(unsigned char *data, unsigned int length)
     if (data < nk__barrier4) { nk__dout = nk__barrier+1; return; }
     while (length--) *nk__dout++ = *data++;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] data <fill in>
+ * \param[in] length <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk__lit(unsigned char *data, unsigned int length)
 {
@@ -738,6 +948,16 @@ nk__lit(unsigned char *data, unsigned int length)
     NK_MEMCPY(nk__dout, data, length);
     nk__dout += length;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] i <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN unsigned char*
 nk_decompress_token(unsigned char *i)
 {
@@ -759,6 +979,18 @@ nk_decompress_token(unsigned char *i)
     }
     return i;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] adler32 <fill in>
+ * \param[in] buffer <fill in>
+ * \param[in] buflen <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN unsigned int
 nk_adler32(unsigned int adler32, unsigned char *buffer, unsigned int buflen)
 {
@@ -789,6 +1021,18 @@ nk_adler32(unsigned int adler32, unsigned char *buffer, unsigned int buflen)
     }
     return (unsigned int)(s2 << 16) + (unsigned int)s1;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] output <fill in>
+ * \param[in] i <fill in>
+ * \param[in] length <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN unsigned int
 nk_decompress(unsigned char *output, unsigned char *i, unsigned int length)
 {
@@ -823,11 +1067,32 @@ nk_decompress(unsigned char *output, unsigned char *i, unsigned int length)
             return 0;
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] c <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN unsigned int
 nk_decode_85_byte(char c)
 {
     return (unsigned int)((c >= '\\') ? c-36 : c-35);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] dst <fill in>
+ * \param[in] src <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN void
 nk_decode_85(unsigned char* dst, const unsigned char* src)
 {
@@ -856,6 +1121,16 @@ nk_decode_85(unsigned char* dst, const unsigned char* src)
  *                          FONT ATLAS
  *
  * --------------------------------------------------------------*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] pixel_height <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_font_config
 nk_font_config(float pixel_height)
 {
@@ -878,6 +1153,16 @@ nk_font_config(float pixel_height)
     return cfg;
 }
 #ifdef NK_INCLUDE_DEFAULT_ALLOCATOR
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] atlas <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_font_atlas_init_default(struct nk_font_atlas *atlas)
 {
@@ -892,6 +1177,17 @@ nk_font_atlas_init_default(struct nk_font_atlas *atlas)
     atlas->permanent.free = nk_mfree;
 }
 #endif
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] atlas <fill in>
+ * \param[in] alloc <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_font_atlas_init(struct nk_font_atlas *atlas, const struct nk_allocator *alloc)
 {
@@ -902,6 +1198,16 @@ nk_font_atlas_init(struct nk_font_atlas *atlas, const struct nk_allocator *alloc
     atlas->permanent = *alloc;
     atlas->temporary = *alloc;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] atlas <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_font_atlas_init_custom(struct nk_font_atlas *atlas,
     const struct nk_allocator *permanent, const struct nk_allocator *temporary)
@@ -914,6 +1220,16 @@ nk_font_atlas_init_custom(struct nk_font_atlas *atlas,
     atlas->permanent = *permanent;
     atlas->temporary = *temporary;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] atlas <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_font_atlas_begin(struct nk_font_atlas *atlas)
 {
@@ -931,6 +1247,17 @@ nk_font_atlas_begin(struct nk_font_atlas *atlas)
         atlas->pixel = 0;
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] atlas <fill in>
+ * \param[in] config <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_font*
 nk_font_atlas_add(struct nk_font_atlas *atlas, const struct nk_font_config *config)
 {
@@ -1018,6 +1345,17 @@ nk_font_atlas_add(struct nk_font_atlas *atlas, const struct nk_font_config *conf
     atlas->font_num++;
     return font;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] atlas <fill in>
+ * \param[in] memory <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_font*
 nk_font_atlas_add_from_memory(struct nk_font_atlas *atlas, void *memory,
     nk_size size, float height, const struct nk_font_config *config)
@@ -1043,6 +1381,17 @@ nk_font_atlas_add_from_memory(struct nk_font_atlas *atlas, void *memory,
     return nk_font_atlas_add(atlas, &cfg);
 }
 #ifdef NK_INCLUDE_STANDARD_IO
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] atlas <fill in>
+ * \param[in] file_path <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_font*
 nk_font_atlas_add_from_file(struct nk_font_atlas *atlas, const char *file_path,
     float height, const struct nk_font_config *config)
@@ -1069,6 +1418,16 @@ nk_font_atlas_add_from_file(struct nk_font_atlas *atlas, const char *file_path,
     return nk_font_atlas_add(atlas, &cfg);
 }
 #endif
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] atlas <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_font*
 nk_font_atlas_add_compressed(struct nk_font_atlas *atlas,
     void *compressed_data, nk_size compressed_size, float height,
@@ -1104,6 +1463,16 @@ nk_font_atlas_add_compressed(struct nk_font_atlas *atlas,
     cfg.ttf_data_owned_by_atlas = 1;
     return nk_font_atlas_add(atlas, &cfg);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] atlas <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_font*
 nk_font_atlas_add_compressed_base85(struct nk_font_atlas *atlas,
     const char *data_base85, float height, const struct nk_font_config *config)
@@ -1135,6 +1504,16 @@ nk_font_atlas_add_compressed_base85(struct nk_font_atlas *atlas,
 }
 
 #ifdef NK_INCLUDE_DEFAULT_FONT
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] atlas <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_font*
 nk_font_atlas_add_default(struct nk_font_atlas *atlas,
     float pixel_height, const struct nk_font_config *config)
@@ -1148,6 +1527,18 @@ nk_font_atlas_add_default(struct nk_font_atlas *atlas,
         nk_proggy_clean_ttf_compressed_data_base85, pixel_height, config);
 }
 #endif
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] atlas <fill in>
+ * \param[in] width <fill in>
+ * \param[in] height <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API const void*
 nk_font_atlas_bake(struct nk_font_atlas *atlas, int *width, int *height,
     enum nk_font_atlas_format fmt)
@@ -1273,6 +1664,17 @@ failed:
     }
     return 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] atlas <fill in>
+ * \param[in] texture <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_font_atlas_end(struct nk_font_atlas *atlas, nk_handle texture,
     struct nk_draw_null_texture *tex_null)
@@ -1308,6 +1710,16 @@ nk_font_atlas_end(struct nk_font_atlas *atlas, nk_handle texture,
     atlas->custom.w = 0;
     atlas->custom.h = 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] atlas <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_font_atlas_cleanup(struct nk_font_atlas *atlas)
 {
@@ -1330,6 +1742,16 @@ nk_font_atlas_cleanup(struct nk_font_atlas *atlas)
         }
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] atlas <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_font_atlas_clear(struct nk_font_atlas *atlas)
 {

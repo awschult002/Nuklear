@@ -6,6 +6,17 @@
  *                              TREE
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN int
 nk_tree_state_base(struct nk_context *ctx, enum nk_tree_type type,
     struct nk_image *img, const char *title, enum nk_collapse_states *state)
@@ -119,6 +130,17 @@ nk_tree_state_base(struct nk_context *ctx, enum nk_tree_type type,
         return nk_true;
     } else return nk_false;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN int
 nk_tree_base(struct nk_context *ctx, enum nk_tree_type type,
     struct nk_image *img, const char *title, enum nk_collapse_states initial_state,
@@ -141,18 +163,50 @@ nk_tree_base(struct nk_context *ctx, enum nk_tree_type type,
     }
     return nk_tree_state_base(ctx, type, img, title, (enum nk_collapse_states*)state);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_tree_state_push(struct nk_context *ctx, enum nk_tree_type type,
     const char *title, enum nk_collapse_states *state)
 {
     return nk_tree_state_base(ctx, type, 0, title, state);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_tree_state_image_push(struct nk_context *ctx, enum nk_tree_type type,
     struct nk_image img, const char *title, enum nk_collapse_states *state)
 {
     return nk_tree_state_base(ctx, type, &img, title, state);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_tree_state_pop(struct nk_context *ctx)
 {
@@ -172,6 +226,17 @@ nk_tree_state_pop(struct nk_context *ctx)
     NK_ASSERT(layout->row.tree_depth);
     layout->row.tree_depth--;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_tree_push_hashed(struct nk_context *ctx, enum nk_tree_type type,
     const char *title, enum nk_collapse_states initial_state,
@@ -179,6 +244,17 @@ nk_tree_push_hashed(struct nk_context *ctx, enum nk_tree_type type,
 {
     return nk_tree_base(ctx, type, 0, title, initial_state, hash, len, line);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_tree_image_push_hashed(struct nk_context *ctx, enum nk_tree_type type,
     struct nk_image img, const char *title, enum nk_collapse_states initial_state,
@@ -186,11 +262,32 @@ nk_tree_image_push_hashed(struct nk_context *ctx, enum nk_tree_type type,
 {
     return nk_tree_base(ctx, type, &img, title, initial_state, hash, len, seed);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_tree_pop(struct nk_context *ctx)
 {
     nk_tree_state_pop(ctx);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN int
 nk_tree_element_image_push_hashed_base(struct nk_context *ctx, enum nk_tree_type type,
     struct nk_image *img, const char *title, int title_len,
@@ -307,6 +404,17 @@ nk_tree_element_image_push_hashed_base(struct nk_context *ctx, enum nk_tree_type
         return nk_true;
     } else return nk_false;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN int
 nk_tree_element_base(struct nk_context *ctx, enum nk_tree_type type,
     struct nk_image *img, const char *title, enum nk_collapse_states initial_state,
@@ -329,6 +437,17 @@ nk_tree_element_base(struct nk_context *ctx, enum nk_tree_type type,
     } return nk_tree_element_image_push_hashed_base(ctx, type, img, title,
         nk_strlen(title), (enum nk_collapse_states*)state, selected);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_tree_element_push_hashed(struct nk_context *ctx, enum nk_tree_type type,
     const char *title, enum nk_collapse_states initial_state,
@@ -336,6 +455,17 @@ nk_tree_element_push_hashed(struct nk_context *ctx, enum nk_tree_type type,
 {
     return nk_tree_element_base(ctx, type, 0, title, initial_state, selected, hash, len, seed);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_tree_element_image_push_hashed(struct nk_context *ctx, enum nk_tree_type type,
     struct nk_image img, const char *title, enum nk_collapse_states initial_state,
@@ -343,6 +473,16 @@ nk_tree_element_image_push_hashed(struct nk_context *ctx, enum nk_tree_type type
 {
     return nk_tree_element_base(ctx, type, &img, title, initial_state, selected, hash, len, seed);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_tree_element_pop(struct nk_context *ctx)
 {

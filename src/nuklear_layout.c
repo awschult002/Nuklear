@@ -6,6 +6,17 @@
  *                          LAYOUT
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] height <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_layout_set_min_row_height(struct nk_context *ctx, float height)
 {
@@ -22,6 +33,16 @@ nk_layout_set_min_row_height(struct nk_context *ctx, float height)
     layout = win->layout;
     layout->row.min_height = height;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_layout_reset_min_row_height(struct nk_context *ctx)
 {
@@ -40,6 +61,17 @@ nk_layout_reset_min_row_height(struct nk_context *ctx)
     layout->row.min_height += ctx->style.text.padding.y*2;
     layout->row.min_height += ctx->style.window.min_row_height_padding*2;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] style <fill in>
+ * \param[in] type <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB float
 nk_layout_row_calculate_usable_space(const struct nk_style *style, enum nk_panel_type type,
     float total_space, int columns)
@@ -58,6 +90,17 @@ nk_layout_row_calculate_usable_space(const struct nk_style *style, enum nk_panel
     panel_space  = total_space - panel_spacing;
     return panel_space;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] win <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_panel_layout(const struct nk_context *ctx, struct nk_window *win,
     float height, int cols)
@@ -110,6 +153,17 @@ nk_panel_layout(const struct nk_context *ctx, struct nk_window *win,
         nk_fill_rect(out, background, 0, color);
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] fmt <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_row_layout(struct nk_context *ctx, enum nk_layout_format fmt,
     float height, int cols, int width)
@@ -133,6 +187,17 @@ nk_row_layout(struct nk_context *ctx, enum nk_layout_format fmt,
     win->layout->row.item_offset = 0;
     win->layout->row.item_width = (float)width;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] pixel_width <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API float
 nk_layout_ratio_from_pixel(const struct nk_context *ctx, float pixel_width)
 {
@@ -143,16 +208,52 @@ nk_layout_ratio_from_pixel(const struct nk_context *ctx, float pixel_width)
     win = ctx->current;
     return NK_CLAMP(0.0f, pixel_width/win->bounds.x, 1.0f);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] height <fill in>
+ * \param[in] cols <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_layout_row_dynamic(struct nk_context *ctx, float height, int cols)
 {
     nk_row_layout(ctx, NK_DYNAMIC, height, cols, 0);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] height <fill in>
+ * \param[in] item_width <fill in>
+ * \param[in] cols <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_layout_row_static(struct nk_context *ctx, float height, int item_width, int cols)
 {
     nk_row_layout(ctx, NK_STATIC, height, cols, item_width);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] fmt <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_layout_row_begin(struct nk_context *ctx, enum nk_layout_format fmt,
     float row_height, int cols)
@@ -179,6 +280,17 @@ nk_layout_row_begin(struct nk_context *ctx, enum nk_layout_format fmt,
     layout->row.item_offset = 0;
     layout->row.columns = cols;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] ratio_or_width <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_layout_row_push(struct nk_context *ctx, float ratio_or_width)
 {
@@ -205,6 +317,16 @@ nk_layout_row_push(struct nk_context *ctx, float ratio_or_width)
         else layout->row.item_width = 1.0f - layout->row.filled;
     } else layout->row.item_width = ratio_or_width;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_layout_row_end(struct nk_context *ctx)
 {
@@ -225,6 +347,17 @@ nk_layout_row_end(struct nk_context *ctx)
     layout->row.item_width = 0;
     layout->row.item_offset = 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] fmt <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_layout_row(struct nk_context *ctx, enum nk_layout_format fmt,
     float height, int cols, const float *ratio)
@@ -264,6 +397,17 @@ nk_layout_row(struct nk_context *ctx, enum nk_layout_format fmt,
     layout->row.item_offset = 0;
     layout->row.filled = 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] height <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_layout_row_template_begin(struct nk_context *ctx, float height)
 {
@@ -291,6 +435,16 @@ nk_layout_row_template_begin(struct nk_context *ctx, float height)
     layout->row.item.w = 0;
     layout->row.item.h = 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_layout_row_template_push_dynamic(struct nk_context *ctx)
 {
@@ -311,6 +465,17 @@ nk_layout_row_template_push_dynamic(struct nk_context *ctx)
     if (layout->row.columns >= NK_MAX_LAYOUT_ROW_TEMPLATE_COLUMNS) return;
     layout->row.templates[layout->row.columns++] = -1.0f;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] min_width <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_layout_row_template_push_variable(struct nk_context *ctx, float min_width)
 {
@@ -331,6 +496,17 @@ nk_layout_row_template_push_variable(struct nk_context *ctx, float min_width)
     if (layout->row.columns >= NK_MAX_LAYOUT_ROW_TEMPLATE_COLUMNS) return;
     layout->row.templates[layout->row.columns++] = -min_width;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] width <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_layout_row_template_push_static(struct nk_context *ctx, float width)
 {
@@ -351,6 +527,16 @@ nk_layout_row_template_push_static(struct nk_context *ctx, float width)
     if (layout->row.columns >= NK_MAX_LAYOUT_ROW_TEMPLATE_COLUMNS) return;
     layout->row.templates[layout->row.columns++] = width;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_layout_row_template_end(struct nk_context *ctx)
 {
@@ -402,6 +588,17 @@ nk_layout_row_template_end(struct nk_context *ctx)
         }
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] fmt <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_layout_space_begin(struct nk_context *ctx, enum nk_layout_format fmt,
     float height, int widget_count)
@@ -427,6 +624,16 @@ nk_layout_space_begin(struct nk_context *ctx, enum nk_layout_format fmt,
     layout->row.item_width = 0;
     layout->row.item_offset = 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_layout_space_end(struct nk_context *ctx)
 {
@@ -446,6 +653,17 @@ nk_layout_space_end(struct nk_context *ctx)
     layout->row.item_offset = 0;
     nk_zero(&layout->row.item, sizeof(layout->row.item));
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] rect <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_layout_space_push(struct nk_context *ctx, struct nk_rect rect)
 {
@@ -462,6 +680,16 @@ nk_layout_space_push(struct nk_context *ctx, struct nk_rect rect)
     layout = win->layout;
     layout->row.item = rect;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_rect
 nk_layout_space_bounds(const struct nk_context *ctx)
 {
@@ -481,6 +709,16 @@ nk_layout_space_bounds(const struct nk_context *ctx)
     ret.h = layout->row.height;
     return ret;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_rect
 nk_layout_widget_bounds(const struct nk_context *ctx)
 {
@@ -500,6 +738,17 @@ nk_layout_widget_bounds(const struct nk_context *ctx)
     ret.h = layout->row.height;
     return ret;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] ret <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_vec2
 nk_layout_space_to_screen(const struct nk_context *ctx, struct nk_vec2 ret)
 {
@@ -516,6 +765,17 @@ nk_layout_space_to_screen(const struct nk_context *ctx, struct nk_vec2 ret)
     ret.y += layout->at_y - (float)*layout->offset_y;
     return ret;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] ret <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_vec2
 nk_layout_space_to_local(const struct nk_context *ctx, struct nk_vec2 ret)
 {
@@ -532,6 +792,17 @@ nk_layout_space_to_local(const struct nk_context *ctx, struct nk_vec2 ret)
     ret.y += -layout->at_y + (float)*layout->offset_y;
     return ret;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] ret <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_rect
 nk_layout_space_rect_to_screen(const struct nk_context *ctx, struct nk_rect ret)
 {
@@ -548,6 +819,17 @@ nk_layout_space_rect_to_screen(const struct nk_context *ctx, struct nk_rect ret)
     ret.y += layout->at_y - (float)*layout->offset_y;
     return ret;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] ret <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_rect
 nk_layout_space_rect_to_local(const struct nk_context *ctx, struct nk_rect ret)
 {
@@ -564,6 +846,17 @@ nk_layout_space_rect_to_local(const struct nk_context *ctx, struct nk_rect ret)
     ret.y += -layout->at_y + (float)*layout->offset_y;
     return ret;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] win <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_panel_alloc_row(const struct nk_context *ctx, struct nk_window *win)
 {
@@ -572,6 +865,17 @@ nk_panel_alloc_row(const struct nk_context *ctx, struct nk_window *win)
     const float row_height = layout->row.height - spacing.y;
     nk_panel_layout(ctx, win, row_height, layout->row.columns);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] bounds <fill in>
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_layout_widget_space(struct nk_rect *bounds, const struct nk_context *ctx,
     struct nk_window *win, int modify)
@@ -707,6 +1011,17 @@ nk_layout_widget_space(struct nk_rect *bounds, const struct nk_context *ctx,
         layout->max_x = bounds->x + bounds->w;
     bounds->x -= (float)*layout->offset_x;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] bounds <fill in>
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_panel_alloc_space(struct nk_rect *bounds, const struct nk_context *ctx)
 {
@@ -729,6 +1044,17 @@ nk_panel_alloc_space(struct nk_rect *bounds, const struct nk_context *ctx)
     nk_layout_widget_space(bounds, ctx, win, nk_true);
     layout->row.index++;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] bounds <fill in>
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_layout_peek(struct nk_rect *bounds, const struct nk_context *ctx)
 {
@@ -760,6 +1086,15 @@ nk_layout_peek(struct nk_rect *bounds, const struct nk_context *ctx)
     layout->at_y = y;
     layout->row.index = index;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_spacer(struct nk_context *ctx )
 {

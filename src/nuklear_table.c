@@ -6,6 +6,16 @@
  *                              TABLE
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB struct nk_table*
 nk_create_table(struct nk_context *ctx)
 {
@@ -15,6 +25,17 @@ nk_create_table(struct nk_context *ctx)
     nk_zero_struct(*elem);
     return &elem->data.tbl;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] tbl <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_free_table(struct nk_context *ctx, struct nk_table *tbl)
 {
@@ -22,6 +43,17 @@ nk_free_table(struct nk_context *ctx, struct nk_table *tbl)
     struct nk_page_element *pe = NK_CONTAINER_OF(pd, struct nk_page_element, data);
     nk_free_page_element(ctx, pe);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] win <fill in>
+ * \param[in] tbl <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_push_table(struct nk_window *win, struct nk_table *tbl)
 {
@@ -40,6 +72,17 @@ nk_push_table(struct nk_window *win, struct nk_table *tbl)
     win->tables = tbl;
     win->table_count++;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] win <fill in>
+ * \param[in] tbl <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_remove_table(struct nk_window *win, struct nk_table *tbl)
 {
@@ -52,6 +95,17 @@ nk_remove_table(struct nk_window *win, struct nk_table *tbl)
     tbl->next = 0;
     tbl->prev = 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] win <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB nk_uint*
 nk_add_value(struct nk_context *ctx, struct nk_window *win,
             nk_hash name, nk_uint value)
@@ -70,6 +124,17 @@ nk_add_value(struct nk_context *ctx, struct nk_window *win,
     win->tables->values[win->tables->size] = value;
     return &win->tables->values[win->tables->size++];
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] win <fill in>
+ * \param[in] name <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB nk_uint*
 nk_find_value(const struct nk_window *win, nk_hash name)
 {

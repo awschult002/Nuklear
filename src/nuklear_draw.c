@@ -6,6 +6,16 @@
  *                          DRAW
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] cb <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_command_buffer_init(struct nk_command_buffer *cb,
     struct nk_buffer *b, enum nk_command_clipping clip)
@@ -19,6 +29,16 @@ nk_command_buffer_init(struct nk_command_buffer *cb,
     cb->end = b->allocated;
     cb->last = b->allocated;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_command_buffer_reset(struct nk_command_buffer *b)
 {
@@ -32,6 +52,16 @@ nk_command_buffer_reset(struct nk_command_buffer *b)
     b->userdata.ptr = 0;
 #endif
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void*
 nk_command_buffer_push(struct nk_command_buffer* b,
     enum nk_command_type t, nk_size size)
@@ -65,6 +95,17 @@ nk_command_buffer_push(struct nk_command_buffer* b,
     b->end = cmd->next;
     return cmd;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] r <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_push_scissor(struct nk_command_buffer *b, struct nk_rect r)
 {
@@ -85,6 +126,18 @@ nk_push_scissor(struct nk_command_buffer *b, struct nk_rect r)
     cmd->w = (unsigned short)NK_MAX(0, r.w);
     cmd->h = (unsigned short)NK_MAX(0, r.h);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] x0 <fill in>
+ * \param[in] y0 <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_stroke_line(struct nk_command_buffer *b, float x0, float y0,
     float x1, float y1, float line_thickness, struct nk_color c)
@@ -102,6 +155,18 @@ nk_stroke_line(struct nk_command_buffer *b, float x0, float y0,
     cmd->end.y = (short)y1;
     cmd->color = c;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] ax <fill in>
+ * \param[in] ay <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_stroke_curve(struct nk_command_buffer *b, float ax, float ay,
     float ctrl0x, float ctrl0y, float ctrl1x, float ctrl1y,
@@ -125,6 +190,17 @@ nk_stroke_curve(struct nk_command_buffer *b, float ax, float ay,
     cmd->end.y = (short)by;
     cmd->color = col;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] rect <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_stroke_rect(struct nk_command_buffer *b, struct nk_rect rect,
     float rounding, float line_thickness, struct nk_color c)
@@ -148,6 +224,17 @@ nk_stroke_rect(struct nk_command_buffer *b, struct nk_rect rect,
     cmd->h = (unsigned short)NK_MAX(0, rect.h);
     cmd->color = c;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] rect <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_fill_rect(struct nk_command_buffer *b, struct nk_rect rect,
     float rounding, struct nk_color c)
@@ -171,6 +258,17 @@ nk_fill_rect(struct nk_command_buffer *b, struct nk_rect rect,
     cmd->h = (unsigned short)NK_MAX(0, rect.h);
     cmd->color = c;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] rect <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_fill_rect_multi_color(struct nk_command_buffer *b, struct nk_rect rect,
     struct nk_color left, struct nk_color top, struct nk_color right,
@@ -197,6 +295,17 @@ nk_fill_rect_multi_color(struct nk_command_buffer *b, struct nk_rect rect,
     cmd->right = right;
     cmd->bottom = bottom;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] r <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_stroke_circle(struct nk_command_buffer *b, struct nk_rect r,
     float line_thickness, struct nk_color c)
@@ -219,6 +328,18 @@ nk_stroke_circle(struct nk_command_buffer *b, struct nk_rect r,
     cmd->h = (unsigned short)NK_MAX(r.h, 0);
     cmd->color = c;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] r <fill in>
+ * \param[in] c <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_fill_circle(struct nk_command_buffer *b, struct nk_rect r, struct nk_color c)
 {
@@ -240,6 +361,19 @@ nk_fill_circle(struct nk_command_buffer *b, struct nk_rect r, struct nk_color c)
     cmd->h = (unsigned short)NK_MAX(r.h, 0);
     cmd->color = c;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] cx <fill in>
+ * \param[in] cy <fill in>
+ * \param[in] radius <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_stroke_arc(struct nk_command_buffer *b, float cx, float cy, float radius,
     float a_min, float a_max, float line_thickness, struct nk_color c)
@@ -257,6 +391,19 @@ nk_stroke_arc(struct nk_command_buffer *b, float cx, float cy, float radius,
     cmd->a[1] = a_max;
     cmd->color = c;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] cx <fill in>
+ * \param[in] cy <fill in>
+ * \param[in] radius <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_fill_arc(struct nk_command_buffer *b, float cx, float cy, float radius,
     float a_min, float a_max, struct nk_color c)
@@ -274,6 +421,19 @@ nk_fill_arc(struct nk_command_buffer *b, float cx, float cy, float radius,
     cmd->a[1] = a_max;
     cmd->color = c;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] x0 <fill in>
+ * \param[in] y0 <fill in>
+ * \param[in] x1 <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_stroke_triangle(struct nk_command_buffer *b, float x0, float y0, float x1,
     float y1, float x2, float y2, float line_thickness, struct nk_color c)
@@ -301,6 +461,19 @@ nk_stroke_triangle(struct nk_command_buffer *b, float x0, float y0, float x1,
     cmd->c.y = (short)y2;
     cmd->color = c;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] x0 <fill in>
+ * \param[in] y0 <fill in>
+ * \param[in] x1 <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_fill_triangle(struct nk_command_buffer *b, float x0, float y0, float x1,
     float y1, float x2, float y2, struct nk_color c)
@@ -328,6 +501,18 @@ nk_fill_triangle(struct nk_command_buffer *b, float x0, float y0, float x1,
     cmd->c.y = (short)y2;
     cmd->color = c;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] points <fill in>
+ * \param[in] point_count <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_stroke_polygon(struct nk_command_buffer *b, const float *points, int point_count,
     float line_thickness, struct nk_color col)
@@ -349,6 +534,18 @@ nk_stroke_polygon(struct nk_command_buffer *b, const float *points, int point_co
         cmd->points[i].y = (short)points[i*2+1];
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] points <fill in>
+ * \param[in] point_count <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_fill_polygon(struct nk_command_buffer *b, const float *points, int point_count,
     struct nk_color col)
@@ -370,6 +567,18 @@ nk_fill_polygon(struct nk_command_buffer *b, const float *points, int point_coun
         cmd->points[i].y = (short)points[i*2+1];
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] points <fill in>
+ * \param[in] point_count <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_stroke_polyline(struct nk_command_buffer *b, const float *points, int point_count,
     float line_thickness, struct nk_color col)
@@ -391,6 +600,17 @@ nk_stroke_polyline(struct nk_command_buffer *b, const float *points, int point_c
         cmd->points[i].y = (short)points[i*2+1];
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] r <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_draw_image(struct nk_command_buffer *b, struct nk_rect r,
     const struct nk_image *img, struct nk_color col)
@@ -414,6 +634,17 @@ nk_draw_image(struct nk_command_buffer *b, struct nk_rect r,
     cmd->img = *img;
     cmd->col = col;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] r <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_draw_nine_slice(struct nk_command_buffer *b, struct nk_rect r,
     const struct nk_nine_slice *slc, struct nk_color col)
@@ -491,6 +722,17 @@ nk_draw_nine_slice(struct nk_command_buffer *b, struct nk_rect r,
 
 #undef IMG_RGN
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] r <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_push_custom(struct nk_command_buffer *b, struct nk_rect r,
     nk_command_custom_callback cb, nk_handle usr)
@@ -514,6 +756,17 @@ nk_push_custom(struct nk_command_buffer *b, struct nk_rect r,
     cmd->callback_data = usr;
     cmd->callback = cb;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] b <fill in>
+ * \param[in] r <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_draw_text(struct nk_command_buffer *b, struct nk_rect r,
     const char *string, int length, const struct nk_user_font *font,

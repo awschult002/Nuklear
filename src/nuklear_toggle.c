@@ -6,6 +6,17 @@
  *                              TOGGLE
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] in <fill in>
+ * \param[in] select <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB nk_bool
 nk_toggle_behavior(const struct nk_input *in, struct nk_rect select,
     nk_flags *state, nk_bool active)
@@ -21,6 +32,16 @@ nk_toggle_behavior(const struct nk_input *in, struct nk_rect select,
         *state |= NK_WIDGET_STATE_LEFT;
     return active;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] out <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_draw_checkbox(struct nk_command_buffer *out,
     nk_flags state, const struct nk_style_toggle *style, nk_bool active,
@@ -64,6 +85,16 @@ nk_draw_checkbox(struct nk_command_buffer *out,
         else nk_fill_rect(out, *cursors, 0, cursor->data.color);
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] out <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_draw_option(struct nk_command_buffer *out,
     nk_flags state, const struct nk_style_toggle *style, nk_bool active,
@@ -107,6 +138,16 @@ nk_draw_option(struct nk_command_buffer *out,
         else nk_fill_circle(out, *cursors, cursor->data.color);
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB nk_bool
 nk_do_toggle(nk_flags *state,
     struct nk_command_buffer *out, struct nk_rect r,
@@ -197,6 +238,19 @@ nk_do_toggle(nk_flags *state,
  *                          CHECKBOX
  *
  * --------------------------------------------------------------*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] text <fill in>
+ * \param[in] len <fill in>
+ * \param[in] active <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_check_text(struct nk_context *ctx, const char *text, int len, nk_bool active)
 {
@@ -225,6 +279,19 @@ nk_check_text(struct nk_context *ctx, const char *text, int len, nk_bool active)
         text, len, NK_TOGGLE_CHECK, &style->checkbox, in, style->font, NK_WIDGET_LEFT, NK_TEXT_LEFT);
     return active;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] text <fill in>
+ * \param[in] len <fill in>
+ * \param[in] active <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_check_text_align(struct nk_context *ctx, const char *text, int len, nk_bool active, nk_flags widget_alignment, nk_flags text_alignment)
 {
@@ -253,6 +320,18 @@ nk_check_text_align(struct nk_context *ctx, const char *text, int len, nk_bool a
         text, len, NK_TOGGLE_CHECK, &style->checkbox, in, style->font, widget_alignment, text_alignment);
     return active;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] text <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API unsigned int
 nk_check_flags_text(struct nk_context *ctx, const char *text, int len,
     unsigned int flags, unsigned int value)
@@ -267,6 +346,19 @@ nk_check_flags_text(struct nk_context *ctx, const char *text, int len,
     else flags &= ~value;
     return flags;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] text <fill in>
+ * \param[in] len <fill in>
+ * \param[in] active <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_checkbox_text(struct nk_context *ctx, const char *text, int len, nk_bool *active)
 {
@@ -279,6 +371,19 @@ nk_checkbox_text(struct nk_context *ctx, const char *text, int len, nk_bool *act
     *active = nk_check_text(ctx, text, len, *active);
     return old_val != *active;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] text <fill in>
+ * \param[in] len <fill in>
+ * \param[in] active <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_checkbox_text_align(struct nk_context *ctx, const char *text, int len, nk_bool *active, nk_flags widget_alignment, nk_flags text_alignment)
 {
@@ -291,6 +396,18 @@ nk_checkbox_text_align(struct nk_context *ctx, const char *text, int len, nk_boo
     *active = nk_check_text_align(ctx, text, len, *active, widget_alignment, text_alignment);
     return old_val != *active;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] text <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_checkbox_flags_text(struct nk_context *ctx, const char *text, int len,
     unsigned int *flags, unsigned int value)
@@ -308,23 +425,80 @@ nk_checkbox_flags_text(struct nk_context *ctx, const char *text, int len,
         return 1;
     }
     return 0;
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] label <fill in>
+ * \param[in] active <fill in>
+ *
+ * \returns <fill in>
+ */
 }
 NK_API nk_bool nk_check_label(struct nk_context *ctx, const char *label, nk_bool active)
 {
     return nk_check_text(ctx, label, nk_strlen(label), active);
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] label <fill in>
+ *
+ * \returns <fill in>
+ */
 }
 NK_API unsigned int nk_check_flags_label(struct nk_context *ctx, const char *label,
     unsigned int flags, unsigned int value)
 {
     return nk_check_flags_text(ctx, label, nk_strlen(label), flags, value);
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] label <fill in>
+ * \param[in] active <fill in>
+ *
+ * \returns <fill in>
+ */
 }
 NK_API nk_bool nk_checkbox_label(struct nk_context *ctx, const char *label, nk_bool *active)
 {
     return nk_checkbox_text(ctx, label, nk_strlen(label), active);
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] label <fill in>
+ *
+ * \returns <fill in>
+ */
 }
 NK_API nk_bool nk_checkbox_label_align(struct nk_context *ctx, const char *label, nk_bool *active, nk_flags widget_alignment, nk_flags text_alignment)
 {
     return nk_checkbox_text_align(ctx, label, nk_strlen(label), active, widget_alignment, text_alignment);
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] label <fill in>
+ *
+ * \returns <fill in>
+ */
 }
 NK_API nk_bool nk_checkbox_flags_label(struct nk_context *ctx, const char *label,
     unsigned int *flags, unsigned int value)
@@ -336,6 +510,19 @@ NK_API nk_bool nk_checkbox_flags_label(struct nk_context *ctx, const char *label
  *                          OPTION
  *
  * --------------------------------------------------------------*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] text <fill in>
+ * \param[in] len <fill in>
+ * \param[in] is_active <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_option_text(struct nk_context *ctx, const char *text, int len, nk_bool is_active)
 {
@@ -364,6 +551,19 @@ nk_option_text(struct nk_context *ctx, const char *text, int len, nk_bool is_act
         text, len, NK_TOGGLE_OPTION, &style->option, in, style->font, NK_WIDGET_LEFT, NK_TEXT_LEFT);
     return is_active;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] text <fill in>
+ * \param[in] len <fill in>
+ * \param[in] is_active <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_option_text_align(struct nk_context *ctx, const char *text, int len, nk_bool is_active, nk_flags widget_alignment, nk_flags text_alignment)
 {
@@ -392,6 +592,19 @@ nk_option_text_align(struct nk_context *ctx, const char *text, int len, nk_bool 
         text, len, NK_TOGGLE_OPTION, &style->option, in, style->font, widget_alignment, text_alignment);
     return is_active;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] text <fill in>
+ * \param[in] len <fill in>
+ * \param[in] active <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_radio_text(struct nk_context *ctx, const char *text, int len, nk_bool *active)
 {
@@ -404,6 +617,19 @@ nk_radio_text(struct nk_context *ctx, const char *text, int len, nk_bool *active
     *active = nk_option_text(ctx, text, len, old_value);
     return old_value != *active;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] text <fill in>
+ * \param[in] len <fill in>
+ * \param[in] active <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_radio_text_align(struct nk_context *ctx, const char *text, int len, nk_bool *active, nk_flags widget_alignment, nk_flags text_alignment)
 {
@@ -416,21 +642,69 @@ nk_radio_text_align(struct nk_context *ctx, const char *text, int len, nk_bool *
     *active = nk_option_text_align(ctx, text, len, old_value, widget_alignment, text_alignment);
     return old_value != *active;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] label <fill in>
+ * \param[in] active <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_option_label(struct nk_context *ctx, const char *label, nk_bool active)
 {
     return nk_option_text(ctx, label, nk_strlen(label), active);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] label <fill in>
+ * \param[in] active <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_option_label_align(struct nk_context *ctx, const char *label, nk_bool active, nk_flags widget_alignment, nk_flags text_alignment)
 {
     return nk_option_text_align(ctx, label, nk_strlen(label), active, widget_alignment, text_alignment);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] label <fill in>
+ * \param[in] active <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_radio_label(struct nk_context *ctx, const char *label, nk_bool *active)
 {
     return nk_radio_text(ctx, label, nk_strlen(label), active);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] label <fill in>
+ * \param[in] active <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_radio_label_align(struct nk_context *ctx, const char *label, nk_bool *active, nk_flags widget_alignment, nk_flags text_alignment)
 {

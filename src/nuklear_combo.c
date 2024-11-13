@@ -6,6 +6,17 @@
  *                          COMBO
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] win <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN nk_bool
 nk_combo_begin(struct nk_context *ctx, struct nk_window *win,
     struct nk_vec2 size, nk_bool is_clicked, struct nk_rect header)
@@ -40,6 +51,18 @@ nk_combo_begin(struct nk_context *ctx, struct nk_window *win,
     win->popup.name = hash;
     return 1;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] selected <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_combo_begin_text(struct nk_context *ctx, const char *selected, int len,
     struct nk_vec2 size)
@@ -148,11 +171,35 @@ nk_combo_begin_text(struct nk_context *ctx, const char *selected, int len,
     }
     return nk_combo_begin(ctx, win, size, is_clicked, header);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] selected <fill in>
+ * \param[in] size <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_combo_begin_label(struct nk_context *ctx, const char *selected, struct nk_vec2 size)
 {
     return nk_combo_begin_text(ctx, selected, nk_strlen(selected), size);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] color <fill in>
+ * \param[in] size <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_combo_begin_color(struct nk_context *ctx, struct nk_color color, struct nk_vec2 size)
 {
@@ -244,6 +291,18 @@ nk_combo_begin_color(struct nk_context *ctx, struct nk_color color, struct nk_ve
     }
     return nk_combo_begin(ctx, win, size, is_clicked, header);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] symbol <fill in>
+ * \param[in] size <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_combo_begin_symbol(struct nk_context *ctx, enum nk_symbol_type symbol, struct nk_vec2 size)
 {
@@ -340,6 +399,18 @@ nk_combo_begin_symbol(struct nk_context *ctx, enum nk_symbol_type symbol, struct
     }
     return nk_combo_begin(ctx, win, size, is_clicked, header);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] selected <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_combo_begin_symbol_text(struct nk_context *ctx, const char *selected, int len,
     enum nk_symbol_type symbol, struct nk_vec2 size)
@@ -447,6 +518,18 @@ nk_combo_begin_symbol_text(struct nk_context *ctx, const char *selected, int len
     }
     return nk_combo_begin(ctx, win, size, is_clicked, header);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] img <fill in>
+ * \param[in] size <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_combo_begin_image(struct nk_context *ctx, struct nk_image img, struct nk_vec2 size)
 {
@@ -538,6 +621,18 @@ nk_combo_begin_image(struct nk_context *ctx, struct nk_image img, struct nk_vec2
     }
     return nk_combo_begin(ctx, win, size, is_clicked, header);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] selected <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_combo_begin_image_text(struct nk_context *ctx, const char *selected, int len,
     struct nk_image img, struct nk_vec2 size)
@@ -647,60 +742,182 @@ nk_combo_begin_image_text(struct nk_context *ctx, const char *selected, int len,
     }
     return nk_combo_begin(ctx, win, size, is_clicked, header);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_combo_begin_symbol_label(struct nk_context *ctx,
     const char *selected, enum nk_symbol_type type, struct nk_vec2 size)
 {
     return nk_combo_begin_symbol_text(ctx, selected, nk_strlen(selected), type, size);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_combo_begin_image_label(struct nk_context *ctx,
     const char *selected, struct nk_image img, struct nk_vec2 size)
 {
     return nk_combo_begin_image_text(ctx, selected, nk_strlen(selected), img, size);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] text <fill in>
+ * \param[in] len <fill in>
+ * \param[in] align <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_combo_item_text(struct nk_context *ctx, const char *text, int len,nk_flags align)
 {
     return nk_contextual_item_text(ctx, text, len, align);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] label <fill in>
+ * \param[in] align <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_combo_item_label(struct nk_context *ctx, const char *label, nk_flags align)
 {
     return nk_contextual_item_label(ctx, label, align);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] img <fill in>
+ * \param[in] text <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_combo_item_image_text(struct nk_context *ctx, struct nk_image img, const char *text,
     int len, nk_flags alignment)
 {
     return nk_contextual_item_image_text(ctx, img, text, len, alignment);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] img <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_combo_item_image_label(struct nk_context *ctx, struct nk_image img,
     const char *text, nk_flags alignment)
 {
     return nk_contextual_item_image_label(ctx, img, text, alignment);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] sym <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_combo_item_symbol_text(struct nk_context *ctx, enum nk_symbol_type sym,
     const char *text, int len, nk_flags alignment)
 {
     return nk_contextual_item_symbol_text(ctx, sym, text, len, alignment);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] sym <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_combo_item_symbol_label(struct nk_context *ctx, enum nk_symbol_type sym,
     const char *label, nk_flags alignment)
 {
     return nk_contextual_item_symbol_label(ctx, sym, label, alignment);
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 }
 NK_API void nk_combo_end(struct nk_context *ctx)
 {
     nk_contextual_end(ctx);
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 }
 NK_API void nk_combo_close(struct nk_context *ctx)
 {
     nk_contextual_close(ctx);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] items <fill in>
+ * \param[in] count <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_combo(struct nk_context *ctx, const char *const *items, int count,
     int selected, int item_height, struct nk_vec2 size)
@@ -731,6 +948,17 @@ nk_combo(struct nk_context *ctx, const char *const *items, int count,
     }
     return selected;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] items_separated_by_separator <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_combo_separator(struct nk_context *ctx, const char *items_separated_by_separator,
     int separator, int selected, int count, int item_height, struct nk_vec2 size)
@@ -780,12 +1008,35 @@ nk_combo_separator(struct nk_context *ctx, const char *items_separated_by_separa
     }
     return selected;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] items_separated_by_zeros <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_combo_string(struct nk_context *ctx, const char *items_separated_by_zeros,
     int selected, int count, int item_height, struct nk_vec2 size)
 {
     return nk_combo_separator(ctx, items_separated_by_zeros, '\0', selected, count, item_height, size);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] item_getter <fill in>
+ * \param[in] int <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_combo_callback(struct nk_context *ctx, void(*item_getter)(void*, int, const char**),
     void *userdata, int selected, int count, int item_height, struct nk_vec2 size)
@@ -819,18 +1070,52 @@ nk_combo_callback(struct nk_context *ctx, void(*item_getter)(void*, int, const c
         nk_combo_end(ctx);
     } return selected;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] items <fill in>
+ * \param[in] count <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_combobox(struct nk_context *ctx, const char *const *items, int count,
     int *selected, int item_height, struct nk_vec2 size)
 {
     *selected = nk_combo(ctx, items, count, *selected, item_height, size);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] items_separated_by_zeros <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_combobox_string(struct nk_context *ctx, const char *items_separated_by_zeros,
     int *selected, int count, int item_height, struct nk_vec2 size)
 {
     *selected = nk_combo_string(ctx, items_separated_by_zeros, *selected, count, item_height, size);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] items_separated_by_separator <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_combobox_separator(struct nk_context *ctx, const char *items_separated_by_separator,
     int separator, int *selected, int count, int item_height, struct nk_vec2 size)
@@ -838,6 +1123,16 @@ nk_combobox_separator(struct nk_context *ctx, const char *items_separated_by_sep
     *selected = nk_combo_separator(ctx, items_separated_by_separator, separator,
                                     *selected, count, item_height, size);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_combobox_callback(struct nk_context *ctx,
     void(*item_getter)(void* data, int id, const char **out_text),

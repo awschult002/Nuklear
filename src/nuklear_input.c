@@ -6,6 +6,16 @@
  *                          INPUT
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_input_begin(struct nk_context *ctx)
 {
@@ -26,6 +36,16 @@ nk_input_begin(struct nk_context *ctx)
     for (i = 0; i < NK_KEY_MAX; i++)
         in->keyboard.keys[i].clicked = 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_input_end(struct nk_context *ctx)
 {
@@ -41,6 +61,18 @@ nk_input_end(struct nk_context *ctx)
         in->mouse.grab = 0;
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] x <fill in>
+ * \param[in] y <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_input_motion(struct nk_context *ctx, int x, int y)
 {
@@ -53,6 +85,18 @@ nk_input_motion(struct nk_context *ctx, int x, int y)
     in->mouse.delta.x = in->mouse.pos.x - in->mouse.prev.x;
     in->mouse.delta.y = in->mouse.pos.y - in->mouse.prev.y;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] key <fill in>
+ * \param[in] down <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_input_key(struct nk_context *ctx, enum nk_keys key, nk_bool down)
 {
@@ -68,6 +112,20 @@ nk_input_key(struct nk_context *ctx, enum nk_keys key, nk_bool down)
 #endif
     in->keyboard.keys[key].down = down;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] id <fill in>
+ * \param[in] x <fill in>
+ * \param[in] y <fill in>
+ * \param[in] down <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_input_button(struct nk_context *ctx, enum nk_buttons id, int x, int y, nk_bool down)
 {
@@ -95,6 +153,17 @@ nk_input_button(struct nk_context *ctx, enum nk_buttons id, int x, int y, nk_boo
     }
 #endif
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] val <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_input_scroll(struct nk_context *ctx, struct nk_vec2 val)
 {
@@ -103,6 +172,17 @@ nk_input_scroll(struct nk_context *ctx, struct nk_vec2 val)
     ctx->input.mouse.scroll_delta.x += val.x;
     ctx->input.mouse.scroll_delta.y += val.y;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] glyph <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_input_glyph(struct nk_context *ctx, const nk_glyph glyph)
 {
@@ -121,6 +201,17 @@ nk_input_glyph(struct nk_context *ctx, const nk_glyph glyph)
         in->keyboard.text_len += len;
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] c <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_input_char(struct nk_context *ctx, char c)
 {
@@ -130,6 +221,17 @@ nk_input_char(struct nk_context *ctx, char c)
     glyph[0] = c;
     nk_input_glyph(ctx, glyph);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] unicode <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_input_unicode(struct nk_context *ctx, nk_rune unicode)
 {
@@ -139,6 +241,17 @@ nk_input_unicode(struct nk_context *ctx, nk_rune unicode)
     nk_utf_encode(unicode, rune, NK_UTF_SIZE);
     nk_input_glyph(ctx, rune);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] i <fill in>
+ * \param[in] id <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_input_has_mouse_click(const struct nk_input *i, enum nk_buttons id)
 {
@@ -147,6 +260,17 @@ nk_input_has_mouse_click(const struct nk_input *i, enum nk_buttons id)
     btn = &i->mouse.buttons[id];
     return (btn->clicked && btn->down == nk_false) ? nk_true : nk_false;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] i <fill in>
+ * \param[in] id <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_input_has_mouse_click_in_rect(const struct nk_input *i, enum nk_buttons id,
     struct nk_rect b)
@@ -158,6 +282,17 @@ nk_input_has_mouse_click_in_rect(const struct nk_input *i, enum nk_buttons id,
         return nk_false;
     return nk_true;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] i <fill in>
+ * \param[in] id <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_input_has_mouse_click_in_button_rect(const struct nk_input *i, enum nk_buttons id,
     struct nk_rect b)
@@ -174,6 +309,17 @@ nk_input_has_mouse_click_in_button_rect(const struct nk_input *i, enum nk_button
         return nk_false;
     return nk_true;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] i <fill in>
+ * \param[in] id <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_input_has_mouse_click_down_in_rect(const struct nk_input *i, enum nk_buttons id,
     struct nk_rect b, nk_bool down)
@@ -183,6 +329,17 @@ nk_input_has_mouse_click_down_in_rect(const struct nk_input *i, enum nk_buttons 
     btn = &i->mouse.buttons[id];
     return nk_input_has_mouse_click_in_rect(i, id, b) && (btn->down == down);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] i <fill in>
+ * \param[in] id <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_input_is_mouse_click_in_rect(const struct nk_input *i, enum nk_buttons id,
     struct nk_rect b)
@@ -193,6 +350,17 @@ nk_input_is_mouse_click_in_rect(const struct nk_input *i, enum nk_buttons id,
     return (nk_input_has_mouse_click_down_in_rect(i, id, b, nk_false) &&
             btn->clicked) ? nk_true : nk_false;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] i <fill in>
+ * \param[in] id <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_input_is_mouse_click_down_in_rect(const struct nk_input *i, enum nk_buttons id,
     struct nk_rect b, nk_bool down)
@@ -203,6 +371,17 @@ nk_input_is_mouse_click_down_in_rect(const struct nk_input *i, enum nk_buttons i
     return (nk_input_has_mouse_click_down_in_rect(i, id, b, down) &&
             btn->clicked) ? nk_true : nk_false;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] in <fill in>
+ * \param[in] b <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_input_any_mouse_click_in_rect(const struct nk_input *in, struct nk_rect b)
 {
@@ -211,18 +390,52 @@ nk_input_any_mouse_click_in_rect(const struct nk_input *in, struct nk_rect b)
         down = down || nk_input_is_mouse_click_in_rect(in, (enum nk_buttons)i, b);
     return down;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] i <fill in>
+ * \param[in] rect <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_input_is_mouse_hovering_rect(const struct nk_input *i, struct nk_rect rect)
 {
     if (!i) return nk_false;
     return NK_INBOX(i->mouse.pos.x, i->mouse.pos.y, rect.x, rect.y, rect.w, rect.h);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] i <fill in>
+ * \param[in] rect <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_input_is_mouse_prev_hovering_rect(const struct nk_input *i, struct nk_rect rect)
 {
     if (!i) return nk_false;
     return NK_INBOX(i->mouse.prev.x, i->mouse.prev.y, rect.x, rect.y, rect.w, rect.h);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] i <fill in>
+ * \param[in] id <fill in>
+ * \param[in] rect <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_input_mouse_clicked(const struct nk_input *i, enum nk_buttons id, struct nk_rect rect)
 {
@@ -230,12 +443,34 @@ nk_input_mouse_clicked(const struct nk_input *i, enum nk_buttons id, struct nk_r
     if (!nk_input_is_mouse_hovering_rect(i, rect)) return nk_false;
     return nk_input_is_mouse_click_in_rect(i, id, rect);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] i <fill in>
+ * \param[in] id <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_input_is_mouse_down(const struct nk_input *i, enum nk_buttons id)
 {
     if (!i) return nk_false;
     return i->mouse.buttons[id].down;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] i <fill in>
+ * \param[in] id <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_input_is_mouse_pressed(const struct nk_input *i, enum nk_buttons id)
 {
@@ -246,12 +481,34 @@ nk_input_is_mouse_pressed(const struct nk_input *i, enum nk_buttons id)
         return nk_true;
     return nk_false;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] i <fill in>
+ * \param[in] id <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_input_is_mouse_released(const struct nk_input *i, enum nk_buttons id)
 {
     if (!i) return nk_false;
     return (!i->mouse.buttons[id].down && i->mouse.buttons[id].clicked);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] i <fill in>
+ * \param[in] key <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_input_is_key_pressed(const struct nk_input *i, enum nk_keys key)
 {
@@ -262,6 +519,17 @@ nk_input_is_key_pressed(const struct nk_input *i, enum nk_keys key)
         return nk_true;
     return nk_false;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] i <fill in>
+ * \param[in] key <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_input_is_key_released(const struct nk_input *i, enum nk_keys key)
 {
@@ -272,6 +540,17 @@ nk_input_is_key_released(const struct nk_input *i, enum nk_keys key)
         return nk_true;
     return nk_false;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] i <fill in>
+ * \param[in] key <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_input_is_key_down(const struct nk_input *i, enum nk_keys key)
 {

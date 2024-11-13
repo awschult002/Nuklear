@@ -6,6 +6,16 @@
  *                          IMAGE
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ptr <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_handle
 nk_handle_ptr(void *ptr)
 {
@@ -13,6 +23,16 @@ nk_handle_ptr(void *ptr)
     handle.ptr = ptr;
     return handle;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] id <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_handle
 nk_handle_id(int id)
 {
@@ -21,6 +41,19 @@ nk_handle_id(int id)
     handle.id = id;
     return handle;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ptr <fill in>
+ * \param[in] w <fill in>
+ * \param[in] h <fill in>
+ * \param[in] r <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_image
 nk_subimage_ptr(void *ptr, nk_ushort w, nk_ushort h, struct nk_rect r)
 {
@@ -34,6 +67,19 @@ nk_subimage_ptr(void *ptr, nk_ushort w, nk_ushort h, struct nk_rect r)
     s.region[3] = (nk_ushort)r.h;
     return s;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] id <fill in>
+ * \param[in] w <fill in>
+ * \param[in] h <fill in>
+ * \param[in] r <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_image
 nk_subimage_id(int id, nk_ushort w, nk_ushort h, struct nk_rect r)
 {
@@ -47,6 +93,19 @@ nk_subimage_id(int id, nk_ushort w, nk_ushort h, struct nk_rect r)
     s.region[3] = (nk_ushort)r.h;
     return s;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] handle <fill in>
+ * \param[in] w <fill in>
+ * \param[in] h <fill in>
+ * \param[in] r <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_image
 nk_subimage_handle(nk_handle handle, nk_ushort w, nk_ushort h, struct nk_rect r)
 {
@@ -60,6 +119,16 @@ nk_subimage_handle(nk_handle handle, nk_ushort w, nk_ushort h, struct nk_rect r)
     s.region[3] = (nk_ushort)r.h;
     return s;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] handle <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_image
 nk_image_handle(nk_handle handle)
 {
@@ -73,6 +142,16 @@ nk_image_handle(nk_handle handle)
     s.region[3] = 0;
     return s;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ptr <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_image
 nk_image_ptr(void *ptr)
 {
@@ -87,6 +166,16 @@ nk_image_ptr(void *ptr)
     s.region[3] = 0;
     return s;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] id <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API struct nk_image
 nk_image_id(int id)
 {
@@ -100,12 +189,33 @@ nk_image_id(int id)
     s.region[3] = 0;
     return s;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] img <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_image_is_subimage(const struct nk_image* img)
 {
     NK_ASSERT(img);
     return !(img->w == 0 && img->h == 0);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] img <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_image(struct nk_context *ctx, struct nk_image img)
 {
@@ -121,6 +231,18 @@ nk_image(struct nk_context *ctx, struct nk_image img)
     if (!nk_widget(&bounds, ctx)) return;
     nk_draw_image(&win->buffer, bounds, &img, nk_white);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] img <fill in>
+ * \param[in] col <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_image_color(struct nk_context *ctx, struct nk_image img, struct nk_color col)
 {

@@ -6,6 +6,17 @@
  *                              SLIDER
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ * \param[in] logical_cursor <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB float
 nk_slider_behavior(nk_flags *state, struct nk_rect *logical_cursor,
     struct nk_rect *visual_cursor, struct nk_input *in,
@@ -48,6 +59,17 @@ nk_slider_behavior(nk_flags *state, struct nk_rect *logical_cursor,
         *state |= NK_WIDGET_STATE_LEFT;
     return slider_value;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] out <fill in>
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_draw_slider(struct nk_command_buffer *out, nk_flags state,
     const struct nk_style_slider *style, const struct nk_rect *bounds,
@@ -115,6 +137,16 @@ nk_draw_slider(struct nk_command_buffer *out, nk_flags state,
     else
         nk_fill_circle(out, *visual_cursor, nk_rgb_factor(cursor->data.color, style->color_factor));
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB float
 nk_do_slider(nk_flags *state,
     struct nk_command_buffer *out, struct nk_rect bounds,
@@ -204,6 +236,19 @@ nk_do_slider(nk_flags *state,
     if (style->draw_end) style->draw_end(out, style->userdata);
     return slider_value;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] min_value <fill in>
+ * \param[in] value <fill in>
+ * \param[in] max_value <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_slider_float(struct nk_context *ctx, float min_value, float *value, float max_value,
     float value_step)
@@ -238,11 +283,39 @@ nk_slider_float(struct nk_context *ctx, float min_value, float *value, float max
                 old_value, max_value, value_step, &style->slider, in, style->font);
     return (old_value > *value || old_value < *value);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] min <fill in>
+ * \param[in] val <fill in>
+ * \param[in] max <fill in>
+ * \param[in] step <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API float
 nk_slide_float(struct nk_context *ctx, float min, float val, float max, float step)
 {
     nk_slider_float(ctx, min, &val, max, step); return val;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] min <fill in>
+ * \param[in] val <fill in>
+ * \param[in] max <fill in>
+ * \param[in] step <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_slide_int(struct nk_context *ctx, int min, int val, int max, int step)
 {
@@ -250,6 +323,20 @@ nk_slide_int(struct nk_context *ctx, int min, int val, int max, int step)
     nk_slider_float(ctx, (float)min, &value, (float)max, (float)step);
     return (int)value;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] min <fill in>
+ * \param[in] val <fill in>
+ * \param[in] max <fill in>
+ * \param[in] step <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_slider_int(struct nk_context *ctx, int min, int *val, int max, int step)
 {

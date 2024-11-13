@@ -6,6 +6,17 @@
  *                              TEXT
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] o <fill in>
+ * \param[in] b <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_widget_text(struct nk_command_buffer *o, struct nk_rect b,
     const char *string, int len, const struct nk_text *t,
@@ -51,6 +62,17 @@ nk_widget_text(struct nk_command_buffer *o, struct nk_rect b,
     }
     nk_draw_text(o, label, (const char*)string, len, f, t->background, t->text);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] o <fill in>
+ * \param[in] b <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_widget_text_wrap(struct nk_command_buffer *o, struct nk_rect b,
     const char *string, int len, const struct nk_text *t,
@@ -90,6 +112,18 @@ nk_widget_text_wrap(struct nk_command_buffer *o, struct nk_rect b,
         fitting = nk_text_clamp(f, &string[done], len - done, line.w, &glyphs, &width, seperator,NK_LEN(seperator));
     }
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] str <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_text_colored(struct nk_context *ctx, const char *str, int len,
     nk_flags alignment, struct nk_color color)
@@ -117,6 +151,17 @@ nk_text_colored(struct nk_context *ctx, const char *str, int len,
     text.text = nk_rgb_factor(color, style->text.color_factor);
     nk_widget_text(&win->buffer, bounds, str, len, &text, alignment, style->font);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] str <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_text_wrap_colored(struct nk_context *ctx, const char *str,
     int len, struct nk_color color)
@@ -145,6 +190,17 @@ nk_text_wrap_colored(struct nk_context *ctx, const char *str,
     nk_widget_text_wrap(&win->buffer, bounds, str, len, &text, style->font);
 }
 #ifdef NK_INCLUDE_STANDARD_VARARGS
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] flags <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_labelf_colored(struct nk_context *ctx, nk_flags flags,
     struct nk_color color, const char *fmt, ...)
@@ -154,6 +210,17 @@ nk_labelf_colored(struct nk_context *ctx, nk_flags flags,
     nk_labelfv_colored(ctx, flags, color, fmt, args);
     va_end(args);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] color <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_labelf_colored_wrap(struct nk_context *ctx, struct nk_color color,
     const char *fmt, ...)
@@ -163,6 +230,18 @@ nk_labelf_colored_wrap(struct nk_context *ctx, struct nk_color color,
     nk_labelfv_colored_wrap(ctx, color, fmt, args);
     va_end(args);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] flags <fill in>
+ * \param[in] fmt <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_labelf(struct nk_context *ctx, nk_flags flags, const char *fmt, ...)
 {
@@ -171,6 +250,17 @@ nk_labelf(struct nk_context *ctx, nk_flags flags, const char *fmt, ...)
     nk_labelfv(ctx, flags, fmt, args);
     va_end(args);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] fmt <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_labelf_wrap(struct nk_context *ctx, const char *fmt,...)
 {
@@ -179,6 +269,17 @@ nk_labelf_wrap(struct nk_context *ctx, const char *fmt,...)
     nk_labelfv_wrap(ctx, fmt, args);
     va_end(args);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] flags <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_labelfv_colored(struct nk_context *ctx, nk_flags flags,
     struct nk_color color, const char *fmt, va_list args)
@@ -188,6 +289,17 @@ nk_labelfv_colored(struct nk_context *ctx, nk_flags flags,
     nk_label_colored(ctx, buf, flags, color);
 }
 
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] color <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_labelfv_colored_wrap(struct nk_context *ctx, struct nk_color color,
     const char *fmt, va_list args)
@@ -197,6 +309,19 @@ nk_labelfv_colored_wrap(struct nk_context *ctx, struct nk_color color,
     nk_label_colored_wrap(ctx, buf, color);
 }
 
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] flags <fill in>
+ * \param[in] fmt <fill in>
+ * \param[in] args <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_labelfv(struct nk_context *ctx, nk_flags flags, const char *fmt, va_list args)
 {
@@ -205,6 +330,18 @@ nk_labelfv(struct nk_context *ctx, nk_flags flags, const char *fmt, va_list args
     nk_label(ctx, buf, flags);
 }
 
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] fmt <fill in>
+ * \param[in] args <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_labelfv_wrap(struct nk_context *ctx, const char *fmt, va_list args)
 {
@@ -213,32 +350,104 @@ nk_labelfv_wrap(struct nk_context *ctx, const char *fmt, va_list args)
     nk_label_wrap(ctx, buf);
 }
 
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] prefix <fill in>
+ * \param[in] value <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_value_bool(struct nk_context *ctx, const char *prefix, int value)
 {
     nk_labelf(ctx, NK_TEXT_LEFT, "%s: %s", prefix, ((value) ? "true": "false"));
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] prefix <fill in>
+ * \param[in] value <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_value_int(struct nk_context *ctx, const char *prefix, int value)
 {
     nk_labelf(ctx, NK_TEXT_LEFT, "%s: %d", prefix, value);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] prefix <fill in>
+ * \param[in] value <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_value_uint(struct nk_context *ctx, const char *prefix, unsigned int value)
 {
     nk_labelf(ctx, NK_TEXT_LEFT, "%s: %u", prefix, value);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] prefix <fill in>
+ * \param[in] value <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_value_float(struct nk_context *ctx, const char *prefix, float value)
 {
     double double_value = (double)value;
     nk_labelf(ctx, NK_TEXT_LEFT, "%s: %.3f", prefix, double_value);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] p <fill in>
+ * \param[in] c <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_value_color_byte(struct nk_context *ctx, const char *p, struct nk_color c)
 {
     nk_labelf(ctx, NK_TEXT_LEFT, "%s: (%d, %d, %d, %d)", p, c.r, c.g, c.b, c.a);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] p <fill in>
+ * \param[in] color <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_value_color_float(struct nk_context *ctx, const char *p, struct nk_color color)
 {
@@ -246,6 +455,18 @@ nk_value_color_float(struct nk_context *ctx, const char *p, struct nk_color colo
     nk_labelf(ctx, NK_TEXT_LEFT, "%s: (%.2f, %.2f, %.2f, %.2f)",
         p, c[0], c[1], c[2], c[3]);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] prefix <fill in>
+ * \param[in] color <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_value_color_hex(struct nk_context *ctx, const char *prefix, struct nk_color color)
 {
@@ -254,6 +475,19 @@ nk_value_color_hex(struct nk_context *ctx, const char *prefix, struct nk_color c
     nk_labelf(ctx, NK_TEXT_LEFT, "%s: %s", prefix, hex);
 }
 #endif
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] str <fill in>
+ * \param[in] len <fill in>
+ * \param[in] alignment <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_text(struct nk_context *ctx, const char *str, int len, nk_flags alignment)
 {
@@ -261,6 +495,18 @@ nk_text(struct nk_context *ctx, const char *str, int len, nk_flags alignment)
     if (!ctx) return;
     nk_text_colored(ctx, str, len, alignment, ctx->style.text.color);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] str <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_text_wrap(struct nk_context *ctx, const char *str, int len)
 {
@@ -268,22 +514,69 @@ nk_text_wrap(struct nk_context *ctx, const char *str, int len)
     if (!ctx) return;
     nk_text_wrap_colored(ctx, str, len, ctx->style.text.color);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] str <fill in>
+ * \param[in] alignment <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_label(struct nk_context *ctx, const char *str, nk_flags alignment)
 {
     nk_text(ctx, str, nk_strlen(str), alignment);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] str <fill in>
+ * \param[in] align <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_label_colored(struct nk_context *ctx, const char *str, nk_flags align,
     struct nk_color color)
 {
     nk_text_colored(ctx, str, nk_strlen(str), align, color);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] str <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_label_wrap(struct nk_context *ctx, const char *str)
 {
     nk_text_wrap(ctx, str, nk_strlen(str));
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] str <fill in>
+ * \param[in] color <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_label_colored_wrap(struct nk_context *ctx, const char *str, struct nk_color color)
 {

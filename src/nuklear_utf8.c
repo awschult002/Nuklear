@@ -11,6 +11,17 @@ NK_GLOBAL const nk_byte nk_utfmask[NK_UTF_SIZE+1] = {0xC0, 0x80, 0xE0, 0xF0, 0xF
 NK_GLOBAL const nk_uint nk_utfmin[NK_UTF_SIZE+1] = {0, 0, 0x80, 0x800, 0x10000};
 NK_GLOBAL const nk_uint nk_utfmax[NK_UTF_SIZE+1] = {0x10FFFF, 0x7F, 0x7FF, 0xFFFF, 0x10FFFF};
 
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] u <fill in>
+ * \param[in] i <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN int
 nk_utf_validate(nk_rune *u, int i)
 {
@@ -22,6 +33,17 @@ nk_utf_validate(nk_rune *u, int i)
     for (i = 1; *u > nk_utfmax[i]; ++i);
     return i;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] c <fill in>
+ * \param[in] i <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN nk_rune
 nk_utf_decode_byte(char c, int *i)
 {
@@ -33,6 +55,18 @@ nk_utf_decode_byte(char c, int *i)
     }
     return 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] c <fill in>
+ * \param[in] u <fill in>
+ * \param[in] clen <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_utf_decode(const char *c, nk_rune *u, int clen)
 {
@@ -61,11 +95,34 @@ nk_utf_decode(const char *c, nk_rune *u, int clen)
     nk_utf_validate(u, len);
     return len;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] u <fill in>
+ * \param[in] i <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_INTERN char
 nk_utf_encode_byte(nk_rune u, int i)
 {
     return (char)((nk_utfbyte[i]) | ((nk_byte)u & ~nk_utfmask[i]));
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] u <fill in>
+ * \param[in] c <fill in>
+ * \param[in] clen <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_utf_encode(nk_rune u, char *c, int clen)
 {
@@ -81,6 +138,17 @@ nk_utf_encode(nk_rune u, char *c, int clen)
     c[0] = nk_utf_encode_byte(u, len);
     return len;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] str <fill in>
+ * \param[in] len <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API int
 nk_utf_len(const char *str, int len)
 {
@@ -104,6 +172,18 @@ nk_utf_len(const char *str, int len)
     }
     return glyphs;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] buffer <fill in>
+ * \param[in] length <fill in>
+ * \param[in] index <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API const char*
 nk_utf_at(const char *buffer, int length, int index,
     nk_rune *unicode, int *len)

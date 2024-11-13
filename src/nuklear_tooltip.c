@@ -6,6 +6,17 @@
  *                              TOOLTIP
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] width <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_tooltip_begin(struct nk_context *ctx, float width)
 {
@@ -45,6 +56,16 @@ nk_tooltip_begin(struct nk_context *ctx, float width)
     return ret;
 }
 
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_tooltip_end(struct nk_context *ctx)
 {
@@ -55,6 +76,17 @@ nk_tooltip_end(struct nk_context *ctx)
     nk_popup_close(ctx);
     nk_popup_end(ctx);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] text <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_tooltip(struct nk_context *ctx, const char *text)
 {
@@ -91,6 +123,17 @@ nk_tooltip(struct nk_context *ctx, const char *text)
     }
 }
 #ifdef NK_INCLUDE_STANDARD_VARARGS
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] fmt <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_tooltipf(struct nk_context *ctx, const char *fmt, ...)
 {
@@ -99,6 +142,18 @@ nk_tooltipf(struct nk_context *ctx, const char *fmt, ...)
     nk_tooltipfv(ctx, fmt, args);
     va_end(args);
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] fmt <fill in>
+ * \param[in] args <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_tooltipfv(struct nk_context *ctx, const char *fmt, va_list args)
 {

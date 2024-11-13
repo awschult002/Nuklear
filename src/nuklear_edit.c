@@ -6,6 +6,17 @@
  *                          FILTER
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] box <fill in>
+ * \param[in] unicode <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_filter_default(const struct nk_text_edit *box, nk_rune unicode)
 {
@@ -13,6 +24,17 @@ nk_filter_default(const struct nk_text_edit *box, nk_rune unicode)
     NK_UNUSED(box);
     return nk_true;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] box <fill in>
+ * \param[in] unicode <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_filter_ascii(const struct nk_text_edit *box, nk_rune unicode)
 {
@@ -20,6 +42,17 @@ nk_filter_ascii(const struct nk_text_edit *box, nk_rune unicode)
     if (unicode > 128) return nk_false;
     else return nk_true;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] box <fill in>
+ * \param[in] unicode <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_filter_float(const struct nk_text_edit *box, nk_rune unicode)
 {
@@ -28,6 +61,17 @@ nk_filter_float(const struct nk_text_edit *box, nk_rune unicode)
         return nk_false;
     else return nk_true;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] box <fill in>
+ * \param[in] unicode <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_filter_decimal(const struct nk_text_edit *box, nk_rune unicode)
 {
@@ -36,6 +80,17 @@ nk_filter_decimal(const struct nk_text_edit *box, nk_rune unicode)
         return nk_false;
     else return nk_true;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] box <fill in>
+ * \param[in] unicode <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_filter_hex(const struct nk_text_edit *box, nk_rune unicode)
 {
@@ -46,6 +101,17 @@ nk_filter_hex(const struct nk_text_edit *box, nk_rune unicode)
         return nk_false;
     else return nk_true;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] box <fill in>
+ * \param[in] unicode <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_filter_oct(const struct nk_text_edit *box, nk_rune unicode)
 {
@@ -54,6 +120,17 @@ nk_filter_oct(const struct nk_text_edit *box, nk_rune unicode)
         return nk_false;
     else return nk_true;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] box <fill in>
+ * \param[in] unicode <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_bool
 nk_filter_binary(const struct nk_text_edit *box, nk_rune unicode)
 {
@@ -68,6 +145,16 @@ nk_filter_binary(const struct nk_text_edit *box, nk_rune unicode)
  *                          EDIT
  *
  * ===============================================================*/
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] out <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB void
 nk_edit_draw_text(struct nk_command_buffer *out,
     const struct nk_style_edit *style, float pos_x, float pos_y,
@@ -151,6 +238,17 @@ nk_edit_draw_text(struct nk_command_buffer *out,
             &txt, NK_TEXT_LEFT, font);
     }}
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] state <fill in>
+ * \param[in] out <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_LIB nk_flags
 nk_do_edit(nk_flags *state, struct nk_command_buffer *out,
     struct nk_rect bounds, nk_flags flags, nk_plugin_filter filter,
@@ -670,6 +768,17 @@ nk_do_edit(nk_flags *state, struct nk_command_buffer *out,
     nk_push_scissor(out, old_clip);}
     return ret;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] flags <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_edit_focus(struct nk_context *ctx, nk_flags flags)
 {
@@ -687,6 +796,16 @@ nk_edit_focus(struct nk_context *ctx, nk_flags flags)
     if (flags & NK_EDIT_ALWAYS_INSERT_MODE)
         win->edit.mode = NK_TEXT_EDIT_MODE_INSERT;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API void
 nk_edit_unfocus(struct nk_context *ctx)
 {
@@ -699,6 +818,17 @@ nk_edit_unfocus(struct nk_context *ctx)
     win->edit.active = nk_false;
     win->edit.name = 0;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] flags <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_flags
 nk_edit_string(struct nk_context *ctx, nk_flags flags,
     char *memory, int *len, int max, nk_plugin_filter filter)
@@ -755,6 +885,17 @@ nk_edit_string(struct nk_context *ctx, nk_flags flags,
         win->edit.scrollbar.y = (nk_uint)edit->scrollbar.y;
     } return state;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] flags <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_flags
 nk_edit_buffer(struct nk_context *ctx, nk_flags flags,
     struct nk_text_edit *edit, nk_plugin_filter filter)
@@ -818,6 +959,17 @@ nk_edit_buffer(struct nk_context *ctx, nk_flags flags,
         win->edit.active = nk_false;
     } return ret_flags;
 }
+/**
+ * \brief <fill in>
+ *
+ * \details
+ * <fill in>
+ *
+ * \param[in] ctx <fill in>
+ * \param[in] flags <fill in>
+ *
+ * \returns <fill in>
+ */
 NK_API nk_flags
 nk_edit_string_zero_terminated(struct nk_context *ctx, nk_flags flags,
     char *buffer, int max, nk_plugin_filter filter)
