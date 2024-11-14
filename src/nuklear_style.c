@@ -908,6 +908,7 @@ nk_style_pop_##type(struct nk_context *ctx)\
     element = &type_stack->elements[--type_stack->head];\
     *element->address = element->old_value;\
     return 1;\
+}
 /**
  * \brief <fill in>
  *
@@ -920,7 +921,6 @@ nk_style_pop_##type(struct nk_context *ctx)\
  *
  * \returns <fill in>
  */
-}
 NK_API nk_bool NK_STYLE_PUSH_IMPLEMENATION(struct nk, style_item, style_items)
 NK_API nk_bool NK_STYLE_PUSH_IMPLEMENATION(nk,float, floats)
 NK_API nk_bool NK_STYLE_PUSH_IMPLEMENATION(struct nk, vec2, vectors)
