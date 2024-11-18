@@ -5,6 +5,8 @@ BIN = demo
 CFLAGS += -std=c89 -Wall -Wextra -pedantic -fsanitize=address -O2
 CFLAGS += -DSDL_DISABLE_IMMINTRIN_H
 
+GLSLC_BIN ?=
+
 SRC = main.c
 OBJ = $(SRC:.c=.o)
 
@@ -17,14 +19,17 @@ else
 	LIBS = $(SDL2) -lvulkan -lm
 endif
 
-
+# if you don't have GLSLC, then don't build
+ifeq ($(GLSLC_BIN, ))
+$(BIN): 
+else
 $(BIN): shaders/demo.vert.spv shaders/demo.frag.spv
 	@mkdir -p bin
 	rm -f bin/$(BIN) $(OBJS)
 	$(CC) $(SRC) $(CFLAGS) -o bin/$(BIN) $(LIBS)
-
 shaders/demo.vert.spv: shaders/demo.vert
-	glslc --target-env=vulkan shaders/demo.vert -o shaders/demo.vert.spv
+	$(GLSLC_BIN) --target-env=vulkan shaders/demo.vert -o shaders/demo.vert.spv
 
 shaders/demo.frag.spv: shaders/demo.frag
-	glslc --target-env=vulkan shaders/demo.frag -o shaders/demo.frag.spv
+	$(GLSLC_BIN) --target-env=vulkan shaders/demo.frag -o shaders/demo.frag.spv
+endif
