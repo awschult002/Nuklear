@@ -79,7 +79,7 @@ $(DOCS_PATH)/doxygen-awesome-css/doxygen-awesome.css:
 ##   Demos
 
 $(DEMO_LIST):
-	$(MAKE) -k -C $@
+	$(MAKE) -j -k -C $@
 
 
 
