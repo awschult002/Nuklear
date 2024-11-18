@@ -20,7 +20,7 @@ else
 endif
 
 # if you don't have GLSLC, then don't build
-ifeq ($(GLSLC_BIN, ))
+ifeq ($(GLSLC_BIN), )
 $(BIN): 
 else
 $(BIN): shaders/demo.vert.spv shaders/demo.frag.spv
