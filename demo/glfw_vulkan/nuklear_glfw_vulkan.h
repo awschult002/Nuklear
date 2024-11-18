@@ -13,7 +13,7 @@
 #ifndef NK_GLFW_VULKAN_H_
 #define NK_GLFW_VULKAN_H_
 
-unsigned char nuklearshaders_nuklear_vert_spv[] = {
+unsigned char src_nuklearshaders_nuklear_vert_spv[] = {
   0x03, 0x02, 0x23, 0x07, 0x00, 0x00, 0x01, 0x00, 0x0b, 0x00, 0x0d, 0x00,
   0x45, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x11, 0x00, 0x02, 0x00,
   0x01, 0x00, 0x00, 0x00, 0x0b, 0x00, 0x06, 0x00, 0x01, 0x00, 0x00, 0x00,
@@ -170,8 +170,8 @@ unsigned char nuklearshaders_nuklear_vert_spv[] = {
   0x3e, 0x00, 0x03, 0x00, 0x42, 0x00, 0x00, 0x00, 0x44, 0x00, 0x00, 0x00,
   0xfd, 0x00, 0x01, 0x00, 0x38, 0x00, 0x01, 0x00
 };
-unsigned int nuklearshaders_nuklear_vert_spv_len = 1856;
-unsigned char nuklearshaders_nuklear_frag_spv[] = {
+unsigned int src_nuklearshaders_nuklear_vert_spv_len = 1856;
+unsigned char src_nuklearshaders_nuklear_frag_spv[] = {
   0x03, 0x02, 0x23, 0x07, 0x00, 0x00, 0x01, 0x00, 0x0b, 0x00, 0x0d, 0x00,
   0x1b, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x11, 0x00, 0x02, 0x00,
   0x01, 0x00, 0x00, 0x00, 0x0b, 0x00, 0x06, 0x00, 0x01, 0x00, 0x00, 0x00,
@@ -245,7 +245,7 @@ unsigned char nuklearshaders_nuklear_frag_spv[] = {
   0x3e, 0x00, 0x03, 0x00, 0x15, 0x00, 0x00, 0x00, 0x1a, 0x00, 0x00, 0x00,
   0xfd, 0x00, 0x01, 0x00, 0x38, 0x00, 0x01, 0x00
 };
-unsigned int nuklearshaders_nuklear_frag_spv_len = 860;
+unsigned int src_nuklearshaders_nuklear_frag_spv_len = 860;
 
 #include <assert.h>
 #include <stddef.h>
@@ -844,11 +844,11 @@ NK_INTERN void nk_glfw3_create_pipeline(struct nk_glfw_device *dev) {
     dynamic_state.dynamicStateCount = 2;
 
     shader_stages[0] = nk_glfw3_create_shader(
-        dev, nuklearshaders_nuklear_vert_spv,
-        nuklearshaders_nuklear_vert_spv_len, VK_SHADER_STAGE_VERTEX_BIT);
+        dev, src_nuklearshaders_nuklear_vert_spv,
+        src_nuklearshaders_nuklear_vert_spv_len, VK_SHADER_STAGE_VERTEX_BIT);
     shader_stages[1] = nk_glfw3_create_shader(
-        dev, nuklearshaders_nuklear_frag_spv,
-        nuklearshaders_nuklear_frag_spv_len, VK_SHADER_STAGE_FRAGMENT_BIT);
+        dev, src_nuklearshaders_nuklear_frag_spv,
+        src_nuklearshaders_nuklear_frag_spv_len, VK_SHADER_STAGE_FRAGMENT_BIT);
 
     memset(&vertex_input_info, 0, sizeof(VkVertexInputBindingDescription));
     vertex_input_info.binding = 0;
