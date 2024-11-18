@@ -12,7 +12,7 @@ jobs:
     - name: apt-update
       run: sudo apt-get update -qq
     - name: apt get demo-libs
-      run: sudo apt-get install -y --no-install-recommends build-essential liballegro5-dev liballegro-image5-dev liballegro-ttf5-dev libglfw3 libglfw3-dev libglew-dev libsdl2-dev libwayland-dev libx11-dev libx11-xcb-dev libcairo2-dev libxft-dev wayland-protocols libsfml-dev tcc libgles2-mesa-dev libegl1-mesa-dev
+      run: sudo apt-get install -y --no-install-recommends build-essential liballegro5-dev liballegro-image5-dev liballegro-ttf5-dev libglfw3 libglfw3-dev libglew-dev libsdl2-dev libwayland-dev libx11-dev libx11-xcb-dev libxcb-util*-dev libcairo2-dev libxft-dev wayland-protocols libsfml-dev tcc libgles2-mesa-dev libegl1-mesa-dev
     - name: build nuklear
       run: make nuke
     - name: build demos
