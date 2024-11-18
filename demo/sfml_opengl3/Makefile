@@ -30,9 +30,11 @@ endif
 
 ifeq ($(SFML_DIR),)
 $(info Need to declare the location of the SFML Library)
+$(BIN):
 else
 ifeq ($(GLAD_DIR),)
 $(info Need to declare the location of the glad files)
+$(BIN):
 else
 
 SFML_INC = -I $(SFML_DIR)/include
