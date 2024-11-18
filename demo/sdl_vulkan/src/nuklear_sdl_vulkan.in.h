@@ -18,10 +18,10 @@
 // so we can have some ide support while editing the .in file
 #include "nuklear.h"
 
-unsigned char nuklearshaders_nuklear_vert_spv[] = {};
-unsigned int nuklearshaders_nuklear_vert_spv_len = 0;
-unsigned char nuklearshaders_nuklear_frag_spv[] = {};
-unsigned int nuklearshaders_nuklear_frag_spv_len = 0;
+unsigned char src_nuklearshaders_nuklear_vert_spv[] = {};
+unsigned int src_nuklearshaders_nuklear_vert_spv_len = 0;
+unsigned char src_nuklearshaders_nuklear_frag_spv[] = {};
+unsigned int src_nuklearshaders_nuklear_frag_spv_len = 0;
 // NUKLEAR_SHADERS_END
 
 #include <assert.h>
@@ -610,11 +610,11 @@ NK_INTERN void nk_sdl_create_pipeline(struct nk_sdl_device *dev) {
     dynamic_state.dynamicStateCount = 2;
 
     shader_stages[0] = nk_sdl_create_shader(
-        dev, nuklearshaders_nuklear_vert_spv,
-        nuklearshaders_nuklear_vert_spv_len, VK_SHADER_STAGE_VERTEX_BIT);
+        dev, src_nuklearshaders_nuklear_vert_spv,
+        src_nuklearshaders_nuklear_vert_spv_len, VK_SHADER_STAGE_VERTEX_BIT);
     shader_stages[1] = nk_sdl_create_shader(
-        dev, nuklearshaders_nuklear_frag_spv,
-        nuklearshaders_nuklear_frag_spv_len, VK_SHADER_STAGE_FRAGMENT_BIT);
+        dev, src_nuklearshaders_nuklear_frag_spv,
+        src_nuklearshaders_nuklear_frag_spv_len, VK_SHADER_STAGE_FRAGMENT_BIT);
 
     memset(&vertex_input_info, 0, sizeof(VkVertexInputBindingDescription));
     vertex_input_info.binding = 0;
