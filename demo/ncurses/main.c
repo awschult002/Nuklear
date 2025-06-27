@@ -17,12 +17,10 @@
 #define NK_IMPLEMENTATION
 #define NK_XLIB_IMPLEMENTATION
 #include "../../nuklear.h"
-/*#include "nuklear_xlib.h"*/
+#include "nuklear_ncurses.h"
 #include <ncurses.h>
 
 #define DTIME           20
-#define WINDOW_WIDTH    800
-#define WINDOW_HEIGHT   600
 
 
 static void
@@ -108,53 +106,49 @@ int main(void)
     long dt;
     long started;
     int running = 1;
-    struct nk_context ctx;
-
-    #ifdef INCLUDE_CONFIGURATOR
-    static struct nk_color color_table[NK_COLOR_COUNT];
-    memcpy(color_table, nk_default_color_style, sizeof(color_table));
-    #endif
+    struct nk_context s_ctx;
+    struct nk_context *ctx = &s_ctx;
 
     /* since tui is character sized pixels, we just return the length of the
-     text as if they are pixels.*/
-      float your_text_width_calculation(nk_handle handle, float height, const char *text, int len)
-      {
-          return len;
-      }
- 
-      struct nk_user_font font;
-      font.userdata.ptr = NULL;
-      font.height = 1;
-      font.width = your_text_width_calculation;
- 
-    nk_init_default(&ctx, 0 );
-
-    while (running)
+       text as if they are pixels.*/
+    float your_text_width_calculation(nk_handle handle, float height, const char *text, int len)
     {
-        initscr();
-        printw("help me");
-        refresh();
-        getch();
-        running = 0;
+        return len;
+    }
 
+    struct nk_user_font font;
+    font.userdata.ptr = NULL;
+    font.height = 1;
+    font.width = your_text_width_calculation;
+
+    int ch;
+    nk_init_default(ctx, &font );
+
+    initscr();			/* Start curses mode 		*/
+    raw();				/* Line buffering disabled	*/
+    keypad(stdscr, TRUE);		/* We get F1, F2 etc..		*/
+    noecho();			/* Don't echo() while we do getch */
+
+    printw("Testing");
+
+    while(running)
+    {
         /* Input */
-
-#if 0
-        XEvent evt;
         started = timestamp();
         nk_input_begin(ctx);
-        while (XPending(xw.dpy)) {
-            XNextEvent(xw.dpy, &evt);
-            if (evt.type == ClientMessage) goto cleanup;
-            if (XFilterEvent(&evt, xw.win)) continue;
-            nk_xlib_handle_event(xw.dpy, xw.screen, xw.win, &evt);
+        ch = getch();
+        switch(ch)
+        {
+            case 'q': running = 0; break;
+            default: printw("%c", ch); break;
         }
+
         nk_input_end(ctx);
 
         /* GUI */
-        if (nk_begin(ctx, "Demo", nk_rect(50, 50, 200, 200),
-            NK_WINDOW_BORDER|NK_WINDOW_MOVABLE|NK_WINDOW_SCALABLE|
-            NK_WINDOW_CLOSABLE|NK_WINDOW_MINIMIZABLE|NK_WINDOW_TITLE))
+        int row,col;
+        getmaxyx(stdscr,row,col);
+        if (nk_begin(ctx, "Demo", nk_rect(0, 0, col, row),0))
         {
             enum {EASY, HARD};
             static int op = EASY;
@@ -169,37 +163,17 @@ int main(void)
             nk_layout_row_dynamic(ctx, 25, 1);
             nk_property_int(ctx, "Compression:", 0, &property, 100, 10, 1);
         }
-        nk_end(ctx);
-        if (nk_window_is_hidden(ctx, "Demo")) break;
 
-        /* -------------- EXAMPLES ---------------- */
-        #ifdef INCLUDE_CALCULATOR
-          calculator(ctx);
-        #endif
-        #ifdef INCLUDE_CANVAS
-          canvas(ctx);
-        #endif
-        #ifdef INCLUDE_OVERVIEW
-          overview(ctx);
-        #endif
-        #ifdef INCLUDE_CONFIGURATOR
-          style_configurator(ctx, color_table);
-        #endif
-        #ifdef INCLUDE_NODE_EDITOR
-          node_editor(ctx);
-        #endif
-        /* ----------------------------------------- */
+        nk_end(ctx);
 
         /* Draw */
-        XClearWindow(xw.dpy, xw.win);
-        nk_xlib_render(xw.win, nk_rgb(30,30,30));
-        XFlush(xw.dpy);
+        nk_ncurses_render(ctx);
 
         /* Timing */
         dt = timestamp() - started;
         if (dt < DTIME)
             sleep_for(DTIME - dt);
-#endif
+
     }
 
 
